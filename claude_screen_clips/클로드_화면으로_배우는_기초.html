@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클로드(Claude) 화면으로 배우는 기초 — 21개 클립 가이드</title>
+<style>
+  /* ===== 디자인 토큰 (웜 + 실무 문서 팔레트) ===== */
+  :root{
+    --bg:#f6f4ef;
+    --paper:#fffdfa;
+    --surface:#ffffff;
+    --surface-2:#f0ede6;
+    --ink:#20211f;
+    --muted:#5f635d;
+    --faint:#6f6c63;
+    --accent:#b45f3f;
+    --accent-ink:#843d29;
+    --accent-soft:#f4e5dc;
+    --blue:#315f7d;
+    --blue-soft:#e5edf2;
+    --tip:#366c55;   --tip-soft:#e8f2ec;
+    --warn:#9f6b27;  --warn-soft:#f5ead8;
+    --line:#ded9cd;
+    --line-strong:#c9c1b3;
+    --radius:8px;
+    --shadow:0 1px 2px rgba(32,33,31,.04), 0 14px 34px rgba(32,33,31,.07);
+    --font:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","맑은 고딕",sans-serif;
+    --mono:"SFMono-Regular",Consolas,"D2Coding","Cascadia Code",monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+       line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--accent);z-index:100;transition:width .1s linear}
+
+  .wrap{display:grid;grid-template-columns:292px minmax(0,1fr);gap:0;max-width:1260px;min-height:100vh;margin:0 auto;align-items:start}
+
+  aside{position:sticky;top:0;height:100vh;overflow-y:auto;padding:30px 20px 42px 24px;border-right:1px solid var(--line);background:rgba(255,253,249,.74)}
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .brand .dot{width:32px;height:32px;border-radius:7px;background:var(--accent);
+       display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px;flex:none}
+  .brand b{font-size:15px;letter-spacing:0}
+  .brand small{display:block;color:var(--faint);font-size:11.5px;font-weight:500}
+  nav{margin-top:22px}
+  nav a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--muted);
+        font-size:13.5px;padding:8px 10px;border-radius:8px;transition:.15s;line-height:1.4}
+  nav a .n{color:var(--faint);font-variant-numeric:tabular-nums;font-size:12px;min-width:16px}
+  nav a:hover{background:var(--surface);color:var(--ink)}
+  nav a.active{background:var(--accent-soft);color:var(--accent-ink);font-weight:700}
+  nav a.active .n{color:var(--accent-ink)}
+  .navgroup{font-size:11px;font-weight:800;letter-spacing:0;text-transform:uppercase;
+        color:var(--faint);padding:14px 10px 4px}
+
+  main{padding:0 clamp(28px,5vw,76px) 120px;min-width:0;background:var(--paper)}
+
+  .hero{padding:72px 0 42px;border-bottom:1px solid var(--line);margin-bottom:12px}
+  .hero::before{content:"";display:block;width:54px;height:4px;background:var(--accent);margin-bottom:28px;border-radius:999px}
+  .eyebrow{display:inline-block;background:var(--accent-soft);color:var(--accent-ink);
+        font-size:12.5px;font-weight:800;padding:5px 12px;border:1px solid rgba(180,95,63,.18);border-radius:999px;margin-bottom:18px}
+  h1{font-size:46px;line-height:1.1;letter-spacing:0;margin:0 0 16px;font-weight:850;max-width:820px}
+  .hero p{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;
+        padding:6px 13px;font-size:13px;color:var(--muted);font-weight:500}
+  .chip b{color:var(--ink)}
+
+  section{padding:52px 0;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+  section:last-of-type{border-bottom:none}
+  .sec-h{display:flex;align-items:center;gap:14px;margin:0 0 8px}
+  .sec-n{width:34px;height:34px;border-radius:8px;background:var(--ink);color:#fff;
+        display:grid;place-items:center;font-weight:800;font-size:15px;flex:none}
+  h2{font-size:26px;letter-spacing:0;margin:0;font-weight:850}
+  .lede{color:var(--muted);font-size:18px;margin:2px 0 22px;max-width:46em}
+  h3{font-size:20px;margin:34px 0 10px;letter-spacing:0;font-weight:800}
+  p{margin:12px 0}
+  main>section>p{max-width:44em}
+  strong{font-weight:700}
+  a.inline{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px}
+
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:7px 0}
+  li::marker{color:var(--accent)}
+
+  /* 카드 */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+        padding:22px 24px;box-shadow:0 1px 2px rgba(32,33,31,.04);margin:18px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card h4{margin:0 0 6px;font-size:16.5px;display:flex;align-items:center;gap:8px}
+  .card p,.card li{line-height:1.62}
+
+  /* 클립 (임베드 영상) */
+  .clip{margin:20px 0;border:1px solid var(--line-strong);border-radius:var(--radius);
+        overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+  .clip video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+  .clip figcaption{padding:11px 16px;font-size:13.8px;color:var(--muted);border-top:1px solid var(--line);
+        background:var(--surface);line-height:1.55}
+  .clip figcaption .t{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;
+        color:var(--accent-ink);background:var(--accent-soft);padding:2px 9px;border-radius:999px;
+        margin-right:9px;white-space:nowrap;letter-spacing:.2px}
+  .clip figcaption b{color:var(--ink)}
+  .cliprow{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
+  .cliprow .clip{margin:0}
+
+  /* 비교 테이블 */
+  table{width:100%;border-collapse:separate;border-spacing:0;margin:18px 0;font-size:14.5px;
+        background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 2px rgba(32,33,31,.04)}
+  th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--surface-2);font-weight:800;font-size:13px;letter-spacing:0;color:var(--muted)}
+  th:not(:last-child),td:not(:last-child){border-right:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fffaf5}
+  td b{color:var(--ink)}
+
+  /* 콜아웃 */
+  .callout{border-radius:var(--radius);padding:15px 18px 15px 20px;margin:18px 0;font-size:15px;
+        background:#faf8f3;border:1px solid var(--line);border-left-width:4px}
+  .callout .ic{font-weight:800;margin-right:6px}
+  .callout.tip{border-left-color:var(--tip)}   .callout.tip .ic{color:var(--tip)}
+  .callout.warn{border-left-color:var(--warn)} .callout.warn .ic{color:var(--warn)}
+  .callout.ex{border-left-color:var(--blue)}   .callout.ex .ic{color:var(--blue)}
+  .callout p{margin:6px 0}
+  .callout b{color:var(--ink)}
+
+  /* 단계 리스트 */
+  .steps{counter-reset:s;list-style:none;padding:0;margin:18px 0}
+  .steps>li{counter-increment:s;position:relative;padding:4px 0 18px 44px;border-left:2px solid var(--line);margin-left:14px}
+  .steps>li:last-child{border-left-color:transparent;padding-bottom:0}
+  .steps>li::before{content:counter(s);position:absolute;left:-15px;top:0;width:28px;height:28px;
+        background:var(--accent);color:#fff;border-radius:50%;display:grid;place-items:center;
+        font-weight:800;font-size:13px}
+  .steps>li b{display:block;margin-bottom:2px}
+
+  /* 명령/프롬프트 블록 */
+  .cmd{position:relative;background:#222723;color:#f1ede3;border-radius:var(--radius);
+        padding:14px 50px 14px 16px;font-family:var(--mono);font-size:13.5px;
+        margin:14px 0;white-space:pre-wrap;word-break:break-word;line-height:1.6;border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 28px rgba(32,33,31,.10)}
+  .cmd .c{color:#a29d8f}
+  .cmd .p{color:#e0a27c}
+  .cmd button{position:absolute;top:9px;right:9px;background:#3a403a;color:#d7d1c5;border:1px solid rgba(255,255,255,.08);
+        border-radius:7px;padding:5px 10px;font-size:11.5px;cursor:pointer;font-family:var(--font)}
+  .cmd button:hover{background:#4b524c;color:#fff}
+  code{background:var(--accent-soft);color:var(--accent-ink);padding:1px 6px;border-radius:5px;
+        font-family:var(--mono);font-size:.88em}
+
+  /* 학습 로드맵 */
+  .roadmap-h{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--faint);margin:30px 0 10px}
+  .roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0}
+  .roadmap .rm{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+  .roadmap .rm span{display:block;color:var(--accent-ink);font-size:11px;font-weight:800;letter-spacing:.3px;margin-bottom:5px}
+  .roadmap .rm b{display:block;font-size:15px;margin-bottom:3px}
+  .roadmap .rm p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.5}
+
+  /* 그룹 헤더 */
+  .grouphead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:20px 0 -30px;padding-top:14px}
+  .grouphead .gh-n{color:var(--accent-ink);font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px}
+  .grouphead .gh-d{color:var(--faint);font-size:13px}
+
+  footer{padding:44px 0 0;color:var(--faint);font-size:13.5px}
+  footer a{color:var(--muted)}
+  footer p{margin:8px 0}
+
+  /* 모바일 */
+  .menu-btn{display:none}
+  @media(max-width:880px){
+    .wrap{grid-template-columns:1fr}
+    aside{position:fixed;inset:0 auto 0 0;width:280px;background:var(--bg);z-index:50;
+          transform:translateX(-100%);transition:.25s;box-shadow:0 0 40px rgba(0,0,0,.15);
+          padding-top:74px}
+    aside.open{transform:none}
+    .menu-btn{display:grid;place-items:center;position:fixed;top:14px;left:14px;z-index:60;
+          width:44px;height:44px;border-radius:8px;background:var(--ink);color:#fff;border:none;
+          font-size:20px;cursor:pointer;box-shadow:var(--shadow)}
+    main{padding:8px 20px 90px}
+    .grid2,.cliprow,.roadmap{grid-template-columns:1fr}
+    .hero{padding-top:74px}
+  }
+  @media(max-width:640px){
+    h1{font-size:32px;line-height:1.14}
+    h2{font-size:22px}
+    .hero p{font-size:16.5px}
+    .sec-h{align-items:flex-start}
+    table{display:block;overflow-x:auto}
+    th,td{min-width:140px}
+    .cmd{font-size:12.5px;padding:46px 14px 14px}
+    .cmd button{left:10px;right:auto}
+  }
+  @media print{
+    body{background:#fff}
+    #progress,.menu-btn,aside,.cmd button{display:none!important}
+    .wrap{display:block;max-width:none}
+    main{padding:0;background:#fff}
+    section{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button class="menu-btn" id="menuBtn" aria-label="목차 열기" aria-controls="aside" aria-expanded="false">☰</button>
+
+<div class="wrap">
+  <!-- ===== 사이드바 ===== -->
+  <aside id="aside">
+    <div class="brand">
+      <div class="dot">C</div>
+      <div><b>클로드 화면 가이드</b><small>21개 클립으로 보는 기초 · 2026</small></div>
+    </div>
+    <nav id="toc">
+      <div class="navgroup">시작하기</div>
+      <a href="#s1"><span class="n">1</span><span>시작과 기본 설정</span></a>
+      <a href="#s2"><span class="n">2</span><span>다른 AI 기억 가져오기</span></a>
+      <a href="#s3"><span class="n">3</span><span>모델 선택</span></a>
+      <div class="navgroup">잘 쓰는 법</div>
+      <a href="#s4"><span class="n">4</span><span>일 잘 시키는 대화법</span></a>
+      <a href="#s5"><span class="n">5</span><span>프로젝트 = 내 업무공간</span></a>
+      <div class="navgroup">확장하기</div>
+      <a href="#s6"><span class="n">6</span><span>커넥터 (외부 앱 연동)</span></a>
+      <a href="#s7"><span class="n">7</span><span>아티팩트 · 시각화 · 디자인</span></a>
+      <div class="navgroup">자동화</div>
+      <a href="#s8"><span class="n">8</span><span>스킬 (Skills)</span></a>
+      <a href="#s9"><span class="n">9</span><span>코워크 (Cowork)</span></a>
+      <a href="#s10"><span class="n">10</span><span>클로드 코드 · 자동화</span></a>
+    </nav>
+  </aside>
+
+  <!-- ===== 본문 ===== -->
+  <main>
+    <header class="hero">
+      <span class="eyebrow">화면으로 보는 클로드 · 왕초보 기초</span>
+      <h1>클로드(Claude)<br>화면으로 배우는 기초</h1>
+      <p>설정부터 프로젝트·커넥터·아티팩트·코워크까지 —
+         <b>실제 클로드 화면 클립 21개</b>를 순서대로 보며, 각 기능이 어떻게 생겼고 무엇을 하는지 눈으로 바로 익힙니다.</p>
+      <div class="meta">
+        <span class="chip">대상 <b>클로드 입문자</b></span>
+        <span class="chip">구성 <b>21개 화면 클립 · 10개 주제</b></span>
+        <span class="chip">소요 <b>영상 약 5분 · 읽기 15분</b></span>
+      </div>
+
+      <div class="roadmap-h">이 가이드의 흐름</div>
+      <div class="roadmap">
+        <div class="rm"><span>PART 1</span><b>기본 세팅</b><p>설정·지침·메모리·모델 고르기</p></div>
+        <div class="rm"><span>PART 2</span><b>잘 쓰는 법</b><p>대화 요령 · 프로젝트</p></div>
+        <div class="rm"><span>PART 3</span><b>확장하기</b><p>커넥터 · 아티팩트/디자인</p></div>
+        <div class="rm"><span>PART 4</span><b>자동화</b><p>스킬 · 코워크 · 코드</p></div>
+      </div>
+
+      <div class="callout tip">
+        <p><span class="ic">▶</span> 각 주제의 <b>영상을 클릭하면 재생</b>됩니다. 클립은 원본 영상에서 <b>클로드 화면만 발췌</b>한 것이며, 화면 속 자막은 원본의 것입니다.</p>
+      </div>
+      <div class="callout warn">
+        <p><span class="ic">!</span> 클로드는 자주 업데이트됩니다. 화면 구성·모델 이름·기능은 <b>영상 촬영 시점(2026) 기준</b>이라 지금과 다를 수 있어요. 세부 사양은 사용 시점에 한 번 더 확인하세요.</p>
+      </div>
+    </header>
+
+    <!-- PART 1 -->
+    <div class="grouphead"><span class="gh-n">PART 1 · 기본 세팅</span><span class="gh-d">처음 켜고 나서 가장 먼저 만지는 것들</span></div>
+
+    <!-- ===== S1 ===== -->
+    <section id="s1">
+      <div class="sec-h"><div class="sec-n">1</div><h2>시작과 기본 설정</h2></div>
+      <p class="lede">로그인하면 보이는 첫 화면, 그리고 왼쪽 아래 <b>프로필 → 설정</b>에서 가장 먼저 손봐야 할 것들부터 봅니다.</p>
+
+      <figure class="clip">
+        <video controls preload="metadata" src="01_settings_open_general.mp4"></video>
+        <figcaption><span class="t">0:56–1:06</span> 클로드 첫 화면에서 <b>왼쪽 아래 프로필 → 설정</b>으로 들어갑니다.</figcaption>
+      </figure>
+
+      <h3>① 클로드 지침 — 나만의 기본 프롬프트</h3>
+      <p>설정 <b>‘일반’ 탭</b>의 <b>클로드 지침</b>에, 매번 반복하는 요구(말투·역할·출력 형식 등)를 한 번 적어두면 <b>모든 대화에 자동으로 적용</b>됩니다. “매번 같은 설명을 반복”하지 않아도 되는 첫 단계예요.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="02_settings_custom_instructions.mp4"></video>
+        <figcaption><span class="t">1:10–1:15</span> ‘일반’ 탭의 <b>클로드 지침</b> 입력란 — 내 기본 프롬프트를 여기에.</figcaption>
+      </figure>
+
+      <h3>② 기능 &amp; 메모리 위치</h3>
+      <p>설정에는 <b>코드 실행·파일 생성</b> 같은 기능 토글과, 클로드가 나에 대해 기억하는 <b>메모리</b> 항목이 모여 있습니다. 무엇이 있는지 위치만 익혀 두세요.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="03_settings_features_memory.mp4"></video>
+        <figcaption><span class="t">1:18–1:35</span> 기능(코드 실행·파일 생성 등)과 <b>메모리</b> 항목들이 있는 설정 화면.</figcaption>
+      </figure>
+
+      <div class="callout ex">
+        <p><span class="ic">예시</span> 클로드 지침에 이렇게 적어두면 좋습니다:</p>
+        <div class="cmd">항상 한국어로, 존댓말로 답해줘.
+나는 건축 설계 실무자야. 전문 용어는 그대로 쓰되 핵심부터 간단히.
+<span class="c">// 말투·역할·형식을 한 번만 정해두면 매 대화에 자동 적용됩니다.</span></div>
+      </div>
+    </section>
+
+    <!-- ===== S2 ===== -->
+    <section id="s2">
+      <div class="sec-h"><div class="sec-n">2</div><h2>다른 AI 기억 가져오기</h2></div>
+      <p class="lede">ChatGPT·Gemini 등 <b>다른 AI가 나에 대해 기억한 내용</b>을, 그대로 클로드로 옮겨올 수 있습니다.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="04_memory_import.mp4"></video>
+        <figcaption><span class="t">1:43–1:56</span> 설정의 <b>‘다른 AI 제공업체에서 메모리 가져오기’</b> — 복사한 내용을 붙여넣는 다이얼로그.</figcaption>
+      </figure>
+      <ol class="steps">
+        <li><b>다른 AI에서 내보내기</b> 기존에 쓰던 AI에 “네가 나에 대해 기억하는 정보를 정리해줘” 류의 프롬프트를 실행합니다.</li>
+        <li><b>결과 복사</b> 정리된 내용을 복사합니다.</li>
+        <li><b>클로드에 붙여넣기</b> ‘메모리 가져오기’ 창에 붙여넣으면, 내 배경·선호가 클로드로 그대로 이어집니다.</li>
+      </ol>
+    </section>
+
+    <!-- ===== S3 ===== -->
+    <section id="s3">
+      <div class="sec-h"><div class="sec-n">3</div><h2>모델 선택</h2></div>
+      <p class="lede">작업 난이도에 따라 <b>모델</b>을 고릅니다. 입력창 오른쪽 모델 이름을 누르면 목록이 열려요.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="05_model_selector_dropdown.mp4"></video>
+        <figcaption><span class="t">1:59–2:08</span> 모델 선택 드롭다운 — Haiku · Sonnet · Opus (그리고 Fable).</figcaption>
+      </figure>
+      <table>
+        <tr><th>모델</th><th>성격</th><th>언제</th></tr>
+        <tr><td><b>Haiku</b></td><td>가장 빠르고 가벼움</td><td>간단·대량 작업</td></tr>
+        <tr><td><b>Sonnet</b></td><td>속도·성능 균형</td><td>일상 작업 대부분 (영상 권장 기본)</td></tr>
+        <tr><td><b>Opus</b></td><td>가장 고성능</td><td>복잡·고난도 작업</td></tr>
+        <tr><td><b>Fable</b></td><td>화면상 ‘현재 사용 불가’로 표시</td><td>—</td></tr>
+      </table>
+      <figure class="clip">
+        <video controls preload="metadata" src="06_model_sonnet_home.mp4"></video>
+        <figcaption><span class="t">2:15–2:25</span> 영상에서는 <b>대부분 Sonnet</b>으로 처리하고, 어려운 작업만 Opus를 권합니다.</figcaption>
+      </figure>
+      <div class="callout tip"><p><span class="ic">TIP</span> 모델 이름·버전은 자주 바뀝니다. “빠름(Haiku) / 균형(Sonnet) / 고성능(Opus)”이라는 <b>성격 구분</b>만 기억하면 어떤 버전이 와도 고르기 쉽습니다.</p></div>
+    </section>
+
+    <!-- PART 2 -->
+    <div class="grouphead"><span class="gh-n">PART 2 · 잘 쓰는 법</span><span class="gh-d">같은 클로드라도 결과 품질이 확 달라지는 지점</span></div>
+
+    <!-- ===== S4 ===== -->
+    <section id="s4">
+      <div class="sec-h"><div class="sec-n">4</div><h2>일 잘 시키는 대화법</h2></div>
+      <p class="lede">두루뭉술하게 시키지 말고, <b>클로드가 먼저 되묻게</b> 만드는 것 — 초보와 고수를 가르는 핵심 습관입니다.</p>
+
+      <h3>① 거꾸로 되묻게 하기</h3>
+      <p>“바로 만들지 말고, 필요한 걸 <b>먼저 나에게 질문해줘</b>”라고 하면, 클로드가 대상·분량·강조점 등을 거꾸로 물어봅니다. 우리가 일일이 설명하지 않아도 맥락이 채워져요.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="07_report_reverse_questions.mp4"></video>
+        <figcaption><span class="t">3:10–3:18</span> 클로드가 <b>거꾸로 나에게 먼저 질문</b>하는 장면.</figcaption>
+      </figure>
+
+      <h3>② 객관식으로 받기</h3>
+      <p>주관식은 답하기 어렵죠. 클로드가 <b>선택지(객관식)</b>로 물어보게 하면, 우리는 <b>고르기만</b> 하면 됩니다.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="08_report_multiple_choice.mp4"></video>
+        <figcaption><span class="t">3:34–3:44</span> 클로드가 옵션을 <b>객관식</b>으로 제시 → 고르기만.</figcaption>
+      </figure>
+
+      <h3>③ 결과물(아티팩트) + 자가 피드백</h3>
+      <p>클로드가 만든 <b>결과물(아티팩트)</b>를 두고, “스스로 한번 검토·수정해봐”라고 하면 실수를 잡아 완성도를 높입니다.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="09_report_artifact_feedback.mp4"></video>
+        <figcaption><span class="t">3:50–4:05</span> 보고서 <b>아티팩트</b> 생성 후, 클로드가 <b>스스로 피드백</b>하며 다듬는 장면.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== S5 ===== -->
+    <section id="s5">
+      <div class="sec-h"><div class="sec-n">5</div><h2>프로젝트 = 내 업무공간</h2></div>
+      <p class="lede"><b>프로젝트</b>는 지침·파일·대화 기록을 담아두는 전용 작업공간입니다. 매번 배경 설명을 반복할 필요가 없어져요.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="10_projects_tab.mp4"></video>
+        <figcaption><span class="t">4:20–4:26</span> 왼쪽 탭의 <b>프로젝트</b> — 나에 대한 정보·대화 기록을 저장하는 공간.</figcaption>
+      </figure>
+      <ol class="steps">
+        <li><b>새 프로젝트</b> 오른쪽 위 ‘새 프로젝트’ → 이름 짓기(예: “유튜브 대본 작성”).</li>
+        <li><b>지침 설정</b> 이 프로젝트에서만 쓸 전용 지침을 넣습니다.</li>
+        <li><b>파일 업로드</b> 관련 자료(예: 과거 결과물)를 넣어두면 매번 참고합니다.</li>
+      </ol>
+      <figure class="clip">
+        <video controls preload="metadata" src="11_project_create_instructions.mp4"></video>
+        <figcaption><span class="t">4:41–4:55</span> 프로젝트 <b>생성</b> + <b>지침 설정</b> 다이얼로그.</figcaption>
+      </figure>
+
+      <h3>마스터 프롬프트 만들기</h3>
+      <p>무엇을 적을지 막막하면, <b>클로드에게 나를 인터뷰</b>시켜 전용 지침(마스터 프롬프트)을 뽑아낼 수 있습니다. 여기에 답만 하면 → 지침 완성 → 파일 업로드 → <b>내 스타일대로</b> 결과가 나옵니다.</p>
+      <div class="cmd">나는 이런 이런 일을 하는데, 이 프로젝트 전용 지침으로 쓸 프롬프트를 만들고 싶어.
+나를 <span class="p">인터뷰하듯이 질문해서</span> 마스터 프롬프트를 만들어 줘.</div>
+      <figure class="clip">
+        <video controls preload="metadata" src="12_master_prompt_generate.mp4"></video>
+        <figcaption><span class="t">5:09–5:52</span> 인터뷰 → 마스터 프롬프트 생성 → 파일 업로드 → 내 스타일 대본 생성까지 (가장 긴 데모).</figcaption>
+      </figure>
+    </section>
+
+    <!-- PART 3 -->
+    <div class="grouphead"><span class="gh-n">PART 3 · 확장하기</span><span class="gh-d">클로드를 바깥 세상과 결과물로 잇기</span></div>
+
+    <!-- ===== S6 ===== -->
+    <section id="s6">
+      <div class="sec-h"><div class="sec-n">6</div><h2>커넥터 (외부 앱 연동)</h2></div>
+      <p class="lede"><b>커넥터</b>로 Gmail·캘린더·드라이브·노션 등을 연결하면, 외부 정보를 가져오거나 결과를 내보낼 수 있습니다.</p>
+    </section>
+
+    <!-- ===== S7 ===== -->
+    <section id="s7">
+      <div class="sec-h"><div class="sec-n">7</div><h2>아티팩트 · 시각화 · 디자인</h2></div>
+      <p class="lede">말로 시켜서 <b>대시보드·차트·웹앱·슬라이드</b>까지. 클로드가 가장 잘하는 것 중 하나가 시각화입니다.</p>
+
+      <h3>① 데이터 시각화</h3>
+      <p>표·숫자를 붙여 넣고 시키면 <b>대시보드·차트</b>로, 나아가 <b>웹사이트·간단한 게임 같은 것</b>까지 아티팩트로 만들어 줍니다.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="15_dataviz_dashboard_artifact.mp4"></video>
+        <figcaption><span class="t">6:50–7:10</span> 대시보드·차트, 그리고 아티팩트로 만든 웹앱(리듬 머신)까지.</figcaption>
+      </figure>
+
+      <h3>② 디자인 — 캔버스 · PPT · 캐러셀</h3>
+      <p>디자인 감각이 없어도, <b>말로 시켜서</b> PPT·카드뉴스(캐러셀) 같은 결과물을 뽑아낼 수 있습니다.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="16_design_canvas_slides.mp4"></video>
+        <figcaption><span class="t">7:13–7:21</span> 디자인 캔버스에서 슬라이드/캐러셀을 생성하는 장면.</figcaption>
+      </figure>
+
+      <h3>③ Claude Design</h3>
+      <p>내 색깔·스타일을 <b>한 번만</b> 알려주면, 이후에는 매번 설명하지 않아도 알아서 내 스타일대로 만들어 줍니다. 마음에 안 드는 부분은 클릭해서 바로 수정.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="17_claude_design_tool.mp4"></video>
+        <figcaption><span class="t">7:25–7:39</span> Claude Design(“What will you design today?”) — 내 스타일 기반 디자인.</figcaption>
+      </figure>
+    </section>
+
+    <!-- PART 4 -->
+    <div class="grouphead"><span class="gh-n">PART 4 · 자동화</span><span class="gh-d">한 단계 더 — 반복을 맡기고 알아서 굴러가게</span></div>
+
+    <!-- ===== S8 ===== -->
+    <section id="s8">
+      <div class="sec-h"><div class="sec-n">8</div><h2>스킬 (Skills)</h2></div>
+      <p class="lede">똑같은 작업을 여러 번 반복한다면, 그 과정을 <b>스킬</b>로 저장해 두고 <b>이름만 부르면</b> 실행하게 만들 수 있습니다.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="18_skills_meeting_to_report.mp4"></video>
+        <figcaption><span class="t">8:20–8:49</span> 회의록 → 보고서 워크플로우를 <b>스킬(meeting-to-report)</b>로 만들고 슬래시로 호출.</figcaption>
+      </figure>
+      <div class="callout tip"><p><span class="ic">TIP</span> 프롬프트창에서 <b>슬래시(/)</b>를 누르면 내가 만들어 둔 스킬 목록이 뜹니다. 구구절절 설명할 필요 없이 이름만 부르면 끝.</p></div>
+    </section>
+
+    <!-- ===== S9 ===== -->
+    <section id="s9">
+      <div class="sec-h"><div class="sec-n">9</div><h2>코워크 (Cowork)</h2></div>
+      <p class="lede">내 컴퓨터의 폴더·앱을 넘나들며 <b>지식노동을 대신</b>해 주는 데스크톱 에이전트입니다. 목표를 주면 → 계획을 제시 → <b>내가 승인</b> → 실행 → 결과물까지.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="19_cowork_folder_report.mp4"></video>
+        <figcaption><span class="t">8:54–9:17</span> 내 컴퓨터의 특정 폴더 자료를 정리 → 보고서로 만들어 주는 장면.</figcaption>
+      </figure>
+
+      <h3>예약 작업</h3>
+      <p>매일 하는 일이 있으면 <b>시간을 예약</b>해 두고, 클로드가 그 시간마다 알아서 실행하게 할 수 있습니다(예: 아침 브리핑).</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="20_cowork_scheduled_task.mp4"></video>
+        <figcaption><span class="t">9:25–9:36</span> 예약 작업(모닝 브리핑) — 아침에 오늘 할 일이 딱 정리돼 있게.</figcaption>
+      </figure>
+      <div class="callout warn"><p><span class="ic">!</span> 코워크는 클로드 <b>데스크톱 앱</b>의 한 모드로 제공됩니다(비교적 최신 기능). 사용 환경·플랜에 따라 제공 여부가 다를 수 있으니 확인하세요.</p></div>
+    </section>
+
+    <!-- ===== S10 ===== -->
+    <section id="s10">
+      <div class="sec-h"><div class="sec-n">10</div><h2>클로드 코드 · 자동화 시스템</h2></div>
+      <p class="lede">여기서 더 나아가면, Slack·앱·<b>Claude Code</b>가 연결돼 <b>24시간 알아서 굴러가는</b> 시스템도 만들 수 있습니다. 개발·파워유저 영역이에요.</p>
+      <figure class="clip">
+        <video controls preload="metadata" src="21_slack_app_claude_code.mp4"></video>
+        <figcaption><span class="t">9:48–9:58</span> Slack 요청 → 클로드 앱 → <b>Claude Code</b>가 코드베이스를 조사·처리하는 자동화 장면.</figcaption>
+      </figure>
+      <div class="callout ex">
+        <p><span class="ic">정리</span> 일반 실무자는 <b>1~7번</b>만으로도 대부분의 업무를 처리할 수 있습니다. <b>스킬·코워크</b>는 반복을 줄이는 다음 단계, <b>클로드 코드</b>는 개발까지 나아가는 고급 단계예요.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p><b>클로드(Claude) 화면으로 배우는 기초</b> · 21개 화면 클립 가이드 · 2026</p>
+      <p>영상 구성·설명은 유튜브
+        <a href="https://www.youtube.com/watch?v=bM9QBgd8ePY" target="_blank">「요즘 클로드가 그렇게 좋다며? 왕초보도 10분 만에 클로드 마스터하는 방법」 (AI LIFE INNOVATION / ALINN)</a>
+        를 참고했으며, 삽입된 클립은 학습·설명 목적으로 원본 영상에서 <b>클로드 화면 구간만 발췌</b>한 것입니다.</p>
+      <p>클로드의 화면·모델·기능은 촬영 시점(2026) 기준이며 이후 업데이트로 달라질 수 있습니다.</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // 읽기 진행바 + 사이드바 active 추적
+  const prog = document.getElementById('progress');
+  const links = [...document.querySelectorAll('#toc a')];
+  const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+  function onScroll(){
+    const st = window.scrollY, h = document.body.scrollHeight - innerHeight;
+    prog.style.width = (h>0 ? (st/h*100) : 0) + '%';
+    let cur = sections.length - 1;
+    for(let i=0;i<sections.length;i++){
+      if(sections[i] && sections[i].getBoundingClientRect().top > 120){ cur = Math.max(0, i-1); break; }
+    }
+    links.forEach((a,i)=>a.classList.toggle('active', i===cur));
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 모바일 메뉴
+  const aside = document.getElementById('aside'), btn = document.getElementById('menuBtn');
+  function setMenu(open){ aside.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); }
+  btn.addEventListener('click', ()=>setMenu(!aside.classList.contains('open')));
+  links.forEach(a=>a.addEventListener('click', ()=>setMenu(false)));
+
+  // 코드/프롬프트 블록 복사 버튼
+  function getCmdText(box){ const c = box.cloneNode(true); c.querySelector('button')?.remove(); return c.innerText.trim(); }
+  function fallbackCopy(txt){
+    const ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok;
+  }
+  document.querySelectorAll('.cmd').forEach(box=>{
+    const b=document.createElement('button'); b.textContent='복사';
+    b.addEventListener('click', async ()=>{
+      const txt=getCmdText(box);
+      try{
+        if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(txt); }
+        else if(!fallbackCopy(txt)){ throw new Error('copy failed'); }
+        b.textContent='복사됨';
+      }catch(e){ b.textContent = fallbackCopy(txt) ? '복사됨' : '복사 실패'; }
+      finally{ setTimeout(()=>b.textContent='복사',1500); }
+    });
+    box.appendChild(b);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Downloads is not a dedicated project folder — track ONLY the completed guide,
+# its three companion clip folders, and the presentation deck. Everything else is ignored.
+/*
+!/.gitignore
+!/클로드_초보자_활용가이드_완성판.html
+!/클로드_초보자가이드_클립
+!/claude_screen_clips
+!/클로드_코워크가이드_클립
+!/클로드_활용가이드_발표.html
+!/_발표_포스터
+!/프리젠테이션_구성플랜.md
+!/프리젠테이션_페이지구성안_v4.md
+!/프리젠테이션_Canva_프롬프트.md
+
+# work-in-progress scratch, not final deliverables
+*.bak_*
+claude_screen_clips/_subtitle_removal_work/
