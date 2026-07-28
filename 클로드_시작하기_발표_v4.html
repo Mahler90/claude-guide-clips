@@ -64,14 +64,21 @@ a{color:var(--coral);text-underline-offset:3px}a:hover{color:var(--teal-deep)}
 .lever-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.lever-row.center{justify-content:center}.lever-trigger{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);padding:10px 15px;cursor:pointer;font-size:16px;font-weight:740;line-height:1.25;box-shadow:0 5px 14px rgba(60,50,38,.07)}.lever-trigger::before{content:"▶";margin-right:8px;color:var(--accent)}.lever-trigger:hover{border-color:var(--accent);color:var(--accent)}.placeholder{display:flex;align-items:center;justify-content:center;text-align:center;height:100%;padding:52px;background:linear-gradient(135deg,var(--paper-2),#fff);color:var(--muted);font-size:25px;line-height:1.55}.placeholder strong{display:block;color:var(--ink);font-size:30px;margin-bottom:10px}
 /* standalone presentation runtime */
 html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR","Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased}button,a{font:inherit}button:focus-visible,a:focus-visible{outline:5px solid var(--mustard);outline-offset:5px}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#171614}#stage{position:relative;width:1920px;height:1080px;flex:0 0 auto;transform-origin:center center}.slide{position:absolute;inset:0;width:1920px;height:1080px;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s ease,transform .3s ease,visibility .3s}.slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#171614;touch-action:pan-y pinch-zoom}#stage{position:relative;width:1920px;height:1080px;flex:0 0 auto;transform-origin:center center}.slide{position:absolute;inset:0;width:1920px;height:1080px;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s ease,transform .3s ease,visibility .3s}.slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
 .frame>.media-trigger{position:absolute;inset:0;width:100%;height:100%;display:block;padding:0;border:0;background:#171614;color:inherit;cursor:pointer}.frame>.media-trigger:focus-visible{outline:0}.frame>.media-trigger:focus-visible::after{content:"";position:absolute;inset:7px;z-index:4;border:6px solid var(--mustard);border-radius:12px;pointer-events:none}.media-trigger img{display:block;width:100%;height:100%;object-fit:contain;background:#171614}.media-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.96);color:#201e1b;font-size:32px;line-height:1;box-shadow:0 16px 42px rgba(0,0,0,.32);pointer-events:none;transition:transform .2s ease}.media-trigger:hover .media-play{transform:translate(-50%,-50%) scale(1.06)}.screen-side .media-play{width:58px;height:58px;font-size:21px}.media-caption{position:absolute;left:18px;bottom:16px;padding:7px 11px;border-radius:999px;background:rgba(24,23,21,.78);color:#fff;font-size:16px;font-weight:700;letter-spacing:.02em;pointer-events:none;backdrop-filter:blur(6px)}
 #chrome{position:absolute;inset:0;z-index:50;pointer-events:none;font-family:inherit}#progress{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(31,29,26,.13)}#progress-fill{height:100%;width:0;background:var(--coral);transition:width .25s ease}#counter,#section-label{position:absolute;top:18px;padding:7px 14px;border-radius:999px;background:rgba(27,26,24,.76);color:#fff;font-size:16px;font-weight:720;backdrop-filter:blur(8px)}#counter{right:22px}#section-label{left:22px}#toolbar{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:55;display:flex;gap:8px}#toolbar button{border:1px solid rgba(255,255,255,.25);background:rgba(28,27,25,.86);color:#fff;border-radius:999px;min-width:46px;height:42px;padding:0 14px;cursor:pointer;font-size:15px;font-weight:720;backdrop-filter:blur(8px)}#toolbar button:hover{background:#000}
+#nav{position:fixed;inset:0;z-index:50;pointer-events:none;display:none}
+#nav button{position:absolute;top:50%;transform:translateY(-50%);pointer-events:auto;width:48px;height:68px;border:1px solid rgba(255,255,255,.22);background:rgba(28,27,25,.82);color:#fff;border-radius:13px;font-size:21px;line-height:1;cursor:pointer;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent}
+#nav button:active{background:#000}
+#nav button[disabled]{opacity:.25}
+#nav .nav-prev{left:10px}
+#nav .nav-next{right:10px}
+@media(hover:none),(max-width:900px){#nav{display:block}}
 #notes{position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(22,21,19,.98);color:#fff;border-top:5px solid var(--coral);padding:25px 42px 29px;max-height:38vh;overflow:auto;transform:translateY(104%);visibility:hidden;transition:transform .25s ease,visibility .25s}#notes.open{transform:none;visibility:visible}#notes h2{font-size:16px;letter-spacing:.14em;text-transform:uppercase;color:#ef9a7b;margin:0 0 10px}#notes p{font-size:21px;line-height:1.55;color:#e0dad2;margin:0;white-space:pre-wrap}
 #toc{position:fixed;inset:0;z-index:80;background:rgba(22,21,19,.985);color:#fff;padding:48px 60px;display:none;overflow:auto}#toc.open{display:block}.toc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.toc-head h2{font-size:31px;margin:0}.toc-head button{border:1px solid #625c55;background:transparent;color:#fff;padding:10px 17px;cursor:pointer}#toc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 34px}.toc-item{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:center;border:0;background:transparent;color:#e6dfd7;text-align:left;padding:10px 13px;cursor:pointer;font-size:18px;border-radius:8px}.toc-item:hover,.toc-item.current{background:rgba(255,255,255,.1)}.toc-item.section{color:#ef9a7b;font-weight:760;margin-top:8px}.toc-num{color:#837b72;text-align:right}
 #zoom{position:fixed;inset:0;z-index:90;background:rgba(12,11,10,.975);display:none;flex-direction:column;padding:48px 70px 34px;color:#fff}#zoom.open{display:flex}#zoom-close{position:absolute;right:25px;top:22px;width:48px;height:48px;border-radius:50%;border:1px solid #655f58;background:#282623;color:#fff;cursor:pointer;font-size:25px}#zoom-video{width:100%;height:calc(100% - 62px);object-fit:contain;background:#000;border-radius:10px}#zoom-caption{text-align:center;font-size:23px;color:#c8c0b7;margin-top:18px}
 @media(max-width:760px){#toc{padding:32px 22px}#toc-grid{grid-template-columns:1fr}.toc-head h2{font-size:25px}#toolbar button{min-width:42px;padding:0 11px}#section-label{display:none}}@media(prefers-reduced-motion:reduce){.slide,#progress-fill,#notes,.media-play{transition:none!important}}
-@page{size:13.333in 7.5in;margin:0}@media print{html,body{height:auto;overflow:visible;background:#fff}#viewport{position:static;display:block;background:#fff;width:1280px}#stage{position:static;width:1920px;height:auto;transform:none!important;zoom:.6666667}.slide{position:relative!important;inset:auto!important;opacity:1!important;visibility:visible!important;transform:none!important;page-break-after:always;break-after:page}#chrome,#toolbar,#notes,#toc,#zoom{display:none!important}}
+@page{size:13.333in 7.5in;margin:0}@media print{html,body{height:auto;overflow:visible;background:#fff}#viewport{position:static;display:block;background:#fff;width:1280px}#stage{position:static;width:1920px;height:auto;transform:none!important;zoom:.6666667}.slide{position:relative!important;inset:auto!important;opacity:1!important;visibility:visible!important;transform:none!important;page-break-after:always;break-after:page}#chrome,#toolbar,#notes,#toc,#zoom,#nav{display:none!important}}
 
 /* ported from 리디자인_v4 for transplanted pages (07-23) */
 /* spectrum */
@@ -1420,6 +1427,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
 <div id="toolbar" aria-label="발표 도구"><button type="button" id="toc-button" aria-label="목차 열기" aria-controls="toc" aria-expanded="false">목차</button><button type="button" id="notes-button" aria-label="발표자 메모 열기" aria-pressed="false">메모</button><button type="button" id="fullscreen-button" aria-label="전체 화면" aria-pressed="false">전체화면</button></div>
 </main></div>
 
+<div id="nav" aria-label="슬라이드 이동"><button type="button" class="nav-prev" id="nav-prev" aria-label="이전 슬라이드">‹</button><button type="button" class="nav-next" id="nav-next" aria-label="다음 슬라이드">›</button></div>
 <aside id="notes" aria-hidden="true"><h2>발표자 메모</h2><p id="notes-copy"></p></aside>
 <div id="toc" role="dialog" aria-modal="true" aria-labelledby="toc-title" aria-hidden="true"><div class="toc-head"><h2 id="toc-title">슬라이드 목차</h2><button type="button" id="toc-close">닫기</button></div><div id="toc-grid"></div></div>
 <div id="zoom" role="dialog" aria-modal="true" aria-labelledby="zoom-caption" aria-hidden="true"><button type="button" id="zoom-close" aria-label="영상 닫기">×</button><video id="zoom-video" controls muted playsinline preload="metadata" aria-label="확대 영상 · 좌우 화살표키로 5초씩 이동" aria-keyshortcuts="ArrowLeft ArrowRight"></video><div id="zoom-caption"></div></div>
@@ -1428,6 +1436,9 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
 (() => {
   "use strict";
   const stage = document.getElementById("stage");
+  const viewportEl = document.getElementById("viewport");
+  const navPrev = document.getElementById("nav-prev");
+  const navNext = document.getElementById("nav-next");
   const slides = [...stage.querySelectorAll(".slide")];
   const counter = document.getElementById("counter");
   const sectionLabel = document.getElementById("section-label");
@@ -1498,6 +1509,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
     });
     if (updateHash && location.hash !== `#${current.id}`) history.replaceState(null, "", `#${current.id}`);
     document.title = `${current.dataset.label || "슬라이드"} — 클로드 시작하기`;
+    navPrev.disabled = index === 0;
+    navNext.disabled = index === slides.length - 1;
   }
 
   function go(targetIndex, options) {
@@ -1635,6 +1648,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
   });
   tocButton.addEventListener("click", openToc);
   document.getElementById("toc-close").addEventListener("click", () => closeToc());
+  navPrev.addEventListener("click", () => go(index - 1));
+  navNext.addEventListener("click", () => go(index + 1));
   notesButton.addEventListener("click", () => toggleNotes());
   fullscreenButton.addEventListener("click", async () => {
     try {
@@ -1683,21 +1698,21 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
     }
   });
 
-  stage.addEventListener("pointerdown", event => {
+  viewportEl.addEventListener("pointerdown", event => {
     if (event.pointerType !== "touch" || isInteractive(event.target)) {
       touchGesture = null;
       return;
     }
     touchGesture = { pointerId: event.pointerId, startX: event.clientX };
   });
-  stage.addEventListener("pointerup", event => {
+  viewportEl.addEventListener("pointerup", event => {
     if (!touchGesture || event.pointerType !== "touch" || event.pointerId !== touchGesture.pointerId) return;
     const delta = event.clientX - touchGesture.startX;
     touchGesture = null;
     if (Math.abs(delta) > 70) go(index + (delta < 0 ? 1 : -1));
   });
-  stage.addEventListener("pointercancel", () => { touchGesture = null; });
-  stage.addEventListener("lostpointercapture", () => { touchGesture = null; });
+  viewportEl.addEventListener("pointercancel", () => { touchGesture = null; });
+  viewportEl.addEventListener("lostpointercapture", () => { touchGesture = null; });
   window.addEventListener("hashchange", () => goToId(decodeURIComponent(location.hash.slice(1)), { updateHash: false }));
   window.addEventListener("resize", fitStage);
   window.visualViewport?.addEventListener("resize", fitStage);
