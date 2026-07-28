@@ -1,0 +1,1735 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>클로드 시작하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--paper:#fdfcfa;--paper-2:#f6f2ea;--ink:#2b2a28;--muted:#736c62;--line:#e6ded1;--teal:#5a9687;--teal-deep:#3f7a6d;--mustard:#eec24a;--mustard-deep:#b07d12;--coral:#d66f53;--coral-deep:#c96a4f}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Pretendard Variable",Pretendard,sans-serif;color:var(--ink)}
+a{color:var(--coral);text-underline-offset:3px}a:hover{color:var(--teal-deep)}
+.serif{font-family:"DM Serif Display",Georgia,serif;font-weight:400}
+.slide{--accent:var(--teal);padding:88px 112px 80px;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;overflow:hidden;word-break:keep-all}
+.slide.tint{background:var(--paper-2)}
+.a-teal{--accent:var(--teal)}.a-coral{--accent:var(--coral)}.a-mustard{--accent:var(--mustard-deep)}
+.body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}
+.head{position:relative;z-index:2;margin-bottom:8px}.head.mb{margin-bottom:38px}
+.eyebrow{font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:27px;color:var(--accent);margin-bottom:16px}
+.h-title{font-size:60px;line-height:1.14;letter-spacing:-.03em;font-weight:780;margin:0}.h-title.sm{font-size:52px}
+.h-lead{font-size:27px;line-height:1.5;color:var(--muted);margin:20px 0 0;max-width:1480px}
+.rule{width:84px;height:5px;border-radius:6px;background:var(--accent);margin:26px 0 0}
+.pageno{position:absolute;right:52px;bottom:42px;font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:22px;color:var(--muted);z-index:2}
+.src{position:absolute;left:52px;bottom:42px;z-index:3;padding:7px 12px;border:1px solid rgba(115,108,98,.25);border-radius:999px;background:rgba(253,252,250,.88);font-size:17px;font-weight:720;color:var(--muted);letter-spacing:.02em;backdrop-filter:blur(7px)}
+.closing .src{color:#fff;background:rgba(35,29,26,.2);border-color:rgba(255,255,255,.28)}
+/* decorations */
+.blob{position:absolute;pointer-events:none;border-radius:42% 58% 63% 37%/45% 42% 58% 55%;z-index:0}.blob2{border-radius:63% 37% 44% 56%/38% 62% 38% 62%}
+.dots{position:absolute;pointer-events:none;background-image:radial-gradient(currentColor 3px,transparent 3.6px);background-size:28px 28px;z-index:1}
+.conf{position:absolute;display:flex;gap:10px;pointer-events:none;z-index:1}.conf i{display:block;width:5px;height:24px;border-radius:3px;background:currentColor;opacity:.8}
+.ring{position:absolute;border-radius:50%;border:2.5px solid currentColor;pointer-events:none;z-index:1}.disc{position:absolute;border-radius:50%;pointer-events:none;z-index:1}
+.c-teal{color:var(--teal)}.c-coral{color:var(--coral)}.c-mustard{color:var(--mustard)}.c-ink{color:var(--ink)}
+/* cover */
+.cover{justify-content:center;padding:104px 120px}.display{font-size:98px;line-height:1.08;letter-spacing:-.045em;font-weight:800;margin:0}
+.hl{position:relative;display:inline-block}.hl .t{position:relative;z-index:1}.hl::before{content:"";position:absolute;left:-8px;right:-8px;bottom:14px;height:38px;background:var(--mustard);opacity:.62;transform:rotate(-1.2deg);border-radius:5px;z-index:0}
+.cover-sub{font-size:30px;line-height:1.5;color:var(--muted);margin-top:38px;max-width:1180px}.meta{display:flex;align-items:center;gap:20px;margin-top:48px;font-size:22px;color:var(--muted);white-space:nowrap}.mdot{color:var(--line)}
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);flex:1;align-items:stretch;margin-top:8px}.flow-col{--sc:var(--teal);display:flex;flex-direction:column;padding:6px 42px;border-left:1px solid var(--line)}
+.flow-col:first-child{border-left:0;padding-left:0}.flow-col:nth-child(1){--sc:var(--teal)}.flow-col:nth-child(2){--sc:var(--coral)}.flow-col:nth-child(3){--sc:var(--mustard-deep)}
+.flow-num{font-family:"DM Serif Display",Georgia,serif;font-size:56px;color:var(--sc);line-height:1}.flow-word{font-size:38px;font-weight:760;letter-spacing:-.02em;margin-top:28px}.flow-copy{font-size:23px;line-height:1.5;color:var(--muted);margin-top:16px}.flow-tag{margin-top:auto;font-size:19px;font-weight:700;letter-spacing:.02em;color:var(--sc);padding-top:22px}
+.take{display:flex;align-items:center;gap:22px;margin-top:38px;padding-left:24px;border-left:5px solid var(--accent);font-size:24px;line-height:1.45}.take .lbl{font-family:"DM Serif Display",Georgia,serif;font-style:italic;color:var(--accent);font-size:25px;white-space:nowrap}.take strong{font-weight:760}
+/* divider */
+.divider{color:#fff;justify-content:center;padding:104px 120px}.d-teal{background:var(--teal-deep)}.d-coral{background:var(--coral-deep)}.d-ink{background:#2b2a28}
+.part-no{position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:"DM Serif Display",Georgia,serif;font-size:560px;line-height:.7;color:rgba(255,255,255,.1);z-index:1}
+.d-kicker{font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:30px;color:rgba(255,255,255,.86)}.d-title{font-size:90px;line-height:1.09;letter-spacing:-.035em;font-weight:770;margin-top:22px;max-width:1380px}.d-sub{font-size:30px;line-height:1.5;color:rgba(255,255,255,.82);margin-top:30px;max-width:1120px}
+.d-dots{display:flex;gap:12px;margin-top:56px}.d-dots span{width:82px;height:7px;border-radius:8px;background:rgba(255,255,255,.28)}.d-dots span.on{background:#fff}
+/* media */
+.media-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(360px,.82fr);gap:52px;align-items:center;flex:1}
+.frame{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 14px 44px rgba(60,50,38,.09)}.frame.r169{aspect-ratio:16/9}.frame>img{display:block;width:100%;height:100%;object-fit:contain}
+.facts{display:flex;flex-direction:column}.fact{display:grid;grid-template-columns:52px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid var(--line)}.fact:last-child{border-bottom:0}.facts.compact .fact{padding:13px 0}.facts.compact .fact-t{font-size:23px}.facts.compact .fact-d{font-size:18px}
+.fact-n{font-family:"DM Serif Display",Georgia,serif;font-size:34px;color:var(--accent);line-height:1}.fact-t{font-size:26px;font-weight:730;line-height:1.25}.fact-d{font-size:21px;line-height:1.46;color:var(--muted);margin-top:6px}.fact-d b{color:var(--ink);font-weight:700}.silent{font-size:18px;font-weight:700;letter-spacing:.03em;color:var(--muted);margin-top:22px}
+/* screens */
+.screens{display:grid;grid-template-columns:minmax(0,1fr) 500px;gap:40px;align-items:stretch;flex:1}.screen-main{display:flex;flex-direction:column;justify-content:center}.screen-side{display:flex;flex-direction:column;gap:14px;justify-content:center;min-height:0}.cap{display:grid;grid-template-columns:42px 1fr;gap:14px;margin-top:18px}.cap b{font-family:"DM Serif Display",Georgia,serif;font-size:26px;color:var(--accent);line-height:1}.cap-t{font-size:24px;font-weight:720;line-height:1.3}.cap-d{display:block;font-size:19px;line-height:1.42;color:var(--muted);margin-top:5px;font-weight:400}.screen-side article{min-height:0}.screen-side .frame{aspect-ratio:16/9}.screen-side .cap{margin-top:7px}.screen-side .cap b{font-size:21px}.screen-side .cap-t{font-size:19px}.screen-side .cap-d{font-size:16px}.screen-side.dense{gap:8px}.screen-side.dense article{width:420px;align-self:center}.screen-side.dense .lever-row{justify-content:center;margin-top:4px}
+/* split */
+.split2{display:grid;grid-template-columns:1fr 1px 1fr;gap:56px;flex:1;align-items:stretch}.vrule{background:var(--line)}.panel2{--pc:var(--teal);display:flex;flex-direction:column;padding:6px 0}.panel2:nth-child(3){--pc:var(--mustard-deep)}.panel-k{font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:25px;color:var(--pc)}.panel-t{font-size:38px;font-weight:750;letter-spacing:-.02em;margin-top:12px;line-height:1.2}.panel-c{font-size:24px;line-height:1.5;color:var(--muted);margin-top:16px}.panel-list{display:flex;flex-direction:column;margin-top:28px}.panel-row{font-size:23px;padding:16px 0;border-bottom:1px solid var(--line)}.panel-row:last-child{border-bottom:0}.panel-foot{margin-top:auto;font-size:23px;color:var(--muted);padding-top:26px}.panel-foot b{color:var(--pc);font-weight:750}
+/* decision */
+.decision2{display:grid;grid-template-columns:440px 1fr;gap:66px;align-items:center;flex:1}.dq small{font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:25px;color:var(--accent)}.dq b{display:block;font-size:56px;line-height:1.14;letter-spacing:-.03em;font-weight:790;margin-top:16px}.dlist{display:flex;flex-direction:column}.drow{display:grid;grid-template-columns:1fr 350px;gap:26px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}.drow:last-child{border-bottom:0}.dneed{font-size:24px;color:var(--muted)}.dtool{font-size:26px;font-weight:750;color:var(--accent);text-align:right}
+/* closing */
+.closing{background:var(--coral-deep);color:#fff;justify-content:center;padding:100px 118px}.closing-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:96px;align-items:center}.closing-title{font-size:76px;line-height:1.1;letter-spacing:-.04em;font-weight:790;margin:0;color:#fff}.chl{position:relative;display:inline-block}.chl .t{position:relative;z-index:1}.chl::before{content:"";position:absolute;left:-6px;right:-6px;bottom:10px;height:30px;background:rgba(255,255,255,.28);transform:rotate(-1deg);border-radius:5px;z-index:0}.crules{display:flex;flex-direction:column;gap:24px;margin-top:42px}.crule{display:grid;grid-template-columns:50px 1fr;gap:20px;font-size:25px;line-height:1.42;color:#fff3ec}.crule b{font-family:"DM Serif Display",Georgia,serif;font-size:38px;line-height:1;color:#fff;font-weight:400}.closing-qa{font-size:26px;color:#fff;margin-top:40px}.next-kicker{font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:26px;color:#fff}.next-h{font-size:44px;line-height:1.18;letter-spacing:-.03em;font-weight:780;margin:16px 0 0;color:#fff}.next-p{font-size:24px;line-height:1.5;color:#fff;margin:20px 0 0}.next-line{width:70px;height:5px;border-radius:6px;background:rgba(255,255,255,.55);margin-top:30px}
+/* optional clip levers and placeholders */
+.lever-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.lever-row.center{justify-content:center}.lever-trigger{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);padding:10px 15px;cursor:pointer;font-size:16px;font-weight:740;line-height:1.25;box-shadow:0 5px 14px rgba(60,50,38,.07)}.lever-trigger::before{content:"▶";margin-right:8px;color:var(--accent)}.lever-trigger:hover{border-color:var(--accent);color:var(--accent)}.placeholder{display:flex;align-items:center;justify-content:center;text-align:center;height:100%;padding:52px;background:linear-gradient(135deg,var(--paper-2),#fff);color:var(--muted);font-size:25px;line-height:1.55}.placeholder strong{display:block;color:var(--ink);font-size:30px;margin-bottom:10px}
+/* standalone presentation runtime */
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR","Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased}button,a{font:inherit}button:focus-visible,a:focus-visible{outline:5px solid var(--mustard);outline-offset:5px}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#171614}#stage{position:relative;width:1920px;height:1080px;flex:0 0 auto;transform-origin:center center}.slide{position:absolute;inset:0;width:1920px;height:1080px;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s ease,transform .3s ease,visibility .3s}.slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
+.frame>.media-trigger{position:absolute;inset:0;width:100%;height:100%;display:block;padding:0;border:0;background:#171614;color:inherit;cursor:pointer}.frame>.media-trigger:focus-visible{outline:0}.frame>.media-trigger:focus-visible::after{content:"";position:absolute;inset:7px;z-index:4;border:6px solid var(--mustard);border-radius:12px;pointer-events:none}.media-trigger img{display:block;width:100%;height:100%;object-fit:contain;background:#171614}.media-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.96);color:#201e1b;font-size:32px;line-height:1;box-shadow:0 16px 42px rgba(0,0,0,.32);pointer-events:none;transition:transform .2s ease}.media-trigger:hover .media-play{transform:translate(-50%,-50%) scale(1.06)}.screen-side .media-play{width:58px;height:58px;font-size:21px}.media-caption{position:absolute;left:18px;bottom:16px;padding:7px 11px;border-radius:999px;background:rgba(24,23,21,.78);color:#fff;font-size:16px;font-weight:700;letter-spacing:.02em;pointer-events:none;backdrop-filter:blur(6px)}
+#chrome{position:absolute;inset:0;z-index:50;pointer-events:none;font-family:inherit}#progress{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(31,29,26,.13)}#progress-fill{height:100%;width:0;background:var(--coral);transition:width .25s ease}#counter,#section-label{position:absolute;top:18px;padding:7px 14px;border-radius:999px;background:rgba(27,26,24,.76);color:#fff;font-size:16px;font-weight:720;backdrop-filter:blur(8px)}#counter{right:22px}#section-label{left:22px}#toolbar{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:55;display:flex;gap:8px}#toolbar button{border:1px solid rgba(255,255,255,.25);background:rgba(28,27,25,.86);color:#fff;border-radius:999px;min-width:46px;height:42px;padding:0 14px;cursor:pointer;font-size:15px;font-weight:720;backdrop-filter:blur(8px)}#toolbar button:hover{background:#000}
+#notes{position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(22,21,19,.98);color:#fff;border-top:5px solid var(--coral);padding:25px 42px 29px;max-height:38vh;overflow:auto;transform:translateY(104%);visibility:hidden;transition:transform .25s ease,visibility .25s}#notes.open{transform:none;visibility:visible}#notes h2{font-size:16px;letter-spacing:.14em;text-transform:uppercase;color:#ef9a7b;margin:0 0 10px}#notes p{font-size:21px;line-height:1.55;color:#e0dad2;margin:0;white-space:pre-wrap}
+#toc{position:fixed;inset:0;z-index:80;background:rgba(22,21,19,.985);color:#fff;padding:48px 60px;display:none;overflow:auto}#toc.open{display:block}.toc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.toc-head h2{font-size:31px;margin:0}.toc-head button{border:1px solid #625c55;background:transparent;color:#fff;padding:10px 17px;cursor:pointer}#toc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 34px}.toc-item{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:center;border:0;background:transparent;color:#e6dfd7;text-align:left;padding:10px 13px;cursor:pointer;font-size:18px;border-radius:8px}.toc-item:hover,.toc-item.current{background:rgba(255,255,255,.1)}.toc-item.section{color:#ef9a7b;font-weight:760;margin-top:8px}.toc-num{color:#837b72;text-align:right}
+#zoom{position:fixed;inset:0;z-index:90;background:rgba(12,11,10,.975);display:none;flex-direction:column;padding:48px 70px 34px;color:#fff}#zoom.open{display:flex}#zoom-close{position:absolute;right:25px;top:22px;width:48px;height:48px;border-radius:50%;border:1px solid #655f58;background:#282623;color:#fff;cursor:pointer;font-size:25px}#zoom-video{width:100%;height:calc(100% - 62px);object-fit:contain;background:#000;border-radius:10px}#zoom-caption{text-align:center;font-size:23px;color:#c8c0b7;margin-top:18px}
+@media(max-width:760px){#toc{padding:32px 22px}#toc-grid{grid-template-columns:1fr}.toc-head h2{font-size:25px}#toolbar button{min-width:42px;padding:0 11px}#section-label{display:none}}@media(prefers-reduced-motion:reduce){.slide,#progress-fill,#notes,.media-play{transition:none!important}}
+@page{size:13.333in 7.5in;margin:0}@media print{html,body{height:auto;overflow:visible;background:#fff}#viewport{position:static;display:block;background:#fff;width:1280px}#stage{position:static;width:1920px;height:auto;transform:none!important;zoom:.6666667}.slide{position:relative!important;inset:auto!important;opacity:1!important;visibility:visible!important;transform:none!important;page-break-after:always;break-after:page}#chrome,#toolbar,#notes,#toc,#zoom{display:none!important}}
+
+/* ported from 리디자인_v4 for transplanted pages (07-23) */
+/* spectrum */
+.spec{position:relative;margin-top:70px}
+.spec-line{position:absolute;left:13%;right:13%;top:22px;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--coral),var(--mustard))}
+.spec-items{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:56px}
+.spec-item{--sd:var(--teal);text-align:center;padding:0 26px}
+.spec-item:nth-child(1){--sd:var(--teal)}
+.spec-item:nth-child(2){--sd:var(--coral)}
+.spec-item:nth-child(3){--sd:var(--mustard-deep)}
+.spec-dot{width:28px;height:28px;border-radius:50%;background:var(--sd);margin:0 auto 42px;border:7px solid var(--paper);box-shadow:0 0 0 3px var(--sd)}
+.spec-title{font-size:40px;font-weight:770;letter-spacing:-.02em}
+.spec-use{font-size:23px;font-weight:700;color:var(--sd);margin-top:12px}
+.spec-copy{font-size:23px;line-height:1.52;color:var(--muted);margin-top:18px}
+/* asks */
+.asks{display:flex;flex-direction:column;margin-top:6px}
+.ask{display:grid;grid-template-columns:92px 1fr 320px;gap:38px;align-items:center;padding:32px 0;border-bottom:1px solid var(--line)}
+.ask:last-child{border-bottom:0}
+.ask-n{font-family:"DM Serif Display",Georgia,serif;font-size:62px;color:var(--accent);line-height:1}
+.ask-q{font-size:29px;line-height:1.42;font-weight:600}
+.ask-e{font-size:22px;line-height:1.46;color:var(--muted)}
+.ask-e strong{color:var(--ink);font-weight:700}
+/* layers */
+.layers2{display:flex;flex-direction:column;gap:16px;margin:auto 0;width:100%}
+.layer2{display:grid;grid-template-columns:260px 1fr 380px;gap:36px;align-items:center;padding:24px 0 24px 30px;border-left:6px solid var(--accent);border-bottom:1px solid var(--line)}
+.layer2:last-child{border-bottom:0}
+.layer-name{font-size:33px;font-weight:740;letter-spacing:-.02em}
+.layer-copy{font-size:23px;line-height:1.46;color:var(--muted)}
+.layer-copy strong{color:var(--ink);font-weight:700}
+.layer-ex{font-size:20px;line-height:1.42;color:var(--muted);padding-left:26px;border-left:1px solid var(--line)}
+/* workflow */
+.flow3{display:grid;grid-template-columns:1fr 64px 1fr 64px 1fr;align-items:stretch;flex:1}
+.arrow{align-self:center;text-align:center;font-size:44px;color:#c9c0b3;font-weight:200}
+.flow3 article .media-play{width:64px;height:64px;font-size:23px}
+
+/* ported from v4: practice2 (07-23) */
+/* practice */
+.practice2{margin:auto 0;width:100%}
+.p-label{font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:26px;color:var(--accent)}
+.p-text{font-size:40px;line-height:1.42;font-weight:600;letter-spacing:-.02em;margin-top:18px;max-width:1560px}
+.p-text strong{font-weight:800}
+.p-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-top:50px}
+.p-step{padding-top:22px;border-top:3px solid var(--accent)}
+.p-step b{display:block;font-size:23px;font-weight:770;margin-bottom:9px}
+.p-step span{font-size:20px;line-height:1.42;color:var(--muted)}
+
+
+
+/* == LX ported layouts (07-23 visual variety) == */
+/* journey */
+/* journey */
+.LX-journey{position:relative;display:block}
+.LX-journey .LX-journey-band{display:block;margin:0 0 40px}
+.LX-journey .LX-journey-band svg{display:block}
+
+.LX-journey .LX-journey-cols{display:grid;grid-template-columns:repeat(3,1fr);column-gap:44px;align-items:stretch}
+.LX-journey .LX-journey-col{position:relative;overflow:hidden;display:flex;flex-direction:column;box-sizing:border-box;padding:48px 44px 42px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.LX-journey .LX-journey-bar{position:absolute;left:0;top:0;display:block;width:100%;height:6px;background:var(--lxj-bar)}
+
+.LX-journey .LX-journey-disc{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:112px;height:112px;border:1.5px solid var(--lxj-ring);border-radius:50%}
+.LX-journey .LX-journey-core{display:flex;align-items:center;justify-content:center;width:84px;height:84px;border-radius:50%;background:var(--lxj-fill)}
+.LX-journey .LX-journey-num{display:block;font-size:42px;line-height:1;letter-spacing:-.02em;color:var(--lxj-deep)}
+
+.LX-journey .LX-journey-word{margin-top:28px;font-size:46px;font-weight:760;letter-spacing:-.02em;line-height:1.2;color:var(--ink)}
+.LX-journey .LX-journey-copy{margin-top:14px;font-size:24px;line-height:1.6;color:rgba(43,42,40,.78)}
+.LX-journey .LX-journey-foot{margin-top:auto;padding-top:32px;display:flex}
+.LX-journey .LX-journey-pill{display:inline-flex;align-items:center;box-sizing:border-box;padding:12px 26px;border-radius:999px;background:var(--paper-2);font-size:19px;font-weight:700;letter-spacing:.12em;line-height:1.1;color:rgba(43,42,40,.82)}
+
+.LX-journey .LX-journey-a{--lxj-deep:var(--teal-deep);--lxj-fill:rgba(90,150,135,.15);--lxj-ring:rgba(63,122,109,.40);--lxj-bar:var(--teal)}
+.LX-journey .LX-journey-b{--lxj-deep:var(--coral-deep);--lxj-fill:rgba(214,111,83,.14);--lxj-ring:rgba(201,106,79,.40);--lxj-bar:var(--coral)}
+.LX-journey .LX-journey-c{--lxj-deep:var(--mustard-deep);--lxj-fill:rgba(238,194,74,.22);--lxj-ring:rgba(176,125,18,.36);--lxj-bar:var(--mustard)}
+/* search-spectrum */
+/* search-spectrum — geometric rebuild: three discs on one axis + colour-blocked cards */
+.LX-search{position:relative;width:1696px;height:580px;color:var(--ink);}
+
+/* ---- single decorative element: the shared axis the three discs sit on ---- */
+.LX-search .LX-search-axis{position:absolute;left:0;top:38px;width:1696px;height:1px;background:var(--line);z-index:0;}
+
+/* ---- three-disc header rhythm (aligned to the card columns) ---- */
+.LX-search .LX-search-discs{position:relative;z-index:1;display:flex;gap:56px;align-items:flex-start;}
+.LX-search .LX-search-col{flex:none;width:528px;}
+.LX-search .LX-search-col-t{color:var(--teal-deep);}
+.LX-search .LX-search-col-c{color:var(--coral-deep);}
+.LX-search .LX-search-col-m{color:var(--mustard-deep);}
+.LX-search .LX-search-disc{width:76px;height:76px;box-sizing:border-box;border-radius:50%;background:var(--paper);border:2px solid currentColor;display:flex;align-items:center;justify-content:center;}
+.LX-search .LX-search-ico{display:block;width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ---- card row ---- */
+.LX-search .LX-search-row{position:relative;z-index:1;margin-top:34px;display:flex;gap:56px;align-items:stretch;}
+.LX-search .LX-search-card{flex:none;width:528px;height:470px;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:var(--paper);}
+
+/* ---- header strip (flat colour block, no icon watermark) ---- */
+.LX-search .LX-search-strip{padding:30px 34px;color:#fff;}
+.LX-search .LX-search-card-t .LX-search-strip{background:var(--teal-deep);}
+.LX-search .LX-search-card-c .LX-search-strip{background:var(--coral-deep);}
+.LX-search .LX-search-card-m .LX-search-strip{background:var(--mustard-deep);}
+.LX-search .LX-search-name{font-size:44px;font-weight:750;line-height:1.1;letter-spacing:-.02em;}
+
+/* ---- panel ---- */
+.LX-search .LX-search-panel{flex:1;display:flex;flex-direction:column;padding:32px 34px 34px;}
+.LX-search .LX-search-card-t .LX-search-panel{background:rgba(90,150,135,.13);}
+.LX-search .LX-search-card-c .LX-search-panel{background:rgba(214,111,83,.12);}
+.LX-search .LX-search-card-m .LX-search-panel{background:rgba(238,194,74,.22);}
+.LX-search .LX-search-use{font-size:23px;font-weight:700;line-height:1.45;letter-spacing:.01em;}
+.LX-search .LX-search-card-t .LX-search-use{color:var(--teal-deep);}
+.LX-search .LX-search-card-c .LX-search-use{color:var(--coral-deep);}
+.LX-search .LX-search-card-m .LX-search-use{color:var(--mustard-deep);}
+.LX-search .LX-search-bar{margin:18px 0;width:56px;height:3px;border-radius:2px;}
+.LX-search .LX-search-card-t .LX-search-bar{background:rgba(63,122,109,.55);}
+.LX-search .LX-search-card-c .LX-search-bar{background:rgba(201,106,79,.55);}
+.LX-search .LX-search-card-m .LX-search-bar{background:rgba(176,125,18,.55);}
+.LX-search .LX-search-copy{font-size:27px;font-weight:500;line-height:1.62;color:var(--ink);}
+
+/* ---- condition chip (Research only) ---- */
+.LX-search .LX-search-chips{margin-top:auto;display:flex;flex-wrap:wrap;gap:10px;}
+.LX-search .LX-search-chip{display:inline-flex;align-items:center;gap:9px;padding:11px 18px 11px 15px;border-radius:999px;background:#fff;color:var(--mustard-deep);font-size:20px;font-weight:600;line-height:1.5;}
+.LX-search .LX-search-chip-ico{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+/* ask-first */
+.LX-ask{position:relative;box-sizing:border-box;width:1696px;height:552px;flex:0 0 auto;padding-top:14px;color:var(--ink)}
+.LX-ask .LX-ask-rings{position:absolute;top:132px;right:0;z-index:0;display:block;width:240px;height:240px;pointer-events:none}
+.LX-ask .LX-ask-ring{fill:none;stroke:var(--teal-deep);stroke-width:2;opacity:.22}
+.LX-ask .LX-ask-core{fill:var(--mustard);opacity:.3}
+.LX-ask .LX-ask-spine{position:absolute;left:43px;top:84px;z-index:0;width:2px;height:330px;background:var(--line)}
+.LX-ask .LX-ask-list{position:relative;z-index:1;width:1424px;margin:0;padding:0;list-style:none}
+.LX-ask .LX-ask-row{display:grid;grid-template-columns:88px 1fr;column-gap:36px;align-items:start;padding:28px 0}
+.LX-ask .LX-ask-row+.LX-ask-row{border-top:1px solid var(--line)}
+.LX-ask .LX-ask-c1{--lx:var(--coral-deep)}
+.LX-ask .LX-ask-c2{--lx:var(--teal-deep)}
+.LX-ask .LX-ask-c3{--lx:var(--mustard-deep)}
+.LX-ask .LX-ask-disc{display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:88px;height:88px;border:2px solid var(--lx);border-radius:50%;background:#fff}
+.LX-ask .LX-ask-num{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:42px;line-height:1;color:var(--lx)}
+.LX-ask .LX-ask-txt{padding-top:6px}
+.LX-ask .LX-ask-q{max-width:1300px;margin:0;font-size:34px;line-height:1.5;font-weight:680;letter-spacing:-.01em;color:var(--ink)}
+.LX-ask .LX-ask-eff{max-width:1300px;margin:12px 0 0;font-size:22px;line-height:1.6;color:rgba(43,42,40,.78)}
+.LX-ask .LX-ask-em{color:var(--ink);font-weight:700}
+/* projects-intro */
+/* projects-intro */
+.LX-proj{position:relative;align-self:center;flex:0 0 auto;width:1696px;height:600px;color:var(--ink)}
+.LX-proj p{margin:0}
+
+.LX-proj .LX-proj-web{position:absolute;left:0;top:0;display:block;width:1696px;height:600px;z-index:0;pointer-events:none}
+.LX-proj .LX-proj-ring{fill:none;stroke:var(--line);stroke-width:1.5}
+.LX-proj .LX-proj-ring--o{stroke:var(--teal);stroke-width:1.5;stroke-linecap:round;stroke-dasharray:2 11;opacity:.4}
+.LX-proj .LX-proj-bus{fill:none;stroke:var(--line);stroke-width:2}
+.LX-proj .LX-proj-stub{fill:none;stroke-width:2;stroke-linecap:round;opacity:.6}
+.LX-proj .LX-proj-stub--a{stroke:var(--teal)}
+.LX-proj .LX-proj-stub--b{stroke:var(--mustard-deep)}
+.LX-proj .LX-proj-stub--c{stroke:var(--coral)}
+
+.LX-proj .LX-proj-hub{position:absolute;left:76px;top:168px;width:264px;height:264px;border-radius:50%;background:var(--teal-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+.LX-proj .LX-proj-hub-ico{display:block;width:76px;height:59px}
+.LX-proj .LX-proj-fold{fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.LX-proj .LX-proj-fold-face{fill:rgba(255,255,255,.16);stroke:#fff;stroke-width:3.4;stroke-linejoin:round}
+.LX-proj .LX-proj-fold-line{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;opacity:.7}
+.LX-proj .LX-proj-hub-label{margin-top:16px;font-size:32px;font-weight:760;letter-spacing:-.02em;line-height:1.3;color:#fff}
+
+.LX-proj .LX-proj-row{position:absolute;left:560px;width:1100px;height:184px;display:flex;align-items:center;gap:32px;z-index:2}
+.LX-proj .LX-proj-row--a{--lxc:var(--teal-deep);top:4px}
+.LX-proj .LX-proj-row--b{--lxc:var(--mustard-deep);top:208px}
+.LX-proj .LX-proj-row--c{--lxc:var(--coral-deep);top:412px}
+
+.LX-proj .LX-proj-disc{flex:0 0 auto;width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--line);color:var(--lxc)}
+.LX-proj .LX-proj-row--a .LX-proj-disc{border-color:rgba(90,150,135,.42)}
+.LX-proj .LX-proj-row--b .LX-proj-disc{border-color:rgba(176,125,18,.32)}
+.LX-proj .LX-proj-row--c .LX-proj-disc{border-color:rgba(214,111,83,.38)}
+.LX-proj .LX-proj-ico{display:block;width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+.LX-proj .LX-proj-txt{flex:1 1 auto;min-width:0}
+.LX-proj .LX-proj-k{font-size:24px;font-weight:720;line-height:1.3;letter-spacing:.01em;color:var(--lxc)}
+.LX-proj .LX-proj-s{margin-top:8px;font-size:28px;font-weight:620;line-height:1.55;letter-spacing:-.012em;color:var(--ink)}
+.LX-proj .LX-proj-ex{margin-top:12px;padding-left:18px;border-left:3px solid var(--line);font-size:21px;line-height:1.55;color:rgba(43,42,40,.78)}
+/* artifacts-and-files */
+.LX-artifact{position:relative;flex:0 0 auto;box-sizing:border-box;width:1696px;height:600px;color:var(--ink)}
+.LX-artifact p{margin:0}
+
+.LX-artifact-band{position:absolute;left:0;right:0;bottom:0;height:116px;border-radius:16px;background:var(--paper-2);z-index:0}
+.LX-artifact-rule{position:absolute;left:848px;top:6px;width:1px;height:586px;background:var(--line);z-index:1}
+.LX-artifact-node{position:absolute;left:820px;top:214px;width:56px;height:56px;z-index:3}
+.LX-artifact-node svg{display:block;width:56px;height:56px}
+
+.LX-artifact-cols{position:relative;z-index:2;display:flex;height:600px}
+.LX-artifact-col{position:relative;box-sizing:border-box;flex:0 0 760px;width:760px;height:600px;padding-top:10px;display:flex;flex-direction:column;align-items:flex-start}
+.LX-artifact-col-b{margin-left:176px}
+
+.LX-artifact-head{display:flex;align-items:center;gap:24px}
+.LX-artifact-emblem{box-sizing:border-box;width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--line)}
+.LX-artifact-disc{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.LX-artifact-disc svg{display:block;width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.LX-artifact-col-a .LX-artifact-emblem{border-color:rgba(90,150,135,.40);color:var(--teal-deep)}
+.LX-artifact-col-a .LX-artifact-disc{background:rgba(90,150,135,.14)}
+.LX-artifact-col-b .LX-artifact-emblem{border-color:rgba(214,111,83,.38);color:var(--coral-deep)}
+.LX-artifact-col-b .LX-artifact-disc{background:rgba(214,111,83,.13)}
+
+.LX-artifact-key{font-size:22px;line-height:1.4;font-weight:600;letter-spacing:.09em}
+.LX-artifact-col-a .LX-artifact-key{color:var(--teal-deep)}
+.LX-artifact-col-b .LX-artifact-key{color:var(--coral-deep)}
+
+.LX-artifact-def{margin-top:32px;width:760px;font-size:46px;font-weight:700;line-height:1.28;letter-spacing:-.012em;color:var(--ink)}
+.LX-artifact-desc{margin-top:18px;width:760px;min-height:38px;font-size:23px;line-height:1.6;color:rgba(43,42,40,.82)}
+
+.LX-artifact-chips{margin-top:38px;display:flex;flex-direction:column;gap:14px}
+.LX-artifact-chip{box-sizing:border-box;width:520px;height:58px;padding:0 30px;border-radius:29px;display:flex;align-items:center;gap:14px;font-size:22px;line-height:1.5;color:var(--ink)}
+.LX-artifact-dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%}
+.LX-artifact-col-a .LX-artifact-chip{background:rgba(90,150,135,.11)}
+.LX-artifact-col-a .LX-artifact-dot{background:var(--teal-deep)}
+.LX-artifact-col-b .LX-artifact-chip{background:rgba(214,111,83,.10)}
+.LX-artifact-col-b .LX-artifact-dot{background:var(--coral-deep)}
+
+.LX-artifact-quote{margin-top:auto;width:760px;height:116px;display:flex;align-items:center;gap:20px}
+.LX-artifact-mark{flex:0 0 auto;width:3px;height:38px;border-radius:2px}
+.LX-artifact-col-a .LX-artifact-mark{background:var(--teal)}
+.LX-artifact-col-b .LX-artifact-mark{background:var(--coral)}
+.LX-artifact-say{font-size:24px;line-height:1.6;color:var(--ink)}
+.LX-artifact-say b{font-weight:700;background:linear-gradient(transparent 62%,rgba(238,194,74,.55) 62%);padding:0 2px}
+/* decision-guide */
+.LX-decide{position:relative;flex:0 0 auto;width:1696px;color:var(--ink)}
+.LX-decide,.LX-decide *{box-sizing:border-box}
+.LX-decide-deco{position:absolute;inset:0;z-index:0;pointer-events:none}
+.LX-decide-vr{position:absolute;top:120px;height:601px;width:1px;background:var(--line)}
+.LX-decide-vr1{left:556px}
+.LX-decide-vr2{left:1140px}
+.LX-decide-inner{position:relative;z-index:1}
+.LX-decide-lead{display:flex;align-items:flex-end;height:92px;margin-bottom:28px}
+.LX-decide-lead-tx{flex:0 0 auto}
+.LX-decide-ask{display:block;font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-weight:400;font-size:25px;line-height:1.2;letter-spacing:.01em;color:var(--teal-deep)}
+.LX-decide-q{display:block;margin-top:12px;font-size:42px;line-height:1.16;letter-spacing:-.03em;font-weight:780;color:var(--ink)}
+.LX-decide-rule{flex:1 1 auto;height:1px;margin:0 0 32px 44px;background:var(--line)}
+.LX-decide-rings{flex:0 0 auto;fill:none;stroke:var(--line);stroke-width:1.6}
+.LX-decide-grid{display:grid;grid-template-columns:repeat(3,1fr);column-gap:56px;row-gap:0;border-bottom:1px solid var(--line)}
+.LX-decide-cell{display:flex;flex-direction:column;min-height:300px;padding:26px 40px 26px 0;border-top:1px solid var(--line)}
+.LX-decide-cell:nth-child(3n+1){--LXd-c:var(--teal-deep);--LXd-s:rgba(90,150,135,.15)}
+.LX-decide-cell:nth-child(3n+2){--LXd-c:var(--coral-deep);--LXd-s:rgba(214,111,83,.14)}
+.LX-decide-cell:nth-child(3n+3){--LXd-c:var(--mustard-deep);--LXd-s:rgba(238,194,74,.26)}
+.LX-decide-num{display:flex;align-items:center;justify-content:center;align-self:flex-start;flex:0 0 auto;width:52px;height:52px;border:1.5px solid var(--line);border-radius:50%;font-size:23px;line-height:1;letter-spacing:.01em;color:rgba(43,42,40,.78);font-variant-numeric:tabular-nums}
+.LX-decide-need{max-width:330px;margin:20px 0 0;min-height:106px;font-size:34px;line-height:1.55;font-weight:600;letter-spacing:-.01em;color:var(--ink);word-break:keep-all}
+.LX-decide-chip{display:inline-flex;align-items:center;align-self:flex-start;margin-top:auto;padding:10px 22px 11px;border-radius:999px;background:var(--LXd-s);color:var(--LXd-c);font-size:23px;font-weight:750;line-height:1.2;letter-spacing:.01em;white-space:nowrap}
+/* one-minute-practice */
+.LX-practice{position:relative;width:1696px;color:var(--ink)}
+.LX-practice *{box-sizing:border-box}
+.LX-practice-field{position:relative;width:1696px;background:var(--paper-2);border-left:6px solid var(--coral);border-radius:0 24px 24px 0;padding:56px 240px 60px 58px;overflow:hidden}
+.LX-practice-rings{position:absolute;right:32px;top:50%;margin-top:-88px;z-index:0}
+.LX-practice-ring-a{fill:none;stroke:var(--teal);stroke-width:2;opacity:.40}
+.LX-practice-ring-b{fill:none;stroke:var(--teal-deep);stroke-width:2;opacity:.32}
+.LX-practice-ring-c{fill:var(--mustard);opacity:.30}
+.LX-practice-kick{position:relative;z-index:1;display:flex;align-items:center;gap:18px}
+.LX-practice-kicklabel{font-size:19px;font-weight:700;letter-spacing:.14em;line-height:1;color:var(--coral-deep);white-space:nowrap}
+.LX-practice-kickrule{width:104px;height:2px;background:rgba(214,111,83,.34)}
+.LX-practice-quote{position:relative;z-index:1;margin:24px 0 0;font-size:44px;line-height:1.55;font-weight:600;letter-spacing:-.012em;color:var(--ink)}
+.LX-practice-line{display:block}
+.LX-practice-em{font-weight:800;color:var(--coral-deep)}
+.LX-practice-mark{position:relative;display:inline-block}
+.LX-practice-markt{position:relative;z-index:1;font-weight:800}
+.LX-practice-mark::before{content:"";position:absolute;left:-9px;right:-9px;bottom:7px;height:28px;background:var(--mustard);opacity:.52;border-radius:4px;z-index:0}
+.LX-practice-steps{width:1696px;margin-top:52px;border-top:1px solid var(--line)}
+.LX-practice-grid{width:1664px;margin-left:32px;display:grid;grid-template-columns:repeat(4,416px)}
+.LX-practice-col{padding:36px 24px 4px 32px}
+.LX-practice-col+.LX-practice-col{border-left:1px solid var(--line)}
+.LX-practice-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.LX-practice-dot{position:relative;width:34px;height:34px;flex:0 0 auto;border-radius:999px;border:2px solid var(--teal-deep)}
+.LX-practice-dot::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:999px;background:var(--teal-deep)}
+.LX-practice-col-2 .LX-practice-dot{border-color:var(--coral-deep)}
+.LX-practice-col-2 .LX-practice-dot::after{background:var(--coral-deep)}
+.LX-practice-col-3 .LX-practice-dot{border-color:var(--mustard-deep)}
+.LX-practice-col-3 .LX-practice-dot::after{background:var(--mustard-deep)}
+.LX-practice-col-4 .LX-practice-dot{border-color:var(--teal)}
+.LX-practice-col-4 .LX-practice-dot::after{background:var(--teal)}
+.LX-practice-label{font-size:27px;font-weight:700;line-height:1.4;letter-spacing:-.012em;color:var(--ink)}
+.LX-practice-sub{font-size:22px;line-height:1.6;font-weight:500;letter-spacing:-.008em;color:rgba(43,42,40,.82)}
+.LX-practice-subline{display:block}
+/* closing */
+.LX-closing{width:100%;color:#fff}
+.LX-closing-stage{position:relative;width:100%;display:flex;flex-direction:column}
+.LX-closing-deco{position:absolute;right:-52px;top:-96px;z-index:0;pointer-events:none}
+.LX-closing-ring1{fill:none;stroke:rgba(255,255,255,.13);stroke-width:2}
+.LX-closing-ring2{fill:none;stroke:rgba(238,194,74,.20);stroke-width:2}
+.LX-closing-main{position:relative;z-index:1;display:flex;flex-direction:column}
+.LX-closing-hd{max-width:1220px}
+.LX-closing-mark{width:66px;height:6px;border-radius:4px;background:var(--mustard);margin-bottom:26px}
+.LX-closing-title{margin:0;font-size:60px;line-height:1.14;letter-spacing:-.035em;font-weight:780;color:#fff}
+.LX-closing-hl{position:relative;display:inline-block}
+.LX-closing-hlt{position:relative;z-index:1}
+.LX-closing-hl::before{content:"";position:absolute;left:-8px;right:-8px;bottom:3px;height:18px;border-radius:4px;background:var(--mustard);z-index:0}
+.LX-closing-hr{height:1px;margin-top:40px;background:rgba(255,255,255,.26)}
+.LX-closing-cols{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:56px;margin-top:50px}
+.LX-closing-rail{position:absolute;left:0;right:0;top:48px;height:1px;background:rgba(255,255,255,.24)}
+.LX-closing-col{position:relative;display:flex;flex-direction:column;align-items:flex-start}
+.LX-closing-disc{position:relative;z-index:1;width:96px;height:96px;border-radius:50%;background:var(--coral-deep);border:2px solid rgba(255,255,255,.52);display:flex;align-items:center;justify-content:center}
+.LX-closing-num{font-size:46px;line-height:1;color:var(--mustard)}
+.LX-closing-lead{margin:30px 0 0;font-size:21px;line-height:1.6;font-weight:600;color:rgba(255,255,255,.84)}
+.LX-closing-emph{margin:10px 0 0;font-size:34px;line-height:1.42;font-weight:780;letter-spacing:-.022em;color:#fff}
+.LX-closing-bar{display:flex;align-items:center;gap:44px;margin-top:52px;padding:28px 40px;border-radius:20px;background:rgba(0,0,0,.18)}
+.LX-closing-q{flex:1 1 auto;margin:0;font-size:28px;line-height:1.55;font-weight:640;letter-spacing:-.012em;color:#fff}
+.LX-closing-sep{flex:0 0 auto;width:1px;height:76px;background:rgba(255,255,255,.26)}
+.LX-closing-next{flex:0 0 auto;width:452px}
+.LX-closing-nrow{display:flex;align-items:baseline;gap:14px}
+.LX-closing-kicker{flex:0 0 auto;font-style:italic;font-size:22px;line-height:1.2;color:var(--mustard)}
+.LX-closing-nh{font-size:27px;line-height:1.3;font-weight:760;letter-spacing:-.02em;color:#fff}
+.LX-closing-np{margin:9px 0 0;font-size:20px;line-height:1.6;color:rgba(255,255,255,.80)}
+/* part-1 */
+.LX-div1{position:relative;z-index:2;flex:0 0 auto;box-sizing:border-box;width:1680px;height:760px;margin:0 auto}
+.LX-div1-stage{position:absolute;left:0;top:0;width:600px;height:760px;z-index:0;pointer-events:none}
+.LX-div1-field{position:absolute;left:0;top:0;width:600px;height:760px;border-radius:3px;background:rgba(255,255,255,.055)}
+.LX-div1-rings{position:absolute;left:0;top:0;display:block;width:600px;height:760px}
+.LX-div1 .LX-div1-r1{fill:none;stroke:rgba(255,255,255,.18);stroke-width:1.6}
+.LX-div1 .LX-div1-r2{fill:none;stroke:rgba(255,255,255,.24);stroke-width:1.6}
+.LX-div1 .LX-div1-r3{fill:none;stroke:rgba(255,255,255,.32);stroke-width:1.6}
+.LX-div1 .LX-div1-dot{fill:var(--mustard);opacity:.5}
+.LX-div1-copy{position:absolute;left:700px;top:0;z-index:1;box-sizing:border-box;width:880px;height:760px;display:flex;flex-direction:column;justify-content:center}
+.LX-div1-eyebrow{display:flex;align-items:center;gap:20px;width:760px}
+.LX-div1-hair{flex:1 1 auto;height:1px;background:rgba(255,255,255,.34)}
+.LX-div1 .d-kicker{flex:0 0 auto;font-size:28px;line-height:1.3;letter-spacing:.06em;color:#fff;white-space:nowrap}
+.LX-div1 .d-title{margin-top:34px;max-width:none;font-size:100px;line-height:1.12;letter-spacing:-.04em;font-weight:780;color:#fff;white-space:nowrap}
+.LX-div1-bar{width:104px;height:6px;margin-top:32px;border-radius:6px;background:var(--mustard)}
+.LX-div1 .d-sub{margin-top:26px;max-width:820px;font-size:34px;line-height:1.55;letter-spacing:.005em;color:rgba(255,255,255,.94)}
+.LX-div1 .d-dots{display:flex;margin-top:62px;gap:14px}
+.LX-div1 .d-dots span{width:96px;height:6px;border-radius:8px;background:rgba(255,255,255,.26)}
+.LX-div1 .d-dots span.on{background:#fff}
+/* part-2 */
+.LX-div2{position:relative;box-sizing:border-box;align-self:stretch;flex:0 0 auto;height:860px;z-index:2}
+
+/* opaque bleed layer: suppresses the deck's oversized ghost-numeral watermark
+   so the slide carries ONE numeral device, not two */
+.LX-div2-cover{position:absolute;left:-160px;right:-160px;top:-160px;bottom:-160px;z-index:0;background:var(--coral-deep);pointer-events:none}
+
+/* decorative element 1 of 2 — one concentric numeral device, right, low contrast */
+.LX-div2-mono{position:absolute;left:1060px;top:100px;z-index:1;display:block;pointer-events:none}
+.LX-div2-mono-o{fill:none;stroke:rgba(255,255,255,.13);stroke-width:1.5}
+.LX-div2-mono-a{fill:none;stroke:var(--mustard);stroke-width:6;stroke-linecap:round;stroke-dasharray:684 548;opacity:.85}
+.LX-div2-mono-d{fill:rgba(255,255,255,.10);stroke:rgba(255,255,255,.22);stroke-width:1.5}
+.LX-div2-num{position:absolute;left:1060px;top:100px;z-index:2;box-sizing:border-box;width:640px;height:640px;display:flex;align-items:center;justify-content:center;font-family:"DM Serif Display",Georgia,serif;font-size:200px;line-height:1;color:rgba(255,255,255,.74);pointer-events:none}
+
+/* left column — single strong edge at x=0, one gutter */
+.LX-div2-lede{position:absolute;left:0;top:198px;width:1010px;z-index:3}
+.LX-div2-mark{width:108px;height:5px;border-radius:3px;background:var(--mustard)}
+.LX-div2 .d-kicker{margin-top:32px;font-size:27px;line-height:1.2;letter-spacing:.34em;color:rgba(255,255,255,.88)}
+.LX-div2 .d-title{margin-top:24px;max-width:1010px;font-size:100px;line-height:1.1;letter-spacing:-.035em;font-weight:770;color:#fff}
+
+/* decorative element 2 of 2 — one clean rule, aligned to the same left edge */
+.LX-div2-rule{position:absolute;left:0;top:466px;width:1010px;height:1px;z-index:1;background:rgba(255,255,255,.26)}
+
+.LX-div2-band{position:absolute;left:0;top:523px;width:1400px;z-index:3}
+.LX-div2 .d-sub{margin:0;max-width:none;font-size:44px;line-height:1.6;letter-spacing:-.005em;color:rgba(255,255,255,.96);white-space:nowrap}
+.LX-div2 .d-dots{display:flex;margin-top:62px;gap:16px}
+.LX-div2 .d-dots span{width:96px;height:7px;border-radius:4px;background:rgba(255,255,255,.26)}
+.LX-div2 .d-dots span.on{width:132px;background:var(--mustard)}
+/* part-3 */
+.LX-div3{position:relative;width:1656px;height:700px;margin:0}
+.LX-div3 .LX-div3-frame{position:absolute;left:0;top:0;width:1656px;height:700px;box-sizing:border-box;z-index:0;pointer-events:none;border-top:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14)}
+.LX-div3 .LX-div3-rings{position:absolute;left:1180px;top:0;width:320px;height:700px;z-index:0;pointer-events:none}
+.LX-div3 .LX-div3-rings svg{display:block}
+.LX-div3 .LX-div3-ring{fill:none;stroke:rgba(255,255,255,.17);stroke-width:2}
+.LX-div3 .LX-div3-ring-on{fill:rgba(238,194,74,.10);stroke:var(--mustard);stroke-width:3;opacity:.78}
+.LX-div3 .LX-div3-col{position:absolute;left:0;top:0;width:1040px;height:700px;display:flex;flex-direction:column;justify-content:center;z-index:2}
+.LX-div3 .LX-div3-eyebrow{display:flex;align-items:center;gap:22px}
+.LX-div3 .LX-div3-bar{display:block;flex:0 0 auto;width:104px;height:5px;border-radius:3px;background:var(--mustard)}
+.LX-div3 .d-kicker{flex:0 0 auto;margin:0;font-size:29px;line-height:1.4;letter-spacing:.06em;color:rgba(255,255,255,.92);white-space:nowrap}
+.LX-div3 .d-title{display:flex;align-items:baseline;gap:34px;width:auto;max-width:none;margin:40px 0 0;font-size:104px;line-height:1.12;letter-spacing:-.02em;font-weight:770;color:#fff}
+.LX-div3 .d-title span{display:block;color:#fff}
+.LX-div3 .LX-div3-rule{width:780px;height:1px;margin:44px 0 0;background:rgba(255,255,255,.20)}
+.LX-div3 .d-sub{margin:26px 0 0;max-width:1000px;font-size:31px;line-height:1.6;color:rgba(255,255,255,.92)}
+.LX-div3 .d-dots{display:flex;gap:14px;margin:48px 0 0}
+.LX-div3 .d-dots span{width:96px;height:7px;border-radius:4px;background:rgba(255,255,255,.24)}
+.LX-div3 .d-dots span.on{width:132px;background:var(--mustard)}
+/* appendix-start */
+/* appendix-start */
+.LX-appendix{position:relative;flex:0 0 auto;width:1696px;display:grid;grid-template-columns:520px 1128px;column-gap:48px;align-items:start;color:var(--ink)}
+.LX-appendix-rule{position:absolute;left:544px;top:8px;bottom:8px;width:1px;background:var(--line)}
+.LX-appendix-lead{padding-top:4px}
+.LX-appendix-eyebrow{display:block;font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-weight:400;font-size:25px;line-height:1.2;letter-spacing:.01em;color:var(--teal-deep)}
+.LX-appendix-q{display:block;margin-top:16px;font-size:54px;line-height:1.16;letter-spacing:-.03em;font-weight:780;color:var(--ink)}
+.LX-appendix-rings{display:block;margin:46px 0 0 8px}
+.LX-appendix-ring-a{fill:none;stroke:var(--teal-deep);stroke-width:2;opacity:.30}
+.LX-appendix-ring-b{fill:none;stroke:var(--coral-deep);stroke-width:2;opacity:.26}
+.LX-appendix-ring-c{fill:none;stroke:var(--mustard-deep);stroke-width:2;opacity:.32}
+.LX-appendix-list{display:grid;grid-template-columns:repeat(2,1fr);column-gap:64px;border-bottom:1px solid var(--line)}
+.LX-appendix-item{display:grid;grid-template-columns:20px 1fr;column-gap:20px;align-items:start;min-height:150px;padding:26px 20px 30px 0;border-top:1px solid var(--line)}
+.LX-appendix-item:nth-child(-n+2){--LXa-c:var(--teal-deep)}
+.LX-appendix-item:nth-child(n+3):nth-child(-n+4){--LXa-c:var(--coral-deep)}
+.LX-appendix-item:nth-child(n+5){--LXa-c:var(--mustard-deep)}
+.LX-appendix-mark{width:20px;height:20px;margin-top:13px;border:2px solid var(--LXa-c);border-radius:50%}
+.LX-appendix-tx{min-width:0}
+.LX-appendix-need{margin:0;font-size:30px;line-height:1.55;font-weight:600;letter-spacing:-.005em;color:var(--ink)}
+.LX-appendix-tool{margin:12px 0 0;font-size:23px;line-height:1.35;font-weight:750;letter-spacing:.01em;color:var(--LXa-c)}
+/* == LX end == */
+</style>
+
+<style id="og-v4">
+/* ===== v4 organic-white restyle (scoped to .og-white slides; source: layouts Organic24) ===== */
+.slide.og-white,.slide.og-white.tint{background:#fff;isolation:isolate}
+.og{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.og .dc{display:block;width:1920px;height:1080px}
+.og--flip .dc{transform:scaleX(-1)}
+.og .d-mint{fill:#5a9687;fill-opacity:.62}
+.og .d-mus{fill:#eec24a}
+.og .d-cor{fill:#d66f53}
+.og .d-dash{fill:#d66f53}
+.og .d-ln{fill:none;stroke:#10312f;stroke-opacity:.62;stroke-width:2.6}
+.og .d-ln2{fill:none;stroke:#1d5c55;stroke-opacity:.55;stroke-width:2.6}
+.og--soft .d-mint{fill-opacity:.28}
+.og--soft .d-mus{fill-opacity:.38}
+.og--soft .d-cor{fill-opacity:.50}
+.og--soft .d-dash{fill-opacity:.55}
+.og--soft .d-ln{stroke-opacity:.15}
+.og--soft .d-ln2{stroke-opacity:.13}
+/* dividers: full blobs, calmer line work so copy stays crisp */
+.divider .og .d-mint{fill-opacity:.42}
+.divider .og .d-ln{stroke-opacity:.30}
+.divider .og .d-ln2{stroke-opacity:.26}
+/* push corner decoration outward: clears eyebrows, folios, chips (verify pass) */
+.og--soft .dc{transform:scale(1.06)}
+.og--soft.og--flip .dc{transform:scale(-1.06,1.06)}
+/* card/chip definition on pure white */
+#journey .LX-journey-col{box-shadow:0 12px 32px rgba(60,50,38,.08)}
+/* retire the old geometric decorations on restyled slides */
+#cover .blob,#cover .dots,
+.og-white .LX-ask-rings,.og-white .LX-decide-rings,.og-white .LX-practice-rings,
+.og-white .LX-appendix-rings,.og-white .LX-closing-deco{display:none}
+/* ===== dividers: white organic ===== */
+.slide.divider.og-white{padding:0;color:var(--ink)}
+.og-white .ogd-copy{position:absolute;top:46%;transform:translateY(-50%);z-index:2}
+#part-1 .ogd-copy{left:980px;width:800px}
+#part-2 .ogd-copy,#part-3 .ogd-copy{left:150px;width:860px}
+.og-white .d-kicker{color:var(--teal-deep)}
+#part-2 .d-kicker{color:var(--coral-deep)}
+#part-3 .d-kicker{color:var(--mustard-deep)}
+.og-white .d-title{color:var(--ink)}
+.og-white .d-sub{color:var(--muted)}
+.og-white .ogd-bar{width:84px;height:5px;border-radius:6px;margin-top:30px;background:var(--teal)}
+#part-2 .ogd-bar{background:var(--coral)}
+#part-3 .ogd-bar{background:var(--mustard)}
+.og-white .d-dots span{background:#d9cdba}
+#part-1 .d-dots span.on{background:var(--teal)}
+#part-2 .d-dots span.on{background:var(--coral)}
+#part-3 .d-dots span.on{background:var(--mustard-deep)}
+.og-white .ogd-num{position:absolute;z-index:1;font-family:"DM Serif Display",Georgia,serif;font-size:430px;line-height:1;color:var(--ink)}
+#part-1 .ogd-num{left:320px;top:300px}
+#part-2 .ogd-num{right:310px;top:300px}
+#part-3 .ogd-num{right:165px;top:290px}
+/* ===== closing: recolor to white ===== */
+#closing.og-white{color:var(--ink)}
+#closing.og-white .LX-closing{color:var(--ink)}
+#closing.og-white .LX-closing-title{color:var(--ink)}
+#closing.og-white .LX-closing-hr{background:rgba(43,42,40,.14)}
+#closing.og-white .LX-closing-rail{background:rgba(43,42,40,.12)}
+#closing.og-white .LX-closing-col:nth-child(2) .LX-closing-disc{background:var(--teal-deep)}
+#closing.og-white .LX-closing-col:nth-child(3) .LX-closing-disc{background:var(--coral-deep)}
+#closing.og-white .LX-closing-col:nth-child(4) .LX-closing-disc{background:var(--mustard-deep)}
+#closing.og-white .LX-closing-disc{border-color:rgba(43,42,40,.10)}
+#closing.og-white .LX-closing-num{color:#fff}
+#closing.og-white .LX-closing-lead{color:var(--muted)}
+#closing.og-white .LX-closing-emph{color:var(--ink)}
+#closing.og-white .LX-closing-bar{background:#fff;border:1px solid var(--line);box-shadow:0 12px 32px rgba(60,50,38,.06)}
+#closing.og-white .LX-closing-q{color:var(--ink)}
+#closing.og-white .LX-closing-sep{background:rgba(43,42,40,.16)}
+#closing.og-white .LX-closing-kicker{color:var(--mustard-deep)}
+#closing.og-white .LX-closing-nh{color:var(--ink)}
+#closing.og-white .LX-closing-np{color:var(--muted)}
+#closing.og-white .src{color:var(--muted);background:rgba(253,252,250,.88);border-color:rgba(115,108,98,.25)}
+
+/* 07-27 프로젝트(09) — 사이드 '프로젝트 탭' 카드 삭제 → 단일 컬럼 중앙 */
+#projects .screens{grid-template-columns:minmax(0,1fr);justify-items:center}
+#projects .screen-main{width:min(1160px,100%)}
+#projects .cap{grid-template-columns:1fr}
+</style>
+</head>
+<body>
+<div id="viewport"><main id="stage" aria-label="클로드 시작하기 발표">
+<section class="slide cover a-teal active og-white" id="cover" data-label="표지" data-part="시작" data-speaker-notes="[전체화면으로 표지 띄워 두고 시작] 안녕하세요. 오늘은 클로드 이야기를 해보려고 합니다. 요즘 AI 얘기가 참 많죠. 챗GPT는 다들 한 번쯤 써보셨을 거고요. 클로드는 이름만 들어보신 분이 많을 것 같습니다. 나와 있는 AI 중에서는 일을 시키기 좋다는 평이 많은 편이고요. 만든 회사는 앤트로픽입니다. 올해 나온 최신 모델이 페이블5인데, 지금 세계에서 제일 성능 좋은 모델로 꼽히고 있습니다. 오늘은 클로드를 실제 업무에서 어떻게 쓰는지, 화면으로 보여드리려고 합니다. [→]">
+<div class="og og--flip" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mus" d="M980 -90 C1167.5 -56.7 898.3 23.3 835 60 C771.7 96.7 673.8 111.7 600 130 C526.2 148.3 450.3 146.7 392 170 C333.7 193.3 265.3 233 250 270 C234.7 307 310 358.7 300 392 C290 425.3 221.7 442 190 470 C158.3 498 115 523.3 110 560 C105 596.7 162.3 649 160 690 C157.7 731 122.7 774.7 96 806 C69.3 837.3 42.7 862.3 0 878 C-42.7 893.7 -110 943 -160 900 C-210 857 -278.3 793.3 -300 620 C-321.7 446.7 -503.3 -21.7 -290 -140 C-76.7 -258.3 792.5 -123.3 980 -90 Z"/><path class="d-ln2" d="M945.5 -123.4 C923.1 -99.7 870.5 -16 811 18.5 C751.4 52.9 661.2 65.6 588.4 83.4 C515.6 101.2 438 97.4 374.2 125.4 C310.4 153.5 225.7 209.5 205.7 251.6 C185.6 293.8 261.9 347.8 254 378.2 C246.1 408.6 190.1 404.8 158.2 434 C126.3 463.3 70.1 511.3 62.4 553.5 C54.8 595.7 112.6 650.4 112.1 687.3 C111.6 724.2 82.9 749.5 59.4 774.9 C36 800.3 -14.1 828.8 -28.8 839.6"/><path class="d-mint" d="M1990 300 C1955 322 1901.3 361 1860 392 C1818.7 423 1766.7 449.7 1742 486 C1717.3 522.3 1739 579.7 1712 610 C1685 640.3 1623.3 644 1580 668 C1536.7 692 1483.3 718.7 1452 754 C1420.7 789.3 1419.3 847 1392 880 C1364.7 913 1314 918.7 1288 952 C1262 985.3 1252.3 1043.7 1236 1080 C1219.7 1116.3 1051 1153.3 1190 1170 C1329 1186.7 1923.3 1331.7 2070 1180 C2216.7 1028.3 2083.3 406.7 2070 260 C2056.7 113.3 2025 278 1990 300 Z"/><path class="d-ln" d="M2016.6 337.5 C1995.1 352.8 1927 399.8 1887.6 428.8 C1848.2 457.8 1803.6 476.5 1780.1 511.8 C1756.5 547.1 1776 607.9 1746.4 640.6 C1716.7 673.3 1645.6 684.3 1602.3 708.2 C1559 732.2 1515.6 751 1486.4 784.5 C1457.3 818 1454.5 876.7 1427.4 909.3 C1400.4 942 1349.1 949 1324.3 980.3 C1299.5 1011.6 1286.2 1077.8 1278.6 1097.3"/><rect class="d-dash" x="159.1" y="901.9" width="25" height="9.5" rx="4.75" transform="rotate(36.4 171.6 906.7)"/><rect class="d-dash" x="214.6" y="891.6" width="25" height="9.5" rx="4.75" transform="rotate(37.2 227.1 896.3)"/><rect class="d-dash" x="273.3" y="890.3" width="25" height="9.5" rx="4.75" transform="rotate(33.5 285.8 895.1)"/><rect class="d-dash" x="186.7" y="946.7" width="25" height="9.5" rx="4.75" transform="rotate(28.8 199.2 951.5)"/><rect class="d-dash" x="244.5" y="946.2" width="25" height="9.5" rx="4.75" transform="rotate(39.1 257 950.9)"/><rect class="d-dash" x="282.4" y="944.4" width="25" height="9.5" rx="4.75" transform="rotate(29.1 294.9 949.1)"/><rect class="d-dash" x="153.4" y="985.4" width="25" height="9.5" rx="4.75" transform="rotate(36.4 165.9 990.2)"/><rect class="d-dash" x="219.2" y="992.3" width="25" height="9.5" rx="4.75" transform="rotate(39.5 231.7 997)"/><rect class="d-dash" x="270.9" y="991.4" width="25" height="9.5" rx="4.75" transform="rotate(33 283.4 996.2)"/></svg></div>
+  <div class="blob c-teal" style="width:520px;height:430px;right:-170px;top:-130px;background:currentColor;opacity:.14"></div>
+  <div class="blob blob2 c-coral" style="width:350px;height:300px;right:180px;bottom:-150px;background:currentColor;opacity:.13"></div>
+  <div class="dots c-mustard" style="width:260px;height:210px;right:120px;top:130px;opacity:.34"></div>
+  <div style="position:relative;z-index:2">
+    <div class="eyebrow">사내 세미나 · 2026</div>
+    <h1 class="display">클로드 <span class="hl"><span class="t">시작</span></span>하기</h1>
+    <p class="cover-sub">시작하기부터 응용하기까지, 그리고 두 가지 실전 사례 — 실제 화면으로 봅니다</p>
+    <div class="meta"><span>발표 약 25분</span><span class="mdot">●</span><span>질의응답 별도</span></div>
+  </div>
+</section>
+
+<section class="slide a-teal tint og-white" id="journey" data-label="오늘의 흐름" data-part="시작" data-speaker-notes="오늘은 크게 세 부분입니다. [카드 세 장을 왼쪽부터 짚으며] 1부는 시작하기. 가입부터 채팅, 프로젝트까지 기본 사용법을 보고요. 2부는 응용하기. 폴더 정리나 프로그램, 발표자료 만드는 도구들을 봅니다. 3부는 사례. 제가 실제 업무에 써 본 이야기를 준비했습니다. [→]">
+<div class="og og--flip og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mint" d="M420 -50 C508.7 -22 397.3 33.7 372 58 C346.7 82.3 301.7 81 268 96 C234.3 111 198.7 127 170 148 C141.3 169 124.3 205.7 96 222 C67.7 238.3 31 243.7 0 246 C-31 248.3 -61.7 257 -90 236 C-118.3 215 -158.3 177.7 -170 120 C-181.7 62.3 -258.3 -81.7 -160 -110 C-61.7 -138.3 331.3 -78 420 -50 Z"/><path class="d-ln" d="M276 -14 C269.7 -2.3 254.3 33.3 238 56 C221.7 78.7 194 98 178 122 C162 146 150 175.7 142 200 C134 224.3 132 256.7 130 268"/><path class="d-ln" d="M164 248.9 C159.3 261.6 151 272.2 143 280.4 C135 288.5 125.4 295.4 116 297.7 C106.5 300 95.3 298.5 86.2 294.1 C77.1 289.7 68.4 280.9 61.4 271 C54.4 261.2 47.1 248.5 44.1 234.8 C41.2 221.1 39.8 202 43.5 188.8 C47.3 175.7 57.8 162.5 66.6 155.8 C75.5 149.1 87.2 149.5 96.8 148.7 C106.5 147.8 115 147.9 124.5 150.6 C134.1 153.3 146.4 155.9 154.2 164.8 C162.1 173.7 169.9 190.3 171.5 204.3 C173.1 218.3 168.8 236.3 164 248.9 Z"/><rect class="d-dash" x="1486.1" y="-17.5" width="25" height="9.5" rx="4.75" transform="rotate(29.5 1498.6 -12.8)"/><rect class="d-dash" x="1568.6" y="-22.6" width="25" height="9.5" rx="4.75" transform="rotate(30.3 1581.1 -17.8)"/><rect class="d-dash" x="1661.0" y="-26.9" width="25" height="9.5" rx="4.75" transform="rotate(36.2 1673.5 -22.2)"/><rect class="d-dash" x="1607.2" y="33.2" width="25" height="9.5" rx="4.75" transform="rotate(41.2 1619.7 37.9)"/><rect class="d-dash" x="1692.7" y="37.0" width="25" height="9.5" rx="4.75" transform="rotate(38.6 1705.2 41.7)"/><rect class="d-dash" x="1794.8" y="39.6" width="25" height="9.5" rx="4.75" transform="rotate(34.5 1807.3 44.3)"/><rect class="d-dash" x="1475.6" y="90.0" width="25" height="9.5" rx="4.75" transform="rotate(39.9 1488.1 94.8)"/><rect class="d-dash" x="1562.5" y="88.6" width="25" height="9.5" rx="4.75" transform="rotate(40.9 1575.0 93.4)"/><rect class="d-dash" x="1661.1" y="91.0" width="25" height="9.5" rx="4.75" transform="rotate(31.3 1673.6 95.7)"/><rect class="d-dash" x="1750.8" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(31.5 1763.3 98.2)"/><path class="d-mint" d="M1990 792 C1958 806 1912.7 827.3 1878 844 C1843.3 860.7 1810.7 873.7 1782 892 C1753.3 910.3 1729.3 930.7 1706 954 C1682.7 977.3 1659.7 996 1642 1032 C1624.3 1068 1528.7 1145.3 1600 1170 C1671.3 1194.7 1991.7 1248.3 2070 1180 C2148.3 1111.7 2083.3 824.7 2070 760 C2056.7 695.3 2022 778 1990 792 Z"/><path class="d-ln" d="M1737.6 950.7 C1740.5 964.8 1737.6 982.2 1734.9 995.9 C1732.3 1009.6 1727.8 1022.1 1721.9 1033 C1716 1043.9 1708.4 1055.3 1699.5 1061.3 C1690.6 1067.2 1678.7 1070 1668.4 1068.9 C1658.1 1067.7 1646.9 1062.3 1637.9 1054.3 C1628.9 1046.4 1619.1 1034.4 1614.6 1021.2 C1610.1 1008 1608.4 988.8 1610.9 975 C1613.5 961.3 1622.5 948.2 1629.9 938.8 C1637.2 929.3 1646 924.4 1654.9 918.5 C1663.9 912.6 1673.1 904.7 1683.6 903.5 C1694.1 902.2 1708.8 903.1 1717.8 911 C1726.9 918.9 1734.8 936.5 1737.6 950.7 Z"/><path class="d-ln" d="M1600 1080 C1609.3 1068.7 1632.7 1031.7 1656 1012 C1679.3 992.3 1711 972.7 1740 962 C1769 951.3 1800 946.7 1830 948 C1860 949.3 1905 966.3 1920 970"/></svg></div>
+  <div class="head mb"><div class="eyebrow">오늘의 흐름</div><h2 class="h-title">오늘 볼 것, 세 묶음</h2><div class="rule"></div></div>
+  <div class="body">
+<div class="LX-journey">
+  <div class="LX-journey-band" aria-hidden="true">
+    <svg width="1696" height="72" viewBox="0 0 1696 72" focusable="false">
+      <g style="fill:none;stroke-width:1.6">
+        <circle cx="1656" cy="26" r="10" style="stroke:var(--teal);stroke-opacity:.38"/>
+        <circle cx="1656" cy="26" r="18" style="stroke:var(--teal);stroke-opacity:.26"/>
+        <circle cx="1656" cy="26" r="26" style="stroke:var(--teal);stroke-opacity:.15"/>
+      </g>
+      <rect x="0" y="55" width="1696" height="1" style="fill:var(--line)"/>
+      <rect x="0" y="52" width="64" height="6" rx="3" style="fill:var(--teal)"/>
+      <rect x="580" y="52" width="64" height="6" rx="3" style="fill:var(--coral)"/>
+      <rect x="1160" y="52" width="64" height="6" rx="3" style="fill:var(--mustard)"/>
+    </svg>
+  </div>
+
+  <div class="LX-journey-cols">
+    <article class="LX-journey-col LX-journey-a">
+      <i class="LX-journey-bar" aria-hidden="true"></i>
+      <span class="LX-journey-disc"><span class="LX-journey-core"><span class="serif LX-journey-num">1</span></span></span>
+      <div class="LX-journey-word">시작하기</div>
+      <div class="LX-journey-copy">계정 · 채팅 · 프로젝트</div>
+      <div class="LX-journey-foot"><span class="LX-journey-pill">PART 1</span></div>
+    </article>
+
+    <article class="LX-journey-col LX-journey-b">
+      <i class="LX-journey-bar" aria-hidden="true"></i>
+      <span class="LX-journey-disc"><span class="LX-journey-core"><span class="serif LX-journey-num">2</span></span></span>
+      <div class="LX-journey-word">응용하기</div>
+      <div class="LX-journey-copy">코워크 · 아티팩트 · 커넥터<br>스킬 · 디자인</div>
+      <div class="LX-journey-foot"><span class="LX-journey-pill">PART 2</span></div>
+    </article>
+
+    <article class="LX-journey-col LX-journey-c">
+      <i class="LX-journey-bar" aria-hidden="true"></i>
+      <span class="LX-journey-disc"><span class="LX-journey-core"><span class="serif LX-journey-num">3</span></span></span>
+      <div class="LX-journey-word">실전 사례</div>
+      <div class="LX-journey-copy">실제 업무에 써 본 이야기 · 두 가지</div>
+      <div class="LX-journey-foot"><span class="LX-journey-pill">PART 3</span></div>
+    </article>
+  </div>
+</div>
+</div>
+<div class="pageno">01</div>
+</section>
+
+<section class="slide divider d-teal og-white" id="part-1" data-label="PART 1" data-part="PART 1" data-type="divider" data-speaker-notes="먼저 1부, 클로드 시작하기입니다. [→]">
+<div class="og" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mus" d="M980 -90 C1167.5 -56.7 898.3 23.3 835 60 C771.7 96.7 673.8 111.7 600 130 C526.2 148.3 450.3 146.7 392 170 C333.7 193.3 265.3 233 250 270 C234.7 307 310 358.7 300 392 C290 425.3 221.7 442 190 470 C158.3 498 115 523.3 110 560 C105 596.7 162.3 649 160 690 C157.7 731 122.7 774.7 96 806 C69.3 837.3 42.7 862.3 0 878 C-42.7 893.7 -110 943 -160 900 C-210 857 -278.3 793.3 -300 620 C-321.7 446.7 -503.3 -21.7 -290 -140 C-76.7 -258.3 792.5 -123.3 980 -90 Z"/><path class="d-ln2" d="M945.5 -123.4 C923.1 -99.7 870.5 -16 811 18.5 C751.4 52.9 661.2 65.6 588.4 83.4 C515.6 101.2 438 97.4 374.2 125.4 C310.4 153.5 225.7 209.5 205.7 251.6 C185.6 293.8 261.9 347.8 254 378.2 C246.1 408.6 190.1 404.8 158.2 434 C126.3 463.3 70.1 511.3 62.4 553.5 C54.8 595.7 112.6 650.4 112.1 687.3 C111.6 724.2 82.9 749.5 59.4 774.9 C36 800.3 -14.1 828.8 -28.8 839.6"/><path class="d-mint" d="M1990 300 C1955 322 1901.3 361 1860 392 C1818.7 423 1766.7 449.7 1742 486 C1717.3 522.3 1739 579.7 1712 610 C1685 640.3 1623.3 644 1580 668 C1536.7 692 1483.3 718.7 1452 754 C1420.7 789.3 1419.3 847 1392 880 C1364.7 913 1314 918.7 1288 952 C1262 985.3 1252.3 1043.7 1236 1080 C1219.7 1116.3 1051 1153.3 1190 1170 C1329 1186.7 1923.3 1331.7 2070 1180 C2216.7 1028.3 2083.3 406.7 2070 260 C2056.7 113.3 2025 278 1990 300 Z"/><path class="d-ln" d="M2016.6 337.5 C1995.1 352.8 1927 399.8 1887.6 428.8 C1848.2 457.8 1803.6 476.5 1780.1 511.8 C1756.5 547.1 1776 607.9 1746.4 640.6 C1716.7 673.3 1645.6 684.3 1602.3 708.2 C1559 732.2 1515.6 751 1486.4 784.5 C1457.3 818 1454.5 876.7 1427.4 909.3 C1400.4 942 1349.1 949 1324.3 980.3 C1299.5 1011.6 1286.2 1077.8 1278.6 1097.3"/><rect class="d-dash" x="159.1" y="901.9" width="25" height="9.5" rx="4.75" transform="rotate(36.4 171.6 906.7)"/><rect class="d-dash" x="214.6" y="891.6" width="25" height="9.5" rx="4.75" transform="rotate(37.2 227.1 896.3)"/><rect class="d-dash" x="273.3" y="890.3" width="25" height="9.5" rx="4.75" transform="rotate(33.5 285.8 895.1)"/><rect class="d-dash" x="186.7" y="946.7" width="25" height="9.5" rx="4.75" transform="rotate(28.8 199.2 951.5)"/><rect class="d-dash" x="244.5" y="946.2" width="25" height="9.5" rx="4.75" transform="rotate(39.1 257 950.9)"/><rect class="d-dash" x="282.4" y="944.4" width="25" height="9.5" rx="4.75" transform="rotate(29.1 294.9 949.1)"/><rect class="d-dash" x="153.4" y="985.4" width="25" height="9.5" rx="4.75" transform="rotate(36.4 165.9 990.2)"/><rect class="d-dash" x="219.2" y="992.3" width="25" height="9.5" rx="4.75" transform="rotate(39.5 231.7 997)"/><rect class="d-dash" x="270.9" y="991.4" width="25" height="9.5" rx="4.75" transform="rotate(33 283.4 996.2)"/></svg></div>
+<div class="ogd-num serif" aria-hidden="true">1</div>
+<div class="ogd-copy">
+  <div class="d-kicker">PART 1</div>
+  <div class="d-title">클로드 시작하기</div>
+  <div class="ogd-bar"></div>
+  <div class="d-sub">계정 · 채팅 · 프로젝트</div>
+  <div class="d-dots"><span class="on"></span><span></span><span></span></div>
+</div>
+</section>
+
+<section class="slide a-teal" id="intro-start" data-label="시작하기" data-part="PART 1 · 기본" data-speaker-notes="클로드는 따로 설치할 게 없습니다. claude.ai에 들어가서 구글이나 이메일로 로그인하면 됩니다. [말 없이 바로 ◎메인 카드 클릭. 클립 흐름: 0초 홈 → 2초 요금제 → 4초 프리 선택 → 10초 로그인 → 13초 Google 클릭] 요금제가 프리, 프로, 맥스 이렇게 있는데, 무료인 프리부터 시작하시면 됩니다. [로그인 화면 나오면] 구글로 계속하기를 한 번 누르면 가입은 이걸로 끝입니다. [끝나면 Esc] 자주 쓰실 거면 앱이 더 편하고요. 들어가면 첫 화면에 입력창이 있습니다. 하고 싶은 일을 평소 말하듯 적으면 됩니다. [→]">
+  <div class="head"><div class="eyebrow">01 · 시작하기</div><h2 class="h-title">웹에서 바로, 앱이면 더 편하게</h2><p class="h-lead">claude.ai 접속 또는 데스크톱·모바일 앱 설치</p></div>
+  <div class="body"><div class="media-grid">
+    <div class="frame r169"><button class="media-trigger" type="button" aria-label="가입부터 첫 화면까지 영상 크게 재생" data-video="클로드_초보자가이드_클립/02_가입시작_0m28s-0m50s_무자막.mp4" data-poster="발표v2_클립/_포스터/p_02_가입시작_0m28s-0m50s_무자막.jpg" data-caption="가입부터 첫 화면까지 · 14초" data-duration="14.0"><img src="발표v2_클립/_포스터/p_02_가입시작_0m28s-0m50s_무자막.jpg" alt="클로드 가입 후 첫 대화 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 14초</span></button></div>
+    <div class="facts">
+      <div class="fact"><div class="fact-n">1</div><div><div class="fact-t">웹</div><div class="fact-d"><b>claude.ai</b> 로그인이면 끝</div></div></div>
+      <div class="fact"><div class="fact-n">2</div><div><div class="fact-t">앱</div><div class="fact-d">데스크톱·모바일 제공</div></div></div>
+      <div class="fact"><div class="fact-n">3</div><div><div class="fact-t">첫 화면</div><div class="fact-d">가입 직후 바로 대화 시작</div></div></div>
+    </div>
+  </div></div><div class="src">가이드</div>
+<div class="pageno">02</div>
+</section>
+
+<section class="slide a-mustard" id="model-pick" data-label="모델" data-part="PART 1 · 기본" data-speaker-notes="모델이 네 가지 보이는데, 소넷이면 대부분 충분합니다. [◎클릭 — 손을 Esc에 올려 두고] 이렇게 입력창 아래에서 바꿀 수 있습니다. [Esc → 바로 →]">
+  <div class="head"><div class="eyebrow">01 · 시작하기 — 모델</div><h2 class="h-title">모델은 소넷으로 시작하면 충분합니다</h2><p class="h-lead">입력창 오른쪽 아래 버튼에서 언제든 변경</p></div>
+  <div class="body"><div class="media-grid">
+    <div class="frame r169"><button class="media-trigger" type="button" aria-label="모델 선택 드롭다운 영상 크게 재생" data-video="claude_screen_clips/05_model_selector_dropdown.mp4" data-poster="발표v2_클립/_포스터/p_05_model_selector_dropdown.jpg" data-caption="모델 선택 — 입력창 오른쪽 아래 · 5초" data-duration="5.1"><img src="발표v2_클립/_포스터/p_05_model_selector_dropdown.jpg" alt="입력창 오른쪽 아래 모델 선택 드롭다운"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 5초</span></button></div>
+    <div class="facts">
+      <div class="fact"><div class="fact-n">1</div><div><div class="fact-t">Haiku</div><div class="fact-d">빠른 응답 · 가벼운 작업</div></div></div>
+      <div class="fact"><div class="fact-n">2</div><div><div class="fact-t">Sonnet</div><div class="fact-d"><b>일상 기본값 — 이걸로 시작</b></div></div></div>
+      <div class="fact"><div class="fact-n">3</div><div><div class="fact-t">Opus</div><div class="fact-d">복잡한 작업용 고성능</div></div></div>
+      <div class="fact"><div class="fact-n">4</div><div><div class="fact-t">Fable</div><div class="fact-d">최고 난도 · 별도 사용량 확인</div></div></div>
+    </div>
+  </div></div><div class="src">가이드</div>
+<div class="pageno">03</div>
+</section>
+
+<section class="slide a-teal tint" id="memory-import" data-label="메모리" data-part="PART 1 · 기본" data-speaker-notes="다른 AI를 오래 쓰셨으면 거기에 그동안 말한 게 꽤 쌓여 있죠. 그걸 처음부터 다시 설명하실 필요는 없습니다. 쌓인 기억은 클로드로 그대로 옮겨옵니다. 설정 열고 기능, 메모리 순서로 들어가시면 됩니다. [◎클릭] 쓰던 AI한테 기억을 정리해 달라고 하면 이렇게 결과가 나오는데요. 그걸 복사해서 여기에 붙여넣으면 끝입니다. [끝나면 Esc] 대화가 통째로 넘어오는 게 아니라 정리된 기억만 넘어옵니다. 여기까지가 기본 설정입니다. [→]">
+<div class="blob" style="width:360px;height:340px;top:-140px;left:-100px;background:var(--teal);opacity:.16"></div>
+<header class="head mb">
+<div class="eyebrow">01 · 시작하기 — 메모리</div>
+<h2 class="h-title sm">쓰던 AI의 기억을 클로드로 가져옵니다</h2>
+</header>
+<div class="body"><div class="screens">
+<div class="screen-main">
+<div class="frame r169"><button class="media-trigger" type="button" aria-label="메모리 가져오기 영상 크게 재생" data-video="claude_screen_clips/04_memory_import.mp4" data-poster="_발표_포스터/p03.jpg" data-caption="다른 AI의 기억 가져오기 · 12초" data-duration="12.0"><img src="_발표_포스터/p03.jpg" alt="Claude의 메모리 가져오기 다이얼로그"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 12초</span></button></div>
+<div class="cap"><b class="serif">01</b><div><div class="cap-t">다른 AI의 기억 가져오기<span class="cap-d">기억 정리 → 복사 → 붙여넣기 · 대화 전체 이전 아님 · 최대 24시간</span></div></div></div>
+</div>
+<div class="screen-side">
+<article><div class="frame r169"><button class="media-trigger" type="button" aria-label="메모리 위치 영상 크게 재생" data-video="claude_screen_clips/03_settings_features_memory.mp4" data-duration="16.0" data-poster="_발표_포스터/p17.jpg" data-caption="기능에서 메모리 찾기 · 16초"><img src="_발표_포스터/p17.jpg" alt="Claude 설정의 기능과 메모리 위치"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">16초</span></button></div><div class="cap"><b class="serif">02</b><div><div class="cap-t">기능에서 메모리 찾기<span class="cap-d">설정 → 기능 → 메모리</span></div></div></div></article>
+</div>
+</div></div>
+<div class="src">가이드</div>
+<div class="pageno">04</div>
+</section>
+
+<section class="slide a-teal og-white" id="search-spectrum" data-label="검색·사고·Research" data-part="PART 1 · 기본" data-speaker-notes="찾아보고 판단하는 걸 도와주는 기능이 세 가지인데, 셋이 하는 일은 서로 다릅니다. [세 항목을 왼쪽부터 짚으며] 최근 사실이나 원문 링크가 필요하면 웹 검색이고요. 이미 가진 정보를 더 깊게 따져야 하면 확장 사고입니다. 저절로 안 켜지니까 직접 눌러 주셔야 하고요. 여러 자료를 단계별로 조사해야 하면 Research입니다. 웹 검색을 켜 둬야 하고, 유료 플랜에서 쓸 수 있습니다. 셋 다 켜 둘 필요는 없고요. 지금 필요한 깊이에 맞춰 고르시면 됩니다. [→]">
+<div class="og og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><rect class="d-dash" x="46.0" y="-25.7" width="25" height="9.5" rx="4.75" transform="rotate(42.8 58.5 -21.0)"/><rect class="d-dash" x="130.9" y="-15.0" width="25" height="9.5" rx="4.75" transform="rotate(35.2 143.4 -10.3)"/><rect class="d-dash" x="218.2" y="-20.3" width="25" height="9.5" rx="4.75" transform="rotate(39.3 230.7 -15.6)"/><rect class="d-dash" x="295.5" y="-14.0" width="25" height="9.5" rx="4.75" transform="rotate(35.3 308.0 -9.3)"/><rect class="d-dash" x="87.6" y="26.4" width="25" height="9.5" rx="4.75" transform="rotate(32.6 100.1 31.1)"/><rect class="d-dash" x="170.9" y="28.5" width="25" height="9.5" rx="4.75" transform="rotate(39.1 183.4 33.2)"/><rect class="d-dash" x="254.4" y="39.0" width="25" height="9.5" rx="4.75" transform="rotate(41.7 266.9 43.7)"/><rect class="d-dash" x="338.0" y="32.1" width="25" height="9.5" rx="4.75" transform="rotate(43.1 350.5 36.9)"/><rect class="d-dash" x="53.3" y="93.8" width="25" height="9.5" rx="4.75" transform="rotate(42.8 65.8 98.6)"/><rect class="d-dash" x="135.7" y="88.3" width="25" height="9.5" rx="4.75" transform="rotate(31.1 148.2 93.0)"/><rect class="d-dash" x="213.4" y="80.2" width="25" height="9.5" rx="4.75" transform="rotate(35.8 225.9 85.0)"/><rect class="d-dash" x="292.6" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(30.0 305.1 98.2)"/><path class="d-mint" d="M1450 -60 C1462 -22.7 1484.3 30.7 1512 64 C1539.7 97.3 1579.7 118 1616 140 C1652.3 162 1694.3 177.3 1730 196 C1765.7 214.7 1785.8 231.3 1830 252 C1874.2 272.7 1953.3 301 1995 320 C2036.7 339 2065.8 446 2080 366 C2094.2 286 2186.7 -72.3 2080 -160 C1973.3 -247.7 1545 -176.7 1440 -160 C1335 -143.3 1438 -97.3 1450 -60 Z"/><path class="d-ln" d="M1827.7 267.1 C1822.5 277.7 1816 287.1 1808.6 293.5 C1801.2 299.9 1791.9 305.1 1783.2 305.6 C1774.6 306.2 1764.8 302.5 1756.8 297 C1748.8 291.4 1740.6 282.8 1735 272.3 C1729.4 261.8 1723.5 247.1 1723 234 C1722.5 220.8 1726.2 203.6 1731.8 193.4 C1737.3 183.1 1748 177 1756.2 172.4 C1764.4 167.7 1772.3 166.9 1780.9 165.7 C1789.5 164.5 1799.2 161.4 1807.9 165.2 C1816.7 168.9 1828.2 177.1 1833.4 187.9 C1838.7 198.7 1840.4 216.9 1839.5 230.1 C1838.5 243.3 1832.8 256.6 1827.7 267.1 Z"/><path class="d-ln" d="M1592 -10 C1604.7 2.7 1643 43 1668 66 C1693 89 1723 105.7 1742 128 C1761 150.3 1774.7 170.3 1782 200 C1789.3 229.7 1785.3 288.3 1786 306"/><path class="d-mint" d="M-60 796 C-21.7 810.3 21.7 828.7 60 846 C98.3 863.3 138.3 879.3 170 900 C201.7 920.7 228.3 943.3 250 970 C271.7 996.7 288.7 1025 300 1060 C311.3 1095 396.3 1158.3 318 1180 C239.7 1201.7 -88.7 1260 -170 1190 C-251.3 1120 -188.3 825.7 -170 760 C-151.7 694.3 -98.3 781.7 -60 796 Z"/><path class="d-ln" d="M301.5 910.5 C303.3 920.8 301.9 930.7 299.3 940.5 C296.7 950.2 293.5 960.9 286.1 968.9 C278.7 976.8 266.7 984.7 254.8 988.2 C242.9 991.7 227.6 992.1 214.7 990 C201.8 988 187.3 983.1 177.5 976 C167.7 968.9 158.4 957.4 155.8 947.2 C153.2 937.1 157.2 924.3 161.7 915 C166.3 905.6 174.9 898.4 183 891 C191.1 883.5 198.8 875.3 210.1 870.2 C221.4 865.1 237.7 859.1 250.8 860.4 C263.9 861.8 280.1 869.8 288.6 878.2 C297 886.5 299.7 900.1 301.5 910.5 Z"/><path class="d-ln" d="M96 836 C106 843 132.3 864.3 156 878 C179.7 891.7 214.7 901.7 238 918 C261.3 934.3 283.7 958.3 296 976 C308.3 993.7 309.3 1016 312 1024"/></svg></div>
+<header class="head">
+<div class="eyebrow">02 · 채팅 — 검색·사고·Research</div>
+<h2 class="h-title">최신 사실, 깊은 판단, 종합 조사는 같은 기능이 아닙니다</h2>
+<div class="rule"></div>
+</header>
+<div class="body">
+<div class="LX-search">
+
+  <div class="LX-search-axis" aria-hidden="true"></div>
+
+  <div class="LX-search-discs" aria-hidden="true">
+    <div class="LX-search-col LX-search-col-t">
+      <div class="LX-search-disc">
+        <svg class="LX-search-ico" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+          <circle cx="10.6" cy="10.6" r="6.4"/>
+          <path d="M15.3 15.3 20.4 20.4"/>
+          <path d="M8.1 8.7a3.6 3.6 0 0 1 2.5-1.5"/>
+        </svg>
+      </div>
+    </div>
+    <div class="LX-search-col LX-search-col-c">
+      <div class="LX-search-disc">
+        <svg class="LX-search-ico" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+          <path d="M12 5.4v13.2"/>
+          <path d="M12 5.4a3.1 3.1 0 0 0-5.5 1.9 2.9 2.9 0 0 0-1.4 5 3 3 0 0 0 2 4.6 3.1 3.1 0 0 0 4.9 1.7"/>
+          <path d="M12 5.4a3.1 3.1 0 0 1 5.5 1.9 2.9 2.9 0 0 1 1.4 5 3 3 0 0 1-2 4.6 3.1 3.1 0 0 1-4.9 1.7"/>
+          <circle cx="8.5" cy="10.1" r="1.15"/>
+          <path d="M9.65 10.1H12"/>
+          <circle cx="15.6" cy="14.3" r="1.15"/>
+          <path d="M14.45 14.3H12"/>
+        </svg>
+      </div>
+    </div>
+    <div class="LX-search-col LX-search-col-m">
+      <div class="LX-search-disc">
+        <svg class="LX-search-ico" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+          <path d="M6.6 6.2H5.2a1.4 1.4 0 0 0-1.4 1.4v11a1.4 1.4 0 0 0 1.4 1.4h8.2"/>
+          <path d="M9.4 3.4h5.3l4.6 4.5v10.7a1.4 1.4 0 0 1-1.4 1.4H9.4A1.4 1.4 0 0 1 8 18.6V4.8a1.4 1.4 0 0 1 1.4-1.4Z"/>
+          <path d="M14.7 3.4v4.5h4.6"/>
+          <path d="M10.8 12.6h5.6"/>
+          <path d="M10.8 15.8h3.8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="LX-search-row">
+
+    <div class="LX-search-card LX-search-card-t">
+      <div class="LX-search-strip">
+        <div class="LX-search-name">웹 검색</div>
+      </div>
+      <div class="LX-search-panel">
+        <div class="LX-search-use">최신 정보와 출처</div>
+        <div class="LX-search-bar"></div>
+        <div class="LX-search-copy">최근 사실이나 원문 링크가 필요할 때 켭니다.</div>
+      </div>
+    </div>
+
+    <div class="LX-search-card LX-search-card-c">
+      <div class="LX-search-strip">
+        <div class="LX-search-name">확장 사고</div>
+      </div>
+      <div class="LX-search-panel">
+        <div class="LX-search-use">복잡한 판단과 추론</div>
+        <div class="LX-search-bar"></div>
+        <div class="LX-search-copy">이미 가진 정보를 더 깊게 분석해야 할 때 별도로 선택합니다.</div>
+      </div>
+    </div>
+
+    <div class="LX-search-card LX-search-card-m">
+      <div class="LX-search-strip">
+        <div class="LX-search-name">Research</div>
+      </div>
+      <div class="LX-search-panel">
+        <div class="LX-search-use">여러 출처의 종합 조사</div>
+        <div class="LX-search-bar"></div>
+        <div class="LX-search-copy">웹과 연결 자료를 여러 단계로 조사합니다.</div>
+        <div class="LX-search-chips">
+          <span class="LX-search-chip">
+            <svg class="LX-search-chip-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.6"/>
+              <path d="M12 11.2v5.1"/>
+              <path d="M12 7.8h.01"/>
+            </svg>웹 검색이 필요하며 유료 플랜에서 제공됩니다.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="src">가이드</div>
+<div class="pageno">05</div>
+</section>
+
+<section class="slide a-coral tint og-white" id="ask-first" data-label="일 잘 시키는 대화법" data-part="PART 1 · 기본" data-speaker-notes="막상 일을 시키려면 뭐라고 써야 할지 막막하죠. 좋은 프롬프트를 고민하는 것보다, 필요한 걸 먼저 물어보게 하는 쪽이 낫습니다. [세 문장을 위에서부터 짚으며] 첫 번째. 바로 답하지 말고, 좋은 결과를 만드는 데 필요한 정보를 먼저 질문해 줘. 대상이랑 목적, 분량을 먼저 챙기게 하는 문장입니다. 두 번째. 내가 쉽게 고를 수 있도록 선택지를 객관식으로 제시해 줘. 막연하던 요청이 고를 수 있는 기준으로 바뀝니다. 세 번째. 답변에서 빠진 점과 오류 가능성을 다시 점검하고 수정해 줘. 클로드가 한 번 더 훑어 주는데, 마지막 확인은 사람이 합니다. 외우실 필요는 없고요. 화면에 있는 그대로 복사해서 쓰시면 됩니다. [→]">
+<div class="og og--flip og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mint" d="M420 -50 C508.7 -22 397.3 33.7 372 58 C346.7 82.3 301.7 81 268 96 C234.3 111 198.7 127 170 148 C141.3 169 124.3 205.7 96 222 C67.7 238.3 31 243.7 0 246 C-31 248.3 -61.7 257 -90 236 C-118.3 215 -158.3 177.7 -170 120 C-181.7 62.3 -258.3 -81.7 -160 -110 C-61.7 -138.3 331.3 -78 420 -50 Z"/><path class="d-ln" d="M276 -14 C269.7 -2.3 254.3 33.3 238 56 C221.7 78.7 194 98 178 122 C162 146 150 175.7 142 200 C134 224.3 132 256.7 130 268"/><path class="d-ln" d="M164 248.9 C159.3 261.6 151 272.2 143 280.4 C135 288.5 125.4 295.4 116 297.7 C106.5 300 95.3 298.5 86.2 294.1 C77.1 289.7 68.4 280.9 61.4 271 C54.4 261.2 47.1 248.5 44.1 234.8 C41.2 221.1 39.8 202 43.5 188.8 C47.3 175.7 57.8 162.5 66.6 155.8 C75.5 149.1 87.2 149.5 96.8 148.7 C106.5 147.8 115 147.9 124.5 150.6 C134.1 153.3 146.4 155.9 154.2 164.8 C162.1 173.7 169.9 190.3 171.5 204.3 C173.1 218.3 168.8 236.3 164 248.9 Z"/><rect class="d-dash" x="1486.1" y="-17.5" width="25" height="9.5" rx="4.75" transform="rotate(29.5 1498.6 -12.8)"/><rect class="d-dash" x="1568.6" y="-22.6" width="25" height="9.5" rx="4.75" transform="rotate(30.3 1581.1 -17.8)"/><rect class="d-dash" x="1661.0" y="-26.9" width="25" height="9.5" rx="4.75" transform="rotate(36.2 1673.5 -22.2)"/><rect class="d-dash" x="1607.2" y="33.2" width="25" height="9.5" rx="4.75" transform="rotate(41.2 1619.7 37.9)"/><rect class="d-dash" x="1692.7" y="37.0" width="25" height="9.5" rx="4.75" transform="rotate(38.6 1705.2 41.7)"/><rect class="d-dash" x="1794.8" y="39.6" width="25" height="9.5" rx="4.75" transform="rotate(34.5 1807.3 44.3)"/><rect class="d-dash" x="1475.6" y="90.0" width="25" height="9.5" rx="4.75" transform="rotate(39.9 1488.1 94.8)"/><rect class="d-dash" x="1562.5" y="88.6" width="25" height="9.5" rx="4.75" transform="rotate(40.9 1575.0 93.4)"/><rect class="d-dash" x="1661.1" y="91.0" width="25" height="9.5" rx="4.75" transform="rotate(31.3 1673.6 95.7)"/><rect class="d-dash" x="1750.8" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(31.5 1763.3 98.2)"/><path class="d-mint" d="M1990 792 C1958 806 1912.7 827.3 1878 844 C1843.3 860.7 1810.7 873.7 1782 892 C1753.3 910.3 1729.3 930.7 1706 954 C1682.7 977.3 1659.7 996 1642 1032 C1624.3 1068 1528.7 1145.3 1600 1170 C1671.3 1194.7 1991.7 1248.3 2070 1180 C2148.3 1111.7 2083.3 824.7 2070 760 C2056.7 695.3 2022 778 1990 792 Z"/><path class="d-ln" d="M1737.6 950.7 C1740.5 964.8 1737.6 982.2 1734.9 995.9 C1732.3 1009.6 1727.8 1022.1 1721.9 1033 C1716 1043.9 1708.4 1055.3 1699.5 1061.3 C1690.6 1067.2 1678.7 1070 1668.4 1068.9 C1658.1 1067.7 1646.9 1062.3 1637.9 1054.3 C1628.9 1046.4 1619.1 1034.4 1614.6 1021.2 C1610.1 1008 1608.4 988.8 1610.9 975 C1613.5 961.3 1622.5 948.2 1629.9 938.8 C1637.2 929.3 1646 924.4 1654.9 918.5 C1663.9 912.6 1673.1 904.7 1683.6 903.5 C1694.1 902.2 1708.8 903.1 1717.8 911 C1726.9 918.9 1734.8 936.5 1737.6 950.7 Z"/><path class="d-ln" d="M1600 1080 C1609.3 1068.7 1632.7 1031.7 1656 1012 C1679.3 992.3 1711 972.7 1740 962 C1769 951.3 1800 946.7 1830 948 C1860 949.3 1905 966.3 1920 970"/></svg></div>
+<header class="head">
+<div class="eyebrow">02 · 채팅 — 일 잘 시키는 대화법</div>
+<h2 class="h-title">좋은 프롬프트를 쓰기보다 필요한 질문부터 받으세요</h2>
+<div class="rule"></div>
+</header>
+<div class="body">
+<div class="LX-ask">
+<svg class="LX-ask-rings" viewBox="0 0 240 240" width="240" height="240" aria-hidden="true" focusable="false">
+<circle class="LX-ask-ring" cx="120" cy="120" r="112"/>
+<circle class="LX-ask-ring" cx="120" cy="120" r="82"/>
+<circle class="LX-ask-ring" cx="120" cy="120" r="52"/>
+<circle class="LX-ask-core" cx="120" cy="120" r="18"/>
+</svg>
+<span class="LX-ask-spine" aria-hidden="true"></span>
+<ol class="LX-ask-list">
+<li class="LX-ask-row LX-ask-c1">
+<span class="LX-ask-disc" aria-hidden="true"><span class="LX-ask-num serif">1</span></span>
+<div class="LX-ask-txt">
+<p class="LX-ask-q">“바로 답하지 말고, 좋은 결과를 만드는 데 필요한 정보를 먼저 질문해 줘.”</p>
+<p class="LX-ask-eff">빠진 <strong class="LX-ask-em">대상·목적·분량</strong>을 먼저 확인합니다.</p>
+</div>
+</li>
+<li class="LX-ask-row LX-ask-c2">
+<span class="LX-ask-disc" aria-hidden="true"><span class="LX-ask-num serif">2</span></span>
+<div class="LX-ask-txt">
+<p class="LX-ask-q">“내가 쉽게 고를 수 있도록 선택지를 객관식으로 제시해 줘.”</p>
+<p class="LX-ask-eff">막연한 질문을 <strong class="LX-ask-em">선택 가능한 기준</strong>으로 바꿉니다.</p>
+</div>
+</li>
+<li class="LX-ask-row LX-ask-c3">
+<span class="LX-ask-disc" aria-hidden="true"><span class="LX-ask-num serif">3</span></span>
+<div class="LX-ask-txt">
+<p class="LX-ask-q">“답변에서 빠진 점과 오류 가능성을 다시 점검하고 수정해 줘.”</p>
+<p class="LX-ask-eff">놓친 부분을 한 번 더 보지만, <strong class="LX-ask-em">최종 확인은 사람</strong>이 합니다.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="take"><span class="lbl">기억할 문장</span><span>요청 앞에 <strong>“필요한 정보를 먼저 질문해 줘”</strong>를 붙여 보세요.</span></div>
+<div class="src">가이드</div>
+<div class="pageno">06</div>
+</section>
+
+<section class="slide a-teal" id="ask-storyboard" data-label="3컷 실연" data-part="PART 1 · 기본" data-speaker-notes="방금 그 세 문장을 실제로 넣으면 이렇게 됩니다. [◎③ 자가 검토 카드 클릭. 재생 중] 지금이 마지막 장면인데요. 답을 다 내놓고 나서, 빠진 데랑 틀릴 만한 데를 스스로 찾아서 고치고 있습니다. 사람이 지적하기 전에요. [끝나면 Esc] 첫 응답을 그대로 쓰지 마시고, 이렇게 한 번 더 점검시키는 게 좋습니다. [→]">
+<div class="blob blob2" style="width:340px;height:320px;top:-130px;right:-90px;background:var(--teal);opacity:.16"></div>
+<header class="head mb">
+<div class="eyebrow">02 · 채팅 — 3컷 실연</div>
+<h2 class="h-title sm">질문을 받으면 요청이 구체적인 선택으로 바뀝니다</h2>
+</header>
+<div class="body"><div class="flow3" style="grid-template-columns:1fr 40px 1fr 40px 1fr">
+<article><div class="frame r169"><button class="media-trigger" id="slot-story1" type="button" aria-label="필요한 정보를 먼저 질문하는 영상 크게 재생" data-video="claude_screen_clips/07_report_reverse_questions.mp4" data-poster="_발표_포스터/p06.jpg" data-caption="1 · 필요한 정보를 먼저 질문"><img src="_발표_포스터/p06.jpg" alt="클로드가 보고서 작성에 필요한 정보를 먼저 질문하는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">8초</span></button></div><div class="cap"><b class="serif">01</b><div><div class="cap-t">먼저 질문한다<span class="cap-d">목적과 독자, 원하는 결과를 확인</span></div></div></div></article>
+<div class="arrow">→</div>
+<article><div class="frame r169"><button class="media-trigger" id="slot-story2" type="button" aria-label="객관식 선택지 영상 크게 재생" data-video="claude_screen_clips/08_report_multiple_choice.mp4" data-poster="_발표_포스터/p07.jpg" data-caption="2 · 선택지를 객관식으로 제시"><img src="_발표_포스터/p07.jpg" alt="클로드가 선택지를 객관식으로 제시하는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">10초</span></button></div><div class="cap"><b class="serif">02</b><div><div class="cap-t">고를 수 있게 한다<span class="cap-d">막연한 요구를 명확한 선택지로</span></div></div></div></article>
+<div class="arrow">→</div>
+<article><div class="frame r169"><button class="media-trigger" id="slot-story3" type="button" aria-label="결과 점검 영상 크게 재생" data-video="claude_screen_clips/09_report_artifact_feedback.mp4" data-poster="_발표_포스터/p08.jpg" data-caption="3 · 빠진 점과 오류 가능성을 점검"><img src="_발표_포스터/p08.jpg" alt="클로드에게 결과를 다시 검토하도록 요청하는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 15초</span></button></div><div class="cap"><b class="serif">03</b><div><div class="cap-t">다시 점검한다<span class="cap-d">누락·오류 확인 뒤 사람이 검토</span></div></div></div></article>
+</div></div>
+<div class="src">가이드</div>
+<div class="pageno">07</div>
+</section>
+
+<section class="slide a-coral og-white" id="projects-intro" data-label="프로젝트" data-part="PART 1 · 기본" data-speaker-notes="채팅으로 일을 시키다 보면 반복되는 작업이 생기죠. 방향이 정해져 있는 일도 있고요. 그럴 때 쓰는 게 프로젝트인데요. 배경 설명이나 우리 방식 같은 걸 지침으로 한 번만 적어 두면 됩니다. [가운데 원에서 시작해 세 카드를 짚으며] 지침에는 어떤 역할로 어떻게 답할지 적어 두고요. 지식 베이스에는 계속 참고할 문서를 올려 둡니다. 대화는 업무별로 이 안에 모입니다. 지침 쓰기가 막막하면 화면 아래 문장을 그대로 쓰면 됩니다. 내 업무를 인터뷰한 뒤에, 이 프로젝트에 넣을 전용 지침을 만들어 줘. 그러면 클로드가 물어봐 가면서 만들어 줍니다. [→]">
+<div class="og og--flip og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mint" d="M420 -50 C508.7 -22 397.3 33.7 372 58 C346.7 82.3 301.7 81 268 96 C234.3 111 198.7 127 170 148 C141.3 169 124.3 205.7 96 222 C67.7 238.3 31 243.7 0 246 C-31 248.3 -61.7 257 -90 236 C-118.3 215 -158.3 177.7 -170 120 C-181.7 62.3 -258.3 -81.7 -160 -110 C-61.7 -138.3 331.3 -78 420 -50 Z"/><path class="d-ln" d="M276 -14 C269.7 -2.3 254.3 33.3 238 56 C221.7 78.7 194 98 178 122 C162 146 150 175.7 142 200 C134 224.3 132 256.7 130 268"/><path class="d-ln" d="M164 248.9 C159.3 261.6 151 272.2 143 280.4 C135 288.5 125.4 295.4 116 297.7 C106.5 300 95.3 298.5 86.2 294.1 C77.1 289.7 68.4 280.9 61.4 271 C54.4 261.2 47.1 248.5 44.1 234.8 C41.2 221.1 39.8 202 43.5 188.8 C47.3 175.7 57.8 162.5 66.6 155.8 C75.5 149.1 87.2 149.5 96.8 148.7 C106.5 147.8 115 147.9 124.5 150.6 C134.1 153.3 146.4 155.9 154.2 164.8 C162.1 173.7 169.9 190.3 171.5 204.3 C173.1 218.3 168.8 236.3 164 248.9 Z"/><rect class="d-dash" x="1486.1" y="-17.5" width="25" height="9.5" rx="4.75" transform="rotate(29.5 1498.6 -12.8)"/><rect class="d-dash" x="1568.6" y="-22.6" width="25" height="9.5" rx="4.75" transform="rotate(30.3 1581.1 -17.8)"/><rect class="d-dash" x="1661.0" y="-26.9" width="25" height="9.5" rx="4.75" transform="rotate(36.2 1673.5 -22.2)"/><rect class="d-dash" x="1607.2" y="33.2" width="25" height="9.5" rx="4.75" transform="rotate(41.2 1619.7 37.9)"/><rect class="d-dash" x="1692.7" y="37.0" width="25" height="9.5" rx="4.75" transform="rotate(38.6 1705.2 41.7)"/><rect class="d-dash" x="1794.8" y="39.6" width="25" height="9.5" rx="4.75" transform="rotate(34.5 1807.3 44.3)"/><rect class="d-dash" x="1475.6" y="90.0" width="25" height="9.5" rx="4.75" transform="rotate(39.9 1488.1 94.8)"/><rect class="d-dash" x="1562.5" y="88.6" width="25" height="9.5" rx="4.75" transform="rotate(40.9 1575.0 93.4)"/><rect class="d-dash" x="1661.1" y="91.0" width="25" height="9.5" rx="4.75" transform="rotate(31.3 1673.6 95.7)"/><rect class="d-dash" x="1750.8" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(31.5 1763.3 98.2)"/><path class="d-mint" d="M1990 792 C1958 806 1912.7 827.3 1878 844 C1843.3 860.7 1810.7 873.7 1782 892 C1753.3 910.3 1729.3 930.7 1706 954 C1682.7 977.3 1659.7 996 1642 1032 C1624.3 1068 1528.7 1145.3 1600 1170 C1671.3 1194.7 1991.7 1248.3 2070 1180 C2148.3 1111.7 2083.3 824.7 2070 760 C2056.7 695.3 2022 778 1990 792 Z"/><path class="d-ln" d="M1737.6 950.7 C1740.5 964.8 1737.6 982.2 1734.9 995.9 C1732.3 1009.6 1727.8 1022.1 1721.9 1033 C1716 1043.9 1708.4 1055.3 1699.5 1061.3 C1690.6 1067.2 1678.7 1070 1668.4 1068.9 C1658.1 1067.7 1646.9 1062.3 1637.9 1054.3 C1628.9 1046.4 1619.1 1034.4 1614.6 1021.2 C1610.1 1008 1608.4 988.8 1610.9 975 C1613.5 961.3 1622.5 948.2 1629.9 938.8 C1637.2 929.3 1646 924.4 1654.9 918.5 C1663.9 912.6 1673.1 904.7 1683.6 903.5 C1694.1 902.2 1708.8 903.1 1717.8 911 C1726.9 918.9 1734.8 936.5 1737.6 950.7 Z"/><path class="d-ln" d="M1600 1080 C1609.3 1068.7 1632.7 1031.7 1656 1012 C1679.3 992.3 1711 972.7 1740 962 C1769 951.3 1800 946.7 1830 948 C1860 949.3 1905 966.3 1920 970"/></svg></div>
+<header class="head mb">
+<div class="eyebrow">03 · 프로젝트</div>
+<h2 class="h-title sm">같은 설명을 두 번 했다면 프로젝트로 묶으세요</h2>
+</header>
+<div class="body">
+<div class="LX-proj">
+  <svg class="LX-proj-web" viewBox="0 0 1696 600" width="1696" height="600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle class="LX-proj-ring" cx="208" cy="300" r="158"/>
+    <circle class="LX-proj-ring LX-proj-ring--o" cx="208" cy="300" r="188"/>
+    <path class="LX-proj-bus" d="M346,300 H500 M500,96 V504"/>
+    <path class="LX-proj-stub LX-proj-stub--a" d="M500,96 H552"/>
+    <path class="LX-proj-stub LX-proj-stub--b" d="M500,300 H552"/>
+    <path class="LX-proj-stub LX-proj-stub--c" d="M500,504 H552"/>
+  </svg>
+
+  <div class="LX-proj-hub">
+    <svg class="LX-proj-hub-ico" viewBox="0 0 88 68" width="76" height="59" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path class="LX-proj-fold" d="M9,27 V15 a7,7 0 0 1 7,-7 h18.6 a6,6 0 0 1 4.3,1.8 L45,17 H72 a7,7 0 0 1 7,7 v5"/>
+      <rect class="LX-proj-fold-face" x="9" y="23" width="70" height="38" rx="8"/>
+      <path class="LX-proj-fold-line" d="M24,38 h32"/>
+      <path class="LX-proj-fold-line" d="M24,48 h20"/>
+    </svg>
+    <span class="LX-proj-hub-label">프로젝트</span>
+  </div>
+
+  <div class="LX-proj-row LX-proj-row--a">
+    <span class="LX-proj-disc">
+      <svg class="LX-proj-ico" viewBox="0 0 24 24" width="34" height="34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8.5 3.5h7a1.5 1.5 0 0 1 1.5 1.5v.5h1.5A1.5 1.5 0 0 1 20 7v12.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19.5V7a1.5 1.5 0 0 1 1.5-1.5H7V5a1.5 1.5 0 0 1 1.5-1.5Z"/>
+        <path d="M8.4 12.6l1.7 1.7 3.6-3.9M8.4 17.6h7.2"/>
+      </svg>
+    </span>
+    <div class="LX-proj-txt">
+      <p class="LX-proj-k">지침</p>
+      <p class="LX-proj-s">이 프로젝트에서 맡을 역할과 답변 기준을 정합니다.</p>
+      <p class="LX-proj-ex">“경영진이 3분 안에 읽도록 결론부터”</p>
+    </div>
+  </div>
+
+  <div class="LX-proj-row LX-proj-row--b">
+    <span class="LX-proj-disc">
+      <svg class="LX-proj-ico" viewBox="0 0 24 24" width="34" height="34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 6.6 4.4 3.9v13.4L12 20V6.6Zm0 0 7.6-2.7v13.4L12 20"/>
+        <path d="M12 6.6V20"/>
+      </svg>
+    </span>
+    <div class="LX-proj-txt">
+      <p class="LX-proj-k">지식 베이스</p>
+      <p class="LX-proj-s">답변에 계속 참고할 문서와 자료를 올려 둡니다.</p>
+      <p class="LX-proj-ex">용어집 · 정책 · 보고서 양식 · 제품 자료</p>
+    </div>
+  </div>
+
+  <div class="LX-proj-row LX-proj-row--c">
+    <span class="LX-proj-disc">
+      <svg class="LX-proj-ico" viewBox="0 0 24 24" width="34" height="34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 6.4a1.9 1.9 0 0 1 1.9-1.9h9.6a1.9 1.9 0 0 1 1.9 1.9v5.4a1.9 1.9 0 0 1-1.9 1.9H9.1L5.4 17V13.7h-.5A1.9 1.9 0 0 1 4 11.8V6.4Z"/>
+        <path d="M17.6 8.2h1.5A1.9 1.9 0 0 1 21 10.1v5.4a1.9 1.9 0 0 1-1.9 1.9h-.6v2.7l-3-2.7"/>
+      </svg>
+    </span>
+    <div class="LX-proj-txt">
+      <p class="LX-proj-k">대화</p>
+      <p class="LX-proj-s">같은 업무에 관한 대화를 프로젝트 안에서 분류합니다.</p>
+      <p class="LX-proj-ex">지속할 맥락은 지침·자료에도 반영</p>
+    </div>
+  </div>
+</div>
+</div>
+<div class="take"><span class="lbl">실제 요청</span><span>“내 업무를 인터뷰한 뒤, 이 프로젝트에 넣을 <strong>전용 지침</strong>을 만들어 줘.”</span></div>
+<div class="src">가이드</div>
+<div class="pageno">08</div>
+</section>
+
+<section class="slide a-teal" id="projects" data-label="프로젝트 만들기" data-part="PART 1 · 기본" data-speaker-notes="[말 없이 바로 ◎클릭. 재생 중 — 12초로 짧다] 만드는 과정인데요. 사이드바에서 프로젝트로 들어가서 새로 만들고요. 지침 적고, 쓰던 작업물을 올려 둡니다. [끝나면 Esc] 이렇게 한 번 만들어 두면, 다음부터는 열고 시키기만 하면 됩니다. [→]"><div class="head"><div class="eyebrow">03 · 프로젝트 — 만들기</div><h2 class="h-title">한 번 만들어 두면, 열고 시키기만 하면 됩니다</h2><p class="h-lead">사이드바 → 프로젝트 → 새로 만들기 — 지침을 적고 쓰던 작업물을 올려 둡니다</p></div>
+  <div class="body"><div class="screens">
+    <div class="screen-main"><div class="frame r169"><button class="media-trigger" type="button" aria-label="프로젝트 만들기 영상 크게 재생" data-video="클로드_초보자가이드_클립/09_프로젝트_만들기_8m39s-9m15s.mp4" data-poster="발표v2_클립/_포스터/p_09_프로젝트_만들기_8m39s-9m15s.jpg" data-caption="프로젝트 만들기 · 12초" data-duration="12"><img src="발표v2_클립/_포스터/p_09_프로젝트_만들기_8m39s-9m15s.jpg" alt="클로드 프로젝트 만들기 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 12초</span></button></div><div class="cap"><div class="cap-t">프로젝트 만들기<span class="cap-d">지침과 기존 작업물을 한곳에</span></div></div></div>
+  </div></div><div class="src">A 00:48–01:07 · 가이드</div>
+<div class="pageno">09</div>
+</section>
+
+<section class="slide a-coral tint" id="project-demo" data-label="프로젝트 지침 데모" data-part="PART 1 · 기본" data-speaker-notes="아까 지침 만들어 달라던 그 문장, 실제로 시켜 보면 이렇게 됩니다. [◎클릭 — 42초. 재생 중, 흐름: 질문 수집 → 지침 정리 → 결과물] 지금 클로드가 저를 인터뷰하는 중인데요. 제 업무가 뭔지, 누가 읽는지, 결과물은 어떤 형태여야 하는지 하나씩 물어봅니다. 저는 답만 하면 되고요. 답이 모이면 그 내용을 지침 문장으로 정리해 줍니다. 그래서 지침을 직접 쓸 줄 몰라도 됩니다. 정리된 지침은 프로젝트에 그대로 남고요. 마지막엔 올려둔 자료까지 같이 보면서 실제 결과물을 하나 만들어 줍니다. [끝나면 Esc] 이렇게 만든 지침이 앞으로 이 프로젝트 대화의 기준이 됩니다. [→]">
+<div class="blob" style="width:360px;height:340px;bottom:-140px;left:-100px;background:var(--coral);opacity:.16"></div>
+<header class="head mb">
+<div class="eyebrow">03 · 프로젝트 — 지침 데모</div>
+<h2 class="h-title sm">인터뷰로 지침을 만들면 프로젝트의 출발점이 선명해집니다</h2>
+</header>
+<div class="body"><div class="media-grid">
+<div class="frame r169"><button class="media-trigger" id="slot-proj" type="button" aria-label="프로젝트 지침 생성 영상 크게 재생" data-video="claude_screen_clips/12_master_prompt_generate.mp4" data-poster="_발표_포스터/p09.jpg" data-caption="인터뷰 → 프로젝트 지침 → 내 스타일 결과물"><img src="_발표_포스터/p09.jpg" alt="프로젝트 지침을 생성하는 Claude 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 42초</span></button></div>
+<div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">먼저 인터뷰</div><div class="fact-d">업무·독자·산출물 기준을 질문으로 수집합니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">지침으로 정리</div><div class="fact-d">반복될 기준을 프로젝트에 남깁니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">자료로 보강</div><div class="fact-d">참조 문서와 함께 실제 결과물을 만듭니다.</div></div></div>
+</div>
+</div></div>
+<div class="src">가이드</div>
+<div class="pageno">10</div>
+</section>
+
+<section class="slide divider d-coral og-white" id="part-2" data-label="PART 2" data-part="PART 2" data-type="divider" data-speaker-notes="1부는 웹에서 바로 되는 것들이었고요. 2부는 응용하기입니다. 컴퓨터에서 하던 일을 클로드한테 맡기는 도구들입니다. [→]">
+<div class="og og--flip" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mus" d="M980 -90 C1167.5 -56.7 898.3 23.3 835 60 C771.7 96.7 673.8 111.7 600 130 C526.2 148.3 450.3 146.7 392 170 C333.7 193.3 265.3 233 250 270 C234.7 307 310 358.7 300 392 C290 425.3 221.7 442 190 470 C158.3 498 115 523.3 110 560 C105 596.7 162.3 649 160 690 C157.7 731 122.7 774.7 96 806 C69.3 837.3 42.7 862.3 0 878 C-42.7 893.7 -110 943 -160 900 C-210 857 -278.3 793.3 -300 620 C-321.7 446.7 -503.3 -21.7 -290 -140 C-76.7 -258.3 792.5 -123.3 980 -90 Z"/><path class="d-ln2" d="M945.5 -123.4 C923.1 -99.7 870.5 -16 811 18.5 C751.4 52.9 661.2 65.6 588.4 83.4 C515.6 101.2 438 97.4 374.2 125.4 C310.4 153.5 225.7 209.5 205.7 251.6 C185.6 293.8 261.9 347.8 254 378.2 C246.1 408.6 190.1 404.8 158.2 434 C126.3 463.3 70.1 511.3 62.4 553.5 C54.8 595.7 112.6 650.4 112.1 687.3 C111.6 724.2 82.9 749.5 59.4 774.9 C36 800.3 -14.1 828.8 -28.8 839.6"/><path class="d-mint" d="M1990 300 C1955 322 1901.3 361 1860 392 C1818.7 423 1766.7 449.7 1742 486 C1717.3 522.3 1739 579.7 1712 610 C1685 640.3 1623.3 644 1580 668 C1536.7 692 1483.3 718.7 1452 754 C1420.7 789.3 1419.3 847 1392 880 C1364.7 913 1314 918.7 1288 952 C1262 985.3 1252.3 1043.7 1236 1080 C1219.7 1116.3 1051 1153.3 1190 1170 C1329 1186.7 1923.3 1331.7 2070 1180 C2216.7 1028.3 2083.3 406.7 2070 260 C2056.7 113.3 2025 278 1990 300 Z"/><path class="d-ln" d="M2016.6 337.5 C1995.1 352.8 1927 399.8 1887.6 428.8 C1848.2 457.8 1803.6 476.5 1780.1 511.8 C1756.5 547.1 1776 607.9 1746.4 640.6 C1716.7 673.3 1645.6 684.3 1602.3 708.2 C1559 732.2 1515.6 751 1486.4 784.5 C1457.3 818 1454.5 876.7 1427.4 909.3 C1400.4 942 1349.1 949 1324.3 980.3 C1299.5 1011.6 1286.2 1077.8 1278.6 1097.3"/><rect class="d-dash" x="159.1" y="901.9" width="25" height="9.5" rx="4.75" transform="rotate(36.4 171.6 906.7)"/><rect class="d-dash" x="214.6" y="891.6" width="25" height="9.5" rx="4.75" transform="rotate(37.2 227.1 896.3)"/><rect class="d-dash" x="273.3" y="890.3" width="25" height="9.5" rx="4.75" transform="rotate(33.5 285.8 895.1)"/><rect class="d-dash" x="186.7" y="946.7" width="25" height="9.5" rx="4.75" transform="rotate(28.8 199.2 951.5)"/><rect class="d-dash" x="244.5" y="946.2" width="25" height="9.5" rx="4.75" transform="rotate(39.1 257 950.9)"/><rect class="d-dash" x="282.4" y="944.4" width="25" height="9.5" rx="4.75" transform="rotate(29.1 294.9 949.1)"/><rect class="d-dash" x="153.4" y="985.4" width="25" height="9.5" rx="4.75" transform="rotate(36.4 165.9 990.2)"/><rect class="d-dash" x="219.2" y="992.3" width="25" height="9.5" rx="4.75" transform="rotate(39.5 231.7 997)"/><rect class="d-dash" x="270.9" y="991.4" width="25" height="9.5" rx="4.75" transform="rotate(33 283.4 996.2)"/></svg></div>
+<div class="ogd-num serif" aria-hidden="true">2</div>
+<div class="ogd-copy">
+  <div class="d-kicker">PART 2</div>
+  <div class="d-title">클로드 응용하기</div>
+  <div class="ogd-bar"></div>
+  <div class="d-sub">코워크 · 아티팩트 · 커넥터 · 스킬 · 디자인</div>
+  <div class="d-dots"><span></span><span class="on"></span><span></span></div>
+</div>
+</section>
+
+<section class="slide a-coral" id="cowork" data-label="코워크" data-part="PART 2 · 응용" data-speaker-notes="파일을 하나씩 올리는 대신, 폴더째 맡길 수도 있는데요. 그게 코워크입니다. 협업 탭에서 폴더를 하나 지정하면, 그때부터는 클로드가 직접 다룹니다. [◎클릭. 재생 중 — 정리 → 문서 → 예약이 한 클립에 이어진다] 지금은 흩어져 있던 동영상 자료를 만든 날짜 기준으로 폴더를 나눠서 정리하는 중이고요. 이어서 오늘 나온 AI 뉴스를 정리해 달라고 했는데요. 엑셀로 만들어서 바탕화면에 저장하고, 주요 내용은 그래프로 같이 그려 줍니다. 마지막은 예약입니다. 이 작업을 매일 아침 자동으로 돌게 걸어 두는 장면입니다. [끝나면 Esc] 예약을 쓰시려면 컴퓨터가 켜져 있어야 하고, 절전 모드 방지도 같이 켜 두셔야 합니다. [→]">
+  <header class="head mb"><div class="eyebrow">04 · 코워크</div><h2 class="h-title sm">폴더를 맡기면 직접 정리합니다</h2></header>
+  <div class="body"><div class="media-grid">
+<div class="frame r169"><button class="media-trigger" type="button" aria-label="자료 정리부터 예약 작업까지 영상 크게 재생" data-video="발표v2_클립/A08bc_정리예약.mp4" data-poster="발표v2_클립/_포스터/p_A08bc_정리예약.jpg" data-caption="자료 정리 → 문서 → 예약 작업 · 33초" data-duration="33.1"><img src="발표v2_클립/_포스터/p_A08bc_정리예약.jpg" alt="코워크가 자료를 정리해 문서를 만들고 예약 작업까지 설정하는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 33초</span></button></div>
+<div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">자료 정리</div><div class="fact-d">흩어져 있던 동영상 자료를 만든 날짜 기준으로 폴더를 나눠 정리합니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">문서 생성</div><div class="fact-d">오늘 나온 AI 뉴스를 엑셀로 정리해 바탕화면에 저장하고, 그래프도 함께 그립니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">예약 작업</div><div class="fact-d">같은 작업을 매일 아침 자동으로 돌게 걸어 둡니다 · 컴퓨터 켜짐과 절전 방지 필요.</div></div></div>
+<div class="silent">협업 탭에서 폴더 지정 → 그때부터는 클로드가 직접 다룹니다</div>
+</div>
+  </div></div><div class="src">A 02:18–03:19 · 가이드</div>
+<div class="pageno">11</div>
+</section>
+
+<section class="slide a-teal og-white" id="artifacts-and-files" data-label="아티팩트와 생성 파일" data-part="PART 2 · 응용" data-speaker-notes="다음은 아티팩트입니다. 클로드에서 결과물은 크게 두 가지로 받을 수 있는데요. 하나는 아티팩트고요, 다른 하나는 워드나 파워포인트처럼 편집해서 쓰는 파일입니다. [왼쪽 패널 짚으며] 답이 텍스트로만 길게 나오면 읽기 힘들 때가 있죠. 그럴 때 이 내용을 아티팩트로 만들어 줘, 하면 대화 옆 창에 정리돼서 나옵니다. 훨씬 읽기 쉽고, 계속 고쳐 가면서 공유하기도 편합니다. [오른쪽 패널] 제출할 파일이 필요하면 형식만 말하면 됩니다. 수식이 작동하는 엑셀 파일로 만들어 줘, 이렇게요. 엑셀, 파워포인트, 워드, PDF 다 됩니다. [→]">
+<div class="og og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><rect class="d-dash" x="46.0" y="-25.7" width="25" height="9.5" rx="4.75" transform="rotate(42.8 58.5 -21.0)"/><rect class="d-dash" x="130.9" y="-15.0" width="25" height="9.5" rx="4.75" transform="rotate(35.2 143.4 -10.3)"/><rect class="d-dash" x="218.2" y="-20.3" width="25" height="9.5" rx="4.75" transform="rotate(39.3 230.7 -15.6)"/><rect class="d-dash" x="295.5" y="-14.0" width="25" height="9.5" rx="4.75" transform="rotate(35.3 308.0 -9.3)"/><rect class="d-dash" x="87.6" y="26.4" width="25" height="9.5" rx="4.75" transform="rotate(32.6 100.1 31.1)"/><rect class="d-dash" x="170.9" y="28.5" width="25" height="9.5" rx="4.75" transform="rotate(39.1 183.4 33.2)"/><rect class="d-dash" x="254.4" y="39.0" width="25" height="9.5" rx="4.75" transform="rotate(41.7 266.9 43.7)"/><rect class="d-dash" x="338.0" y="32.1" width="25" height="9.5" rx="4.75" transform="rotate(43.1 350.5 36.9)"/><rect class="d-dash" x="53.3" y="93.8" width="25" height="9.5" rx="4.75" transform="rotate(42.8 65.8 98.6)"/><rect class="d-dash" x="135.7" y="88.3" width="25" height="9.5" rx="4.75" transform="rotate(31.1 148.2 93.0)"/><rect class="d-dash" x="213.4" y="80.2" width="25" height="9.5" rx="4.75" transform="rotate(35.8 225.9 85.0)"/><rect class="d-dash" x="292.6" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(30.0 305.1 98.2)"/><path class="d-mint" d="M1450 -60 C1462 -22.7 1484.3 30.7 1512 64 C1539.7 97.3 1579.7 118 1616 140 C1652.3 162 1694.3 177.3 1730 196 C1765.7 214.7 1785.8 231.3 1830 252 C1874.2 272.7 1953.3 301 1995 320 C2036.7 339 2065.8 446 2080 366 C2094.2 286 2186.7 -72.3 2080 -160 C1973.3 -247.7 1545 -176.7 1440 -160 C1335 -143.3 1438 -97.3 1450 -60 Z"/><path class="d-ln" d="M1827.7 267.1 C1822.5 277.7 1816 287.1 1808.6 293.5 C1801.2 299.9 1791.9 305.1 1783.2 305.6 C1774.6 306.2 1764.8 302.5 1756.8 297 C1748.8 291.4 1740.6 282.8 1735 272.3 C1729.4 261.8 1723.5 247.1 1723 234 C1722.5 220.8 1726.2 203.6 1731.8 193.4 C1737.3 183.1 1748 177 1756.2 172.4 C1764.4 167.7 1772.3 166.9 1780.9 165.7 C1789.5 164.5 1799.2 161.4 1807.9 165.2 C1816.7 168.9 1828.2 177.1 1833.4 187.9 C1838.7 198.7 1840.4 216.9 1839.5 230.1 C1838.5 243.3 1832.8 256.6 1827.7 267.1 Z"/><path class="d-ln" d="M1592 -10 C1604.7 2.7 1643 43 1668 66 C1693 89 1723 105.7 1742 128 C1761 150.3 1774.7 170.3 1782 200 C1789.3 229.7 1785.3 288.3 1786 306"/><path class="d-mint" d="M-60 796 C-21.7 810.3 21.7 828.7 60 846 C98.3 863.3 138.3 879.3 170 900 C201.7 920.7 228.3 943.3 250 970 C271.7 996.7 288.7 1025 300 1060 C311.3 1095 396.3 1158.3 318 1180 C239.7 1201.7 -88.7 1260 -170 1190 C-251.3 1120 -188.3 825.7 -170 760 C-151.7 694.3 -98.3 781.7 -60 796 Z"/><path class="d-ln" d="M301.5 910.5 C303.3 920.8 301.9 930.7 299.3 940.5 C296.7 950.2 293.5 960.9 286.1 968.9 C278.7 976.8 266.7 984.7 254.8 988.2 C242.9 991.7 227.6 992.1 214.7 990 C201.8 988 187.3 983.1 177.5 976 C167.7 968.9 158.4 957.4 155.8 947.2 C153.2 937.1 157.2 924.3 161.7 915 C166.3 905.6 174.9 898.4 183 891 C191.1 883.5 198.8 875.3 210.1 870.2 C221.4 865.1 237.7 859.1 250.8 860.4 C263.9 861.8 280.1 869.8 288.6 878.2 C297 886.5 299.7 900.1 301.5 910.5 Z"/><path class="d-ln" d="M96 836 C106 843 132.3 864.3 156 878 C179.7 891.7 214.7 901.7 238 918 C261.3 934.3 283.7 958.3 296 976 C308.3 993.7 309.3 1016 312 1024"/></svg></div>
+<header class="head mb">
+<div class="eyebrow">05 · 아티팩트</div>
+<h2 class="h-title sm">결과물은 아티팩트와 생성 파일로 나뉩니다</h2>
+</header>
+<div class="body">
+<div class="LX-artifact">
+
+  <div class="LX-artifact-band" aria-hidden="true"></div>
+  <div class="LX-artifact-rule" aria-hidden="true"></div>
+  <div class="LX-artifact-node" aria-hidden="true">
+    <svg width="56" height="56" viewBox="0 0 56 56">
+      <circle cx="28" cy="28" r="27" fill="var(--paper)"/>
+      <circle cx="28" cy="28" r="26" fill="none" stroke="var(--line)" stroke-width="1"/>
+      <path d="M28 15 a13 13 0 0 0 0 26 Z" fill="var(--teal)" opacity=".5"/>
+      <path d="M28 15 a13 13 0 0 1 0 26 Z" fill="var(--coral)" opacity=".45"/>
+    </svg>
+  </div>
+
+  <div class="LX-artifact-cols">
+
+    <div class="LX-artifact-col LX-artifact-col-a">
+      <div class="LX-artifact-head">
+        <div class="LX-artifact-emblem" aria-hidden="true">
+          <div class="LX-artifact-disc">
+            <svg width="34" height="34" viewBox="0 0 40 40">
+              <rect x="4" y="7" width="32" height="26" rx="4"/>
+              <path d="M23.5 7 V33"/>
+              <path d="M9 14.5 H18"/><path d="M9 20 H18"/><path d="M9 25.5 H15"/>
+              <path d="M28 15 H32"/><path d="M28 20 H32"/>
+            </svg>
+          </div>
+        </div>
+        <div class="LX-artifact-key serif">Artifact</div>
+      </div>
+      <p class="LX-artifact-def">계속 수정하고 공유할 결과</p>
+      <p class="LX-artifact-desc">대화 옆 전용 창에서 편집·반복 사용할 수 있는 독립 콘텐츠입니다.</p>
+      <div class="LX-artifact-chips">
+        <div class="LX-artifact-chip"><span class="LX-artifact-dot" aria-hidden="true"></span><span>웹앱 · 시각화 · 다이어그램</span></div>
+        <div class="LX-artifact-chip"><span class="LX-artifact-dot" aria-hidden="true"></span><span>문서 · 코드 · 인터랙티브 도구</span></div>
+      </div>
+      <div class="LX-artifact-quote">
+        <span class="LX-artifact-mark" aria-hidden="true"></span>
+        <p class="LX-artifact-say">“이 내용을 <b>아티팩트로</b> 만들어 줘.”</p>
+      </div>
+    </div>
+
+    <div class="LX-artifact-col LX-artifact-col-b">
+      <div class="LX-artifact-head">
+        <div class="LX-artifact-emblem" aria-hidden="true">
+          <div class="LX-artifact-disc">
+            <svg width="34" height="34" viewBox="0 0 40 40">
+              <path d="M11 5 H23 l6 6 v18 a3 3 0 0 1 -3 3 H11 a3 3 0 0 1 -3 -3 V8 a3 3 0 0 1 3 -3 Z"/>
+              <path d="M23 5 v6 h6"/>
+              <path d="M18.5 16 V26"/>
+              <path d="M14.5 22 l4 4 4 -4"/>
+            </svg>
+          </div>
+        </div>
+        <div class="LX-artifact-key serif">Downloadable File</div>
+      </div>
+      <p class="LX-artifact-def">다운로드해 제출할 파일</p>
+      <p class="LX-artifact-desc">코드 실행과 파일 생성으로 실제 업무 파일을 만들 수 있습니다.</p>
+      <div class="LX-artifact-chips">
+        <div class="LX-artifact-chip"><span class="LX-artifact-dot" aria-hidden="true"></span><span>Excel · PowerPoint · Word</span></div>
+        <div class="LX-artifact-chip"><span class="LX-artifact-dot" aria-hidden="true"></span><span>PDF · 데이터 파일</span></div>
+      </div>
+      <div class="LX-artifact-quote">
+        <span class="LX-artifact-mark" aria-hidden="true"></span>
+        <p class="LX-artifact-say">“수식이 작동하는 <b>엑셀 파일</b>로 만들어 줘.”</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="src">가이드</div>
+<div class="pageno">12</div>
+</section>
+
+<section class="slide a-teal tint" id="artifact-demo" data-label="아티팩트 데모" data-part="PART 2 · 응용" data-speaker-notes="[말 없이 바로 ◎클릭. 재생 중] 이 데이터를 한눈에 보기 쉽게 그래프로 만들어 줘, 하면 알아서 만들어 줍니다. 위에 버튼을 눌러 분야별 실적도 바로 볼 수 있고요. [15초, 주황 화면으로 바뀌면] 뒤에 붙은 건 클로드 홍보 영상인데요. 이렇게 눌러 쓰는 것도 아티팩트입니다. [끝나면 Esc → 바로 →]">
+<div class="blob blob2" style="width:340px;height:320px;top:-130px;right:-90px;background:var(--mustard);opacity:.22"></div>
+<header class="head mb">
+<div class="eyebrow">05 · 아티팩트 — 데모</div>
+<h2 class="h-title sm">“그래프로 만들어 줘” 한 문장이면 표가 대시보드가 됩니다</h2>
+</header>
+<div class="body"><div class="media-grid">
+<div class="frame r169"><button class="media-trigger" id="slot-artifact" type="button" aria-label="아티팩트 영상 크게 재생" data-video="claude_screen_clips/15_dataviz_dashboard_artifact_무자막.mp4" data-poster="_발표_포스터_무자막_v1/p10.jpg" data-caption="데이터 표 → 대시보드 → 눌러 쓰는 아티팩트"><img src="_발표_포스터_무자막_v1/p10.jpg" alt="데이터 표를 대시보드와 눌러 쓰는 아티팩트로 만드는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 20초</span></button></div>
+<div class="facts">
+<div class="fact"><div class="fact-n serif">·</div><div><div class="fact-t">한 문장</div><div class="fact-d">“이 데이터를 한눈에 보기 쉽게 그래프로 만들어 줘”면 충분합니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">·</div><div><div class="fact-t">탐색</div><div class="fact-d">위 버튼을 눌러 분야별 실적도 바로 봅니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">·</div><div><div class="fact-t">이런 것도</div><div class="fact-d">눌러 쓰는 홍보 영상 같은 콘텐츠도 아티팩트입니다.</div></div></div>
+</div>
+</div></div>
+<div class="src">가이드</div>
+<div class="pageno">13</div>
+</section>
+
+<section class="slide a-coral" id="artifact-app" data-label="아티팩트 · 앱까지" data-part="PART 2 · 응용" data-speaker-notes="방금 본 아티팩트에서 한 걸음 더 나가면 앱입니다. [카드를 짚으며] 돈 주고 쓰던 프로그램도, 우리한테 필요한 기능만이면 직접 만들어 쓸 수 있습니다. 필요한 기능이랑 화면을 말로 설명하면 되고, 개발 지식은 없어도 됩니다. [◎클릭. 재생 중] 할 일이랑 메모가 한 화면에 같이 보이는 달력 앱인데요. 이것도 필요한 기능을 말로 설명한 게 그대로 나온 겁니다. [끝나면 Esc → 바로 →]">
+<div class="blob blob2" style="width:340px;height:320px;top:-130px;right:-90px;background:var(--teal);opacity:.16"></div>
+  <div class="head"><div class="eyebrow">05 · 아티팩트 — 앱까지</div><h2 class="h-title sm">이런 앱도 말로 설명하면 바로 나옵니다</h2><p class="h-lead">표와 대시보드에서 한 걸음 더 — 필요한 기능만이면 프로그램도 직접 만들어 씁니다</p></div>
+  <div class="body"><div class="media-grid">
+<div class="frame r169"><button class="media-trigger" type="button" aria-label="할 일과 메모 달력 앱 영상 크게 재생" data-video="발표v2_클립/_무자막/A10b_달력앱_wide.mp4" data-poster="발표v2_클립/_포스터/p_A10b_달력앱_wide.jpg" data-caption="할 일·메모 달력 앱 · 13초" data-duration="12.5"><img src="발표v2_클립/_포스터/p_A10b_달력앱_wide.jpg" alt="말로 설명해서 만든 할 일과 메모 달력 앱"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 13초</span></button></div>
+<div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">이런 일에</div><div class="fact-d">돈 주고 쓰던 프로그램도, 우리한테 필요한 기능만이면 직접 만들어 씁니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">만드는 법</div><div class="fact-d">필요한 기능과 화면을 말로 설명하면 됩니다 · 개발 지식 불필요</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">감안할 점</div><div class="fact-d">진입 장벽은 있는 편입니다 · 어디까지 되는지는 마지막 사례에서</div></div></div>
+<div class="silent">할 일·메모 달력 앱 — 필요한 기능을 말로 설명한 결과</div>
+</div>
+  </div></div><div class="src">A 04:26–05:14</div>
+<div class="pageno">14</div>
+</section>
+
+<section class="slide a-mustard tint" id="skills" data-label="커넥터와 스킬" data-part="PART 2 · 응용" data-speaker-notes="다음은 커넥터와 스킬입니다. 커넥터는 메일이나 드라이브 같은 외부 앱을 클로드에 연결하는 거고요. 스킬은 우리가 일하는 방식을 저장해 두는 겁니다. [말 없이 바로 ◎클릭. 재생 중 — 0~24초 커넥터 연결, 24초부터 스킬] 왼쪽 사용자 지정에 커넥터가 있는데요. 여기서 쓸 앱을 골라 연결합니다. 구글 계정으로 로그인하고, 어디까지 열어 줄지만 체크하면 연결이 끝납니다. [24초, 스킬 목록으로 돌아오면] 여기부터가 스킬인데요. 플러스를 누르면 두 가지가 나옵니다. 새로 만들거나, 만들어 둔 스킬을 올리거나. [35초, 채팅 화면으로 나오면] 쓸 때는 입력창 플러스 버튼에서 스킬을 골라 실행하면 됩니다. [끝나면 Esc] 프로젝트가 그 프로젝트 안에서만 쓰는 지침이라면, 스킬은 어느 대화에서든 이름만 부르면 되고요. 파일로 만들어지니까 팀에 나눠줄 수도 있습니다. 새로 온 분한테 업무 가이드 한 장 드리는 것과 비슷한데요. 회사 보고서는 이런 형식으로 쓴다, 이런 걸 하나 만들어서 같이 쓰면 다들 같은 형식으로 나옵니다. [→]">
+  <div class="head"><div class="eyebrow">06 · 커넥터와 스킬</div><h2 class="h-title sm">자료는 커넥터로 연결하고, 방식은 스킬로 저장합니다</h2><p class="h-lead">커넥터 = 메일·드라이브 같은 외부 앱 연결 · 스킬 = 우리 일하는 방식 저장 — 파일이라 팀에 나눠줄 수 있습니다</p></div>
+  <div class="body"><div class="media-grid">
+    <div class="frame r169"><button class="media-trigger" type="button" aria-label="커넥터 연결과 스킬 만들기 영상 크게 재생" data-video="클로드_초보자가이드_클립/20_스킬_활성화커스텀_23m30s-24m09s_무자막.mp4" data-poster="발표v2_클립/_포스터/p_20_스킬_활성화커스텀_23m30s-24m09s_무자막.jpg" data-caption="커넥터 연결 → 스킬 만들기 · 39초" data-duration="38.9"><img src="발표v2_클립/_포스터/p_20_스킬_활성화커스텀_23m30s-24m09s_무자막.jpg" alt="설정에서 커넥터를 연결하고 스킬을 만드는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 39초</span></button></div>
+    <div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">커넥터 연결</div><div class="fact-d">왼쪽 사용자 지정에서 쓸 앱을 골라, 로그인하고 어디까지 열지만 체크하면 끝납니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">스킬 만들기</div><div class="fact-d">플러스를 누르면 두 가지 — 새로 만들거나, 만들어 둔 스킬을 올리거나.</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">쓸 때</div><div class="fact-d">입력창 + 버튼에서 골라 실행합니다 · 어느 대화에서든 이름만 부르면 됩니다.</div></div></div>
+<div class="silent">영상 한 편에 둘 다 — 앞부분은 커넥터 연결, 뒤는 스킬 만들기</div>
+</div>
+  </div></div><div class="src">A 05:26–06:03 · 가이드</div>
+<div class="pageno">15</div>
+</section>
+
+<section class="slide a-teal" id="connectors" data-label="커넥터와 스킬 · 시연" data-part="PART 2 · 응용" data-speaker-notes="[말 없이 바로 ◎클릭. 재생 중] 이어서 보시면, 대화창 플러스 버튼으로 커넥터를 켤 수 있고요. 어떻게 써야 할지 모르겠으면 그냥 물어보시면 됩니다. 지메일 커넥터로 뭘 할 수 있냐고 물어본 건데요. 메일 검색이랑 읽기, 작성까지 된다고 답을 줍니다. 이렇게 물어보면 된다고 예시까지 알려 주고요. 지난주에 누구한테서 온 메일 찾아 줘, 청구서 관련 메일 있어? 이런 식으로요. 최근 6개월 안에 안 읽은 메일 중에 중요한 것만 골라 달라고 하면, 이렇게 목록으로 나옵니다. [끝나면 Esc] 다만 딱 초안까지입니다. 보내는 건 사람이 직접 하고요. 커넥터는 지금 필요한 것만 열어 두시면 됩니다. [→]">
+<div class="conf c-teal" style="top:130px;right:160px;transform:rotate(-18deg)"><i></i><i></i><i></i></div>
+<header class="head">
+<div class="eyebrow">06 · 커넥터와 스킬 — 시연</div>
+<h2 class="h-title sm">Gmail을 연결하면 실제 메일을 읽고 초안까지 만듭니다</h2>
+<p class="h-lead">쓰는 법을 몰라도 됩니다 — 지메일 커넥터로 뭘 할 수 있는지부터 물어보세요</p>
+</header>
+<div class="body"><div class="media-grid">
+<div class="frame r169"><button class="media-trigger" id="slot-connector" type="button" aria-label="Gmail 커넥터 영상 크게 재생" data-video="클로드_발표용_무자막_클립_v1/16_커넥터_Gmail_16m48s-17m36s_무자막.mp4" data-poster="_발표_포스터_무자막_v1/p12.jpg" data-caption="Gmail 커넥터 · 검색부터 초안까지 · 48초"><img src="_발표_포스터_무자막_v1/p12.jpg" alt="Claude에서 Gmail 커넥터를 여는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 48초</span></button></div>
+<div><div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">켜기</div><div class="fact-d">대화창 + 버튼에서 연결해 둔 커넥터를 켭니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">물어보기</div><div class="fact-d">“지메일 커넥터로 뭘 할 수 있어?” — 되는 일과 질문 예시까지 알려 줍니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">시켜보기</div><div class="fact-d">최근 6개월 안 읽은 메일 중 중요한 것만 골라 목록으로 받습니다.</div></div></div>
+<div class="silent">딱 초안까지 — 전송은 사람이 직접 · 커넥터는 지금 필요한 것만 열기</div>
+</div><div class="lever-row"><button class="lever-trigger media-trigger" type="button" data-video="claude_screen_clips/18_skills_meeting_to_report_무자막.mp4" data-poster="발표v2_클립/_포스터/p_18_skills_meeting_to_report_무자막.jpg" data-caption="스킬 시연 · 회의록에서 보고서까지 · 28초" data-duration="28.3">스킬 시연 · 회의→보고서 · 28초</button></div></div>
+</div></div>
+<div class="src">가이드</div>
+<div class="pageno">16</div>
+</section>
+
+<section class="slide a-mustard tint" id="skills-procedure" data-label="스킬 · 절차 저장" data-part="PART 2 · 응용" data-speaker-notes="백지에서 시작하지 않으셔도 됩니다. 스킬 만드는 거 도와줘, 하고 시작하면 절차랑 기준을 같이 잡아 줍니다. 이건 제가 만들어 둔 데일리 브리핑 스킬인데요. 오늘 일정이랑 주요 뉴스를 훑어서 정리해 달라고 적어 뒀습니다. [◎클릭. 재생 중] 그래서 대화창에 브리핑이라고만 치면요. 적어 둔 대로 오늘 브리핑이 이렇게 나옵니다. [끝나면 Esc] 매번 절차를 다시 설명할 일이 없어지고요. 시작하기 전에 코드 실행이랑 파일 생성 기능은 먼저 켜 두셔야 합니다. 이게 꺼져 있으면 스킬이 아예 안 돌아갑니다. [→]">
+<div class="blob blob2" style="width:340px;height:320px;top:-130px;right:-90px;background:var(--mustard);opacity:.24"></div>
+<header class="head">
+<div class="eyebrow">06 · 스킬 — 절차 저장</div>
+<h2 class="h-title sm">같은 절차는 스킬로 저장해 다시 설명하지 않습니다</h2>
+<p class="h-lead">절차를 한 번 적어 두면, 다음부터는 이름만 부르면 됩니다</p>
+</header>
+<div class="body"><div class="media-grid">
+<div class="frame r169"><button class="media-trigger" id="slot-skill" type="button" aria-label="Skill 활성화와 커스텀 시나리오 영상 크게 재생" data-video="클로드_초보자가이드_클립/22_스킬_실행마무리_25m53s-26m16s_무자막.mp4" data-poster="클로드_초보자가이드_클립/22_스킬_실행마무리_25m53s-26m16s_무자막_포스터.jpg" data-caption="스킬을 이름으로 실행 · 23초"><img src="클로드_초보자가이드_클립/22_스킬_실행마무리_25m53s-26m16s_무자막_포스터.jpg" alt="스킬을 이름으로 불러 실행하는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 23초</span></button></div>
+<div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">같이 만들기</div><div class="fact-d">“스킬 만드는 거 도와줘”로 시작하면 절차와 기준을 같이 잡아 줍니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">예시 · 데일리 브리핑</div><div class="fact-d">오늘 일정과 주요 뉴스를 훑어 정리하도록 적어 둔 스킬입니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">이름으로 실행</div><div class="fact-d">대화창에 “브리핑”이라고만 치면 적어 둔 대로 나옵니다.</div></div></div>
+</div></div>
+</div>
+<div class="take"><span class="lbl">시작 전</span><span><strong>코드 실행과 파일 생성</strong> 기능을 먼저 켜 두세요 — 꺼져 있으면 스킬이 아예 안 돌아갑니다.</span></div>
+<div class="src">가이드</div>
+<div class="pageno">17</div>
+</section>
+
+<section class="slide a-coral tint" id="design-slides" data-label="클로드 디자인" data-part="PART 2 · 응용" data-speaker-notes="발표자료나 웹 화면처럼 눈에 보이는 결과물이 필요할 때가 있습니다. 그건 디자인에서 만듭니다. [◎클릭. 재생 중 — 15초] 왼쪽 사이드바에서 디자인으로 들어갑니다. 지금은 기본 사용량에 포함돼 있어서 부담 없이 쓰셔도 됩니다. [템플릿 띠가 보이면] 나오는 건 다섯 가지입니다. 프로토타입은 작동하는 웹 화면이고, 슬라이드는 발표용 PPT고요. 도큐먼트는 한 장 요약, 와이어프레임은 뼈대만 먼저 잡아 보는 거고, 애니메이션은 짧은 영상입니다. [랜딩페이지가 뜨면] 지금 보시는 게 프로토타입인데요. 한 줄 설명만 줬는데 판매 랜딩페이지가 통째로 나옵니다. 다만 이걸 실제 서비스로 쓰시려면 도메인이랑 호스팅, 결제 연결은 따로 하셔야 합니다. [끝나면 Esc → ]"><div class="head"><div class="eyebrow">07 · 클로드 디자인</div><h2 class="h-title">한 줄 설명만 주면 작동하는 웹 화면이 나옵니다</h2><p class="h-lead">사이드바 Design에서 시작 — 올해 4월 업데이트, 기본 사용량에 통합</p></div>
+  <div class="body"><div class="media-grid"><div class="frame r169"><button class="media-trigger" type="button" aria-label="디자인 진입부터 프로토타입 생성까지 영상 크게 재생" data-video="발표v2_클립/_무자막/D1_디자인진입_프로토타입_wide.mp4" data-poster="발표v2_클립/_포스터/p_D1_디자인진입_프로토타입_wide.jpg" data-caption="디자인 진입 → 템플릿 → 프로토타입 · 15초" data-duration="14.6"><img src="발표v2_클립/_포스터/p_D1_디자인진입_프로토타입_wide.jpg" alt="사이드바에서 클로드 디자인에 들어가 프로토타입으로 랜딩페이지를 만드는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 15초</span></button></div><div><div class="facts"><div class="fact"><div class="fact-n">1</div><div><div class="fact-t">진입</div><div class="fact-d">왼쪽 사이드바 <b>디자인</b> · 기본 사용량 포함</div></div></div><div class="fact"><div class="fact-n">2</div><div><div class="fact-t">템플릿 5종</div><div class="fact-d">프로토타입 · 슬라이드 · 도큐먼트 · 와이어프레임 · 애니메이션(베타)</div></div></div><div class="fact"><div class="fact-n">3</div><div><div class="fact-t">프로토타입</div><div class="fact-d">한 줄 설명 → 작동하는 웹 화면</div></div></div><div class="silent">실제 서비스로 쓰려면 — 도메인 · 호스팅 · 결제 연결은 별도</div></div><div class="lever-row"><button class="lever-trigger media-trigger" type="button" data-video="claude_screen_clips/15_dataviz_dashboard_artifact_무자막.mp4" data-poster="발표v2_클립/_포스터/p_15_dataviz_dashboard_artifact_무자막.jpg" data-caption="데이터 시각화 대시보드 · 20초" data-duration="19.8">데이터 시각화 · 20초</button></div></div></div></div><div class="src">A 01:38–01:53 · B 1·2·4장 · 가이드</div>
+<div class="pageno">18</div>
+</section>
+
+<section class="slide a-mustard" id="design-anim-wrap" data-label="슬라이드·애니메이션" data-part="PART 2 · 응용" data-speaker-notes="그중 제일 많이 쓰는 게 슬라이드입니다. [◎클릭. 재생 중 — 24초] 주제랑 색상, 몇 장짜리인지만 알려 주면 초안이 통째로 나옵니다. 고칠 데는 오른쪽 위 에디트로 그 부분만 손보고요. 다 됐으면 쉐어에서 PDF나 PPT로 내보냅니다. 초안이 밋밋하게 나오면 대화로 다시 시키면 되고요. 이미지는 클로드가 만든 것보다 실제 로고랑 사진을 올려주시는 쪽이 결과가 훨씬 낫습니다. [뒤쪽 애니메이션 장면] 마지막에 나오는 게 애니메이션입니다. 이미지 한 장이랑 설명 문장을 주면 짧은 영상을 만들어 줍니다. 아직 베타라 실무에 바로 쓰기에는 좀 이릅니다. [끝나면 Esc] 그래서 디자인은 프로토타입이랑 슬라이드, 도큐먼트 이 셋부터 쓰시면 되고요. 여러 개 만드실 때 컬러만 하나로 맞춰 두면, 결과물들이 한 브랜드처럼 보입니다. 여기까지가 2부입니다. [→]"><div class="head"><div class="eyebrow">07 · 디자인 — 슬라이드와 애니메이션</div><h2 class="h-title">주제와 페이지 수를 주면 PPT가 나옵니다</h2><p class="h-lead">에디트로 부분만 수정 → 쉐어에서 PDF·PPT — 끝에 애니메이션(베타)까지</p></div>
+  <div class="body"><div class="media-grid"><div class="frame r169"><button class="media-trigger" type="button" aria-label="슬라이드 생성부터 내보내기와 애니메이션까지 영상 크게 재생" data-video="발표v2_클립/_무자막/D2_슬라이드_내보내기_애니메이션_wide.mp4" data-poster="발표v2_클립/_포스터/p_D2_슬라이드_내보내기_애니메이션_wide.jpg" data-caption="슬라이드 생성 → 수정 → 내보내기 → 애니메이션 · 24초" data-duration="23.8"><img src="발표v2_클립/_포스터/p_D2_슬라이드_내보내기_애니메이션_wide.jpg" alt="클로드 디자인에서 슬라이드를 만들어 수정하고 PDF·PPT로 내보낸 뒤 애니메이션까지 보여 주는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 24초</span></button></div><div class="facts"><div class="fact"><div class="fact-n">1</div><div><div class="fact-t">조건 입력</div><div class="fact-d">주제 · 색상 · 페이지 수</div></div></div><div class="fact"><div class="fact-n">2</div><div><div class="fact-t">수정 → 내보내기</div><div class="fact-d">오른쪽 위 <b>에디트</b> · 쉐어 → PDF·PPT</div></div></div><div class="fact"><div class="fact-n">3</div><div><div class="fact-t">애니메이션</div><div class="fact-d">이미지 한 장과 문장으로 짧은 영상 · <b>아직 베타 — 실무 적용은 이른 편</b></div></div></div><div class="silent">실무는 프로토타입 · 슬라이드 · 도큐먼트부터 — 여러 개 만들 땐 컬러를 하나로</div></div></div></div><div class="src">A 01:57–02:21 · B 5·8–9장</div>
+<div class="pageno">19</div>
+</section>
+
+<section class="slide divider d-ink og-white" id="part-3" data-label="PART 3" data-part="PART 3" data-type="divider" data-speaker-notes="마지막 3부는 사례입니다. 앞에서 본 도구를 실제 업무에 써 본 이야기 두 개 보여 드리고, 뭐부터 시작할지 정리하겠습니다. [→]">
+<div class="og" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mus" d="M392 -60 C473 -34.3 366.7 18 346 44 C325.3 70 299 81.3 268 96 C237 110.7 194.7 120 160 132 C125.3 144 96.7 157.3 60 168 C23.3 178.7 -25 217.3 -60 196 C-95 174.7 -136.7 91 -150 40 C-163.3 -11 -230.3 -93.3 -140 -110 C-49.7 -126.7 311 -85.7 392 -60 Z"/><circle class="d-ln" cx="540" cy="-98" r="202"/><rect class="d-mint" x="1489" y="0" width="431" height="1080"/><path class="d-ln" d="M1869.1 548 C1871 574.2 1861.1 603.8 1847.9 628 C1834.7 652.2 1814.1 676.8 1789.7 693.4 C1765.4 710 1729.8 717.4 1701.8 727.6 C1673.7 737.7 1649.1 750.6 1621.6 754.3 C1594.2 757.9 1564.2 751.7 1537 749.3 C1509.8 746.9 1490.3 738.6 1458.2 740 C1426.1 741.4 1377.3 763.3 1344.7 757.6 C1312 752 1275.4 729.4 1262.1 706.1 C1248.9 682.9 1266 644.3 1265.1 618 C1264.2 591.6 1257 571.3 1256.9 548 C1256.8 524.7 1257.3 500.5 1264.7 477.9 C1272.1 455.3 1286 433.5 1301.2 412.4 C1316.5 391.2 1332.4 365.8 1356.4 351.2 C1380.4 336.5 1415.2 332 1445.3 324.4 C1475.4 316.9 1506.1 306.9 1537 306 C1567.9 305.2 1607.3 304.6 1630.9 319.2 C1654.5 333.8 1661.3 374.5 1678.7 393.6 C1696 412.8 1708.5 421.3 1734.9 434.1 C1761.3 447 1814.5 451.9 1836.9 470.8 C1859.2 489.8 1867.3 521.8 1869.1 548 Z"/><path class="d-ln" d="M1809.7 538 C1811.2 559 1803.3 582.6 1792.7 602 C1782.1 621.4 1765.7 641 1746.2 654.3 C1726.7 667.6 1698.2 673.5 1675.8 681.6 C1653.4 689.8 1633.7 700.1 1611.7 703 C1589.7 705.9 1565.8 700.9 1544 699 C1522.2 697.1 1506.6 690.5 1481 691.6 C1455.3 692.7 1416.3 710.2 1390.1 705.7 C1364 701.2 1334.7 683.1 1324.1 664.5 C1313.5 645.9 1327.2 615.1 1326.5 594 C1325.8 572.9 1320 556.7 1319.9 538 C1319.9 519.3 1320.2 500 1326.2 482 C1332.1 463.9 1343.2 446.4 1355.4 429.5 C1367.6 412.6 1380.3 392.2 1399.5 380.5 C1418.7 368.8 1446.5 365.2 1470.6 359.2 C1494.7 353.1 1519.3 345.1 1544 344.4 C1568.7 343.7 1600.2 343.3 1619.1 355 C1638 366.7 1643.5 399.2 1657.3 414.5 C1671.2 429.8 1681.2 436.6 1702.3 446.9 C1723.4 457.2 1766 461.1 1783.9 476.3 C1801.8 491.5 1808.2 517 1809.7 538 Z"/><path class="d-ln" d="M1754.3 530 C1755.4 546.1 1749.3 564.3 1741.2 579.2 C1733.1 594.1 1720.4 609.2 1705.4 619.4 C1690.4 629.6 1668.6 634.2 1651.3 640.4 C1634.1 646.7 1618.9 654.6 1602.1 656.9 C1585.2 659.1 1566.8 655.2 1550 653.8 C1533.2 652.3 1521.3 647.2 1501.5 648.1 C1481.8 649 1451.8 662.4 1431.7 658.9 C1411.6 655.4 1389.1 641.6 1380.9 627.3 C1372.8 612.9 1383.3 589.2 1382.8 573 C1382.2 556.8 1377.8 544.4 1377.7 530 C1377.7 515.6 1378 500.8 1382.5 486.9 C1387.1 473 1395.6 459.6 1405 446.6 C1414.4 433.6 1424.2 418 1438.9 408.9 C1453.7 399.9 1475.1 397.1 1493.6 392.5 C1512.1 387.9 1531 381.7 1550 381.2 C1569 380.7 1593.2 380.3 1607.7 389.3 C1622.3 398.3 1626.5 423.3 1637.1 435.1 C1647.8 446.8 1655.5 452.1 1671.7 460 C1687.9 467.9 1720.7 470.9 1734.4 482.6 C1748.2 494.2 1753.1 513.9 1754.3 530 Z"/><path class="d-ln" d="M1704.5 524 C1705.3 535.8 1700.9 549.1 1694.9 560 C1688.9 570.9 1679.7 582 1668.7 589.4 C1657.8 596.9 1641.7 600.2 1629.1 604.8 C1616.5 609.4 1605.4 615.2 1593.1 616.8 C1580.7 618.4 1567.3 615.6 1555 614.6 C1542.7 613.5 1534 609.8 1519.5 610.4 C1505.1 611 1483.2 620.9 1468.5 618.3 C1453.7 615.8 1437.3 605.6 1431.3 595.2 C1425.3 584.7 1433 567.3 1432.6 555.5 C1432.2 543.6 1429 534.5 1429 524 C1428.9 513.5 1429.1 502.6 1432.5 492.5 C1435.8 482.3 1442 472.5 1448.9 463 C1455.8 453.5 1462.9 442 1473.7 435.4 C1484.5 428.8 1500.2 426.8 1513.7 423.4 C1527.3 420 1541.1 415.5 1555 415.1 C1568.9 414.7 1586.6 414.5 1597.2 421.1 C1607.9 427.6 1610.9 445.9 1618.7 454.5 C1626.5 463.1 1632.2 467 1644.1 472.8 C1655.9 478.6 1679.9 480.7 1689.9 489.3 C1700 497.8 1703.6 512.2 1704.5 524 Z"/><path class="d-ln" d="M1655.3 520 C1655.8 527.6 1653 536.2 1649.2 543.2 C1645.3 550.2 1639.4 557.3 1632.3 562.2 C1625.2 567 1614.9 569.1 1606.8 572.1 C1598.7 575 1591.5 578.8 1583.5 579.8 C1575.6 580.9 1566.9 579.1 1559 578.4 C1551.1 577.7 1545.4 575.3 1536.1 575.7 C1526.9 576.1 1512.7 582.4 1503.2 580.8 C1493.7 579.1 1483.1 572.6 1479.3 565.9 C1475.4 559.1 1480.4 547.9 1480.1 540.3 C1479.9 532.6 1477.8 526.8 1477.8 520 C1477.8 513.2 1477.9 506.2 1480 499.7 C1482.2 493.1 1486.2 486.8 1490.6 480.7 C1495.1 474.5 1499.7 467.2 1506.6 462.9 C1513.6 458.7 1523.7 457.3 1532.4 455.2 C1541.1 453 1550 450.1 1559 449.8 C1568 449.6 1579.4 449.4 1586.2 453.7 C1593.1 457.9 1595.1 469.7 1600.1 475.2 C1605.1 480.8 1608.7 483.2 1616.4 487 C1624 490.7 1639.5 492.1 1646 497.6 C1652.5 503.1 1654.8 512.4 1655.3 520 Z"/><path class="d-cor" d="M1314.7 529 C1314.5 540.6 1307.4 554.4 1299.7 563.4 C1292.1 572.4 1279 577.3 1268.9 583 C1258.8 588.7 1250.2 592.9 1239 597.5 C1227.8 602.1 1215 610 1201.7 610.6 C1188.4 611.3 1169.7 608.7 1159.3 601.3 C1148.8 593.8 1141.4 577.8 1139 565.7 C1136.5 553.7 1142.1 540.1 1144.6 529 C1147.2 517.9 1150.2 509.3 1154.2 499 C1158.2 488.8 1160.7 476.3 1168.6 467.5 C1176.5 458.8 1189.4 449.4 1201.5 446.5 C1213.7 443.7 1229.4 446.7 1241.5 450.5 C1253.6 454.2 1264 461.8 1274 469.1 C1284 476.3 1294.5 484 1301.2 493.9 C1308 503.9 1315 517.4 1314.7 529 Z"/><path class="d-mus" d="M830 1170 C838.3 1143.3 851.7 1056.3 880 1020 C908.3 983.7 955 964.3 1000 952 C1045 939.7 1101.7 937.3 1150 946 C1198.3 954.7 1245 991.7 1290 1004 C1335 1016.3 1380 1024.3 1420 1020 C1460 1015.7 1491.7 993 1530 978 C1568.3 963 1606.7 936.3 1650 930 C1693.3 923.7 1748.3 928.3 1790 940 C1831.7 951.7 1865.8 982.7 1900 1000 C1934.2 1017.3 1979.2 1014 1995 1044 C2010.8 1074 2189.2 1157.3 1995 1180 C1800.8 1202.7 1024.2 1181.7 830 1180 C635.8 1178.3 821.7 1196.7 830 1170 Z"/><path class="d-ln2" d="M1770.7 1017.3 C1767.7 1027.1 1764.1 1037 1757.1 1044.9 C1750.1 1052.8 1739.8 1060.9 1728.9 1064.7 C1717.9 1068.5 1703.6 1069.3 1691.5 1067.6 C1679.4 1065.9 1665.9 1061.4 1656.1 1054.6 C1646.3 1047.9 1636.2 1037.3 1632.8 1027.1 C1629.5 1017 1631.6 1003.3 1635.9 993.8 C1640.1 984.2 1650.2 976.7 1658.3 969.7 C1666.5 962.8 1674.4 956.7 1684.9 951.8 C1695.4 947 1709 940.2 1721.4 940.6 C1733.8 940.9 1750.7 946.2 1759.6 953.8 C1768.5 961.4 1773 975.5 1774.8 986.1 C1776.7 996.7 1773.6 1007.5 1770.7 1017.3 Z"/><path class="d-ln2" d="M1616 1080 C1625.7 1071.7 1650 1042.7 1674 1030 C1698 1017.3 1730.7 1006 1760 1004 C1789.3 1002 1824.7 1007.7 1850 1018 C1875.3 1028.3 1901.7 1058 1912 1066"/></svg></div>
+<div class="ogd-num serif" aria-hidden="true">3</div>
+<div class="ogd-copy">
+  <div class="d-kicker">PART 3</div>
+  <div class="d-title">실전 사례</div>
+  <div class="ogd-bar"></div>
+  <div class="d-sub">이 도구들이 실제 업무에서 어떻게 쓰였는지 · 무엇부터 시작할지</div>
+  <div class="d-dots"><span></span><span></span><span class="on"></span></div>
+</div>
+</section>
+
+<section class="slide a-coral tint og-white" id="case-1" data-label="사례 1 · 캐드 도구" data-part="PART 3 · 사례" data-speaker-notes="첫 사례는 캐드입니다. 도면 그리다 보면 손이 많이 가는데 파는 프로그램은 없고, 개발자한테 맡길 만한 일도 아닙니다. 그래서 필요한 걸 그냥 만들었습니다. [자산 클릭. 재생 중 — 세 가지를 카드 순서대로] 첫 번째는 출력인데요. 심의나 납품 때마다 도면 수백 장을 한 장씩 PDF로 뽑던 일입니다. 폴더만 주면 표제란을 읽어서 한 번에 뽑아 줍니다. 지금은 팀에서 같이 쓰고 있고요. 두 번째는 리습입니다. 쓰던 리습이 갑자기 느려지거나 엉뚱하게 동작할 때가 있는데, 원인을 찾아서 고쳐 줍니다. 없던 명령은 새로 만들고요. 세 번째는 엑스레프 경로입니다. 폴더를 옮기면 참조가 통째로 끊기죠. 끊긴 것만 골라서 경로를 한 번에 다시 잡아 줍니다. [끝나면 Esc] 제가 코드를 쓴 건 아니고요. 뭐가 필요한지, 어떻게 동작해야 하는지만 설명했습니다. 그 정도면 됩니다. [→]">
+<div class="og og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mint" d="M420 -50 C508.7 -22 397.3 33.7 372 58 C346.7 82.3 301.7 81 268 96 C234.3 111 198.7 127 170 148 C141.3 169 124.3 205.7 96 222 C67.7 238.3 31 243.7 0 246 C-31 248.3 -61.7 257 -90 236 C-118.3 215 -158.3 177.7 -170 120 C-181.7 62.3 -258.3 -81.7 -160 -110 C-61.7 -138.3 331.3 -78 420 -50 Z"/><path class="d-ln" d="M276 -14 C269.7 -2.3 254.3 33.3 238 56 C221.7 78.7 194 98 178 122 C162 146 150 175.7 142 200 C134 224.3 132 256.7 130 268"/><path class="d-ln" d="M164 248.9 C159.3 261.6 151 272.2 143 280.4 C135 288.5 125.4 295.4 116 297.7 C106.5 300 95.3 298.5 86.2 294.1 C77.1 289.7 68.4 280.9 61.4 271 C54.4 261.2 47.1 248.5 44.1 234.8 C41.2 221.1 39.8 202 43.5 188.8 C47.3 175.7 57.8 162.5 66.6 155.8 C75.5 149.1 87.2 149.5 96.8 148.7 C106.5 147.8 115 147.9 124.5 150.6 C134.1 153.3 146.4 155.9 154.2 164.8 C162.1 173.7 169.9 190.3 171.5 204.3 C173.1 218.3 168.8 236.3 164 248.9 Z"/><rect class="d-dash" x="1486.1" y="-17.5" width="25" height="9.5" rx="4.75" transform="rotate(29.5 1498.6 -12.8)"/><rect class="d-dash" x="1568.6" y="-22.6" width="25" height="9.5" rx="4.75" transform="rotate(30.3 1581.1 -17.8)"/><rect class="d-dash" x="1661.0" y="-26.9" width="25" height="9.5" rx="4.75" transform="rotate(36.2 1673.5 -22.2)"/><rect class="d-dash" x="1607.2" y="33.2" width="25" height="9.5" rx="4.75" transform="rotate(41.2 1619.7 37.9)"/><rect class="d-dash" x="1692.7" y="37.0" width="25" height="9.5" rx="4.75" transform="rotate(38.6 1705.2 41.7)"/><rect class="d-dash" x="1794.8" y="39.6" width="25" height="9.5" rx="4.75" transform="rotate(34.5 1807.3 44.3)"/><rect class="d-dash" x="1475.6" y="90.0" width="25" height="9.5" rx="4.75" transform="rotate(39.9 1488.1 94.8)"/><rect class="d-dash" x="1562.5" y="88.6" width="25" height="9.5" rx="4.75" transform="rotate(40.9 1575.0 93.4)"/><rect class="d-dash" x="1661.1" y="91.0" width="25" height="9.5" rx="4.75" transform="rotate(31.3 1673.6 95.7)"/><rect class="d-dash" x="1750.8" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(31.5 1763.3 98.2)"/><path class="d-mint" d="M1990 792 C1958 806 1912.7 827.3 1878 844 C1843.3 860.7 1810.7 873.7 1782 892 C1753.3 910.3 1729.3 930.7 1706 954 C1682.7 977.3 1659.7 996 1642 1032 C1624.3 1068 1528.7 1145.3 1600 1170 C1671.3 1194.7 1991.7 1248.3 2070 1180 C2148.3 1111.7 2083.3 824.7 2070 760 C2056.7 695.3 2022 778 1990 792 Z"/><path class="d-ln" d="M1737.6 950.7 C1740.5 964.8 1737.6 982.2 1734.9 995.9 C1732.3 1009.6 1727.8 1022.1 1721.9 1033 C1716 1043.9 1708.4 1055.3 1699.5 1061.3 C1690.6 1067.2 1678.7 1070 1668.4 1068.9 C1658.1 1067.7 1646.9 1062.3 1637.9 1054.3 C1628.9 1046.4 1619.1 1034.4 1614.6 1021.2 C1610.1 1008 1608.4 988.8 1610.9 975 C1613.5 961.3 1622.5 948.2 1629.9 938.8 C1637.2 929.3 1646 924.4 1654.9 918.5 C1663.9 912.6 1673.1 904.7 1683.6 903.5 C1694.1 902.2 1708.8 903.1 1717.8 911 C1726.9 918.9 1734.8 936.5 1737.6 950.7 Z"/><path class="d-ln" d="M1600 1080 C1609.3 1068.7 1632.7 1031.7 1656 1012 C1679.3 992.3 1711 972.7 1740 962 C1769 951.3 1800 946.7 1830 948 C1860 949.3 1905 966.3 1920 970"/></svg></div>
+<header class="head mb">
+<div class="eyebrow">사례 1 · 캐드 업무</div>
+<h2 class="h-title sm">캐드에 없던 기능은 직접 만들어 씁니다</h2>
+<p class="h-lead">파는 프로그램도, 대신해 줄 사람도 없던 일 — 필요한 기능을 말로 설명했더니 도구가 나왔습니다</p>
+</header>
+<div class="body"><div class="media-grid">
+<div class="frame r169">
+<div class="placeholder"><div><strong>영상 자리 — 촬영 후 교체</strong>발표v2_클립/실무1_캐드도구.mp4<br>아래 주석 블록으로 이 자리를 바꾸면 클릭 재생됩니다</div></div>
+<!-- 영상 준비되면 바로 위 .placeholder 한 줄을 지우고 아래 한 줄의 주석을 풀어 쓰세요 (00초 자리에 실제 길이 기입)
+<button class="media-trigger" type="button" aria-label="직접 만든 캐드 도구 영상 크게 재생" data-video="발표v2_클립/실무1_캐드도구.mp4" data-poster="발표v2_클립/_포스터/p_실무1_캐드도구.jpg" data-caption="직접 만든 캐드 도구 · 00초"><img src="발표v2_클립/_포스터/p_실무1_캐드도구.jpg" alt="직접 만든 캐드 도구가 실행되는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 00초</span></button>
+-->
+</div>
+<div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">도면 일괄 출력</div><div class="fact-d">폴더를 지정하면 <b>표제란을 읽어</b> 도면 수백 장을 한 번에 PDF로 뽑습니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">리습(LISP) 손보기</div><div class="fact-d">쓰던 리습이 어긋나면 <b>원인을 찾아 고치고</b>, 없던 명령은 새로 만듭니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">XREF 경로 재지정</div><div class="fact-d">참조가 끊긴 도면은 <b>경로를 한꺼번에</b> 다시 잡아 줍니다.</div></div></div>
+<div class="silent">코드는 클로드가 씁니다 · 저는 무엇이 필요한지만 설명했습니다</div>
+</div>
+</div></div>
+<div class="src">실무</div>
+<div class="pageno">20</div>
+</section>
+
+<section class="slide a-teal og-white" id="case-2" data-label="사례 2 · 단지 배치" data-part="PART 3 · 사례" data-speaker-notes="두 번째는 배치입니다. 계획 초기에 배치안을 여러 개 만들어 보잖아요. 세대수 맞추고, 이격 보고, 층수 조정하고. 손으로 하면 한 안에 한참 걸립니다. 그래서 조건을 주면 알아서 배치해 주는 걸 만들었습니다. [자산 클릭. 재생 중 — 대지 → 조건 → 대안 순서] 먼저 대지입니다. 주소로 부지를 불러오고, 도로 중심선이나 인접 경계선에 이격 기준선을 그어 줍니다. 다음은 조건이고요. 목표 세대수랑 최고 층수, 주동을 판상으로 할지 탑상으로 할지 정합니다. 그러면 배치안이 여러 개 나옵니다. 동수랑 층수, 세대수가 같이 나오니까 비교해서 고르면 되고요. [끝나면 Esc] 기준선에서 높이의 절반을 띄우는 건 만들 때부터 지키게 해 놨고요. 일조나 정북은 만든 다음에 따로 검토합니다. 초안을 빨리 여러 개 보려고 만든 거지, 이걸로 설계가 끝나는 건 아닙니다. [→]">
+<div class="og og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><rect class="d-dash" x="46.0" y="-25.7" width="25" height="9.5" rx="4.75" transform="rotate(42.8 58.5 -21.0)"/><rect class="d-dash" x="130.9" y="-15.0" width="25" height="9.5" rx="4.75" transform="rotate(35.2 143.4 -10.3)"/><rect class="d-dash" x="218.2" y="-20.3" width="25" height="9.5" rx="4.75" transform="rotate(39.3 230.7 -15.6)"/><rect class="d-dash" x="295.5" y="-14.0" width="25" height="9.5" rx="4.75" transform="rotate(35.3 308.0 -9.3)"/><rect class="d-dash" x="87.6" y="26.4" width="25" height="9.5" rx="4.75" transform="rotate(32.6 100.1 31.1)"/><rect class="d-dash" x="170.9" y="28.5" width="25" height="9.5" rx="4.75" transform="rotate(39.1 183.4 33.2)"/><rect class="d-dash" x="254.4" y="39.0" width="25" height="9.5" rx="4.75" transform="rotate(41.7 266.9 43.7)"/><rect class="d-dash" x="338.0" y="32.1" width="25" height="9.5" rx="4.75" transform="rotate(43.1 350.5 36.9)"/><rect class="d-dash" x="53.3" y="93.8" width="25" height="9.5" rx="4.75" transform="rotate(42.8 65.8 98.6)"/><rect class="d-dash" x="135.7" y="88.3" width="25" height="9.5" rx="4.75" transform="rotate(31.1 148.2 93.0)"/><rect class="d-dash" x="213.4" y="80.2" width="25" height="9.5" rx="4.75" transform="rotate(35.8 225.9 85.0)"/><rect class="d-dash" x="292.6" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(30.0 305.1 98.2)"/><path class="d-mint" d="M1450 -60 C1462 -22.7 1484.3 30.7 1512 64 C1539.7 97.3 1579.7 118 1616 140 C1652.3 162 1694.3 177.3 1730 196 C1765.7 214.7 1785.8 231.3 1830 252 C1874.2 272.7 1953.3 301 1995 320 C2036.7 339 2065.8 446 2080 366 C2094.2 286 2186.7 -72.3 2080 -160 C1973.3 -247.7 1545 -176.7 1440 -160 C1335 -143.3 1438 -97.3 1450 -60 Z"/><path class="d-ln" d="M1827.7 267.1 C1822.5 277.7 1816 287.1 1808.6 293.5 C1801.2 299.9 1791.9 305.1 1783.2 305.6 C1774.6 306.2 1764.8 302.5 1756.8 297 C1748.8 291.4 1740.6 282.8 1735 272.3 C1729.4 261.8 1723.5 247.1 1723 234 C1722.5 220.8 1726.2 203.6 1731.8 193.4 C1737.3 183.1 1748 177 1756.2 172.4 C1764.4 167.7 1772.3 166.9 1780.9 165.7 C1789.5 164.5 1799.2 161.4 1807.9 165.2 C1816.7 168.9 1828.2 177.1 1833.4 187.9 C1838.7 198.7 1840.4 216.9 1839.5 230.1 C1838.5 243.3 1832.8 256.6 1827.7 267.1 Z"/><path class="d-ln" d="M1592 -10 C1604.7 2.7 1643 43 1668 66 C1693 89 1723 105.7 1742 128 C1761 150.3 1774.7 170.3 1782 200 C1789.3 229.7 1785.3 288.3 1786 306"/><path class="d-mint" d="M-60 796 C-21.7 810.3 21.7 828.7 60 846 C98.3 863.3 138.3 879.3 170 900 C201.7 920.7 228.3 943.3 250 970 C271.7 996.7 288.7 1025 300 1060 C311.3 1095 396.3 1158.3 318 1180 C239.7 1201.7 -88.7 1260 -170 1190 C-251.3 1120 -188.3 825.7 -170 760 C-151.7 694.3 -98.3 781.7 -60 796 Z"/><path class="d-ln" d="M301.5 910.5 C303.3 920.8 301.9 930.7 299.3 940.5 C296.7 950.2 293.5 960.9 286.1 968.9 C278.7 976.8 266.7 984.7 254.8 988.2 C242.9 991.7 227.6 992.1 214.7 990 C201.8 988 187.3 983.1 177.5 976 C167.7 968.9 158.4 957.4 155.8 947.2 C153.2 937.1 157.2 924.3 161.7 915 C166.3 905.6 174.9 898.4 183 891 C191.1 883.5 198.8 875.3 210.1 870.2 C221.4 865.1 237.7 859.1 250.8 860.4 C263.9 861.8 280.1 869.8 288.6 878.2 C297 886.5 299.7 900.1 301.5 910.5 Z"/><path class="d-ln" d="M96 836 C106 843 132.3 864.3 156 878 C179.7 891.7 214.7 901.7 238 918 C261.3 934.3 283.7 958.3 296 976 C308.3 993.7 309.3 1016 312 1024"/></svg></div>
+<header class="head mb">
+<div class="eyebrow">사례 2 · 단지 배치</div>
+<h2 class="h-title sm">대지와 조건을 주면 배치 대안이 나옵니다</h2>
+<p class="h-lead">목표 세대수와 주동형태를 정하면 — 기준을 지킨 배치안을 여러 개 만들어 비교합니다</p>
+</header>
+<div class="body"><div class="media-grid">
+<div class="frame r169">
+<div class="placeholder"><div><strong>영상 자리 — 촬영 후 교체</strong>발표v2_클립/실무2_배치모델.mp4<br>아래 주석 블록으로 이 자리를 바꾸면 클릭 재생됩니다</div></div>
+<!-- 영상 준비되면 바로 위 .placeholder 한 줄을 지우고 아래 한 줄의 주석을 풀어 쓰세요 (00초 자리에 실제 길이 기입)
+<button class="media-trigger" type="button" aria-label="배치 대안을 자동으로 만드는 화면 크게 재생" data-video="발표v2_클립/실무2_배치모델.mp4" data-poster="발표v2_클립/_포스터/p_실무2_배치모델.jpg" data-caption="대지·조건 입력에서 배치 대안까지 · 00초"><img src="발표v2_클립/_포스터/p_실무2_배치모델.jpg" alt="대지와 조건을 입력해 단지 배치 대안을 만드는 화면"><span class="media-play" aria-hidden="true">▶</span><span class="media-caption">기본 재생 · 00초</span></button>
+-->
+</div>
+<div class="facts">
+<div class="fact"><div class="fact-n serif">1</div><div><div class="fact-t">대지</div><div class="fact-d">주소로 부지를 불러오고 <b>도로중심선·인접경계선</b>에 이격 기준선을 그립니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">2</div><div><div class="fact-t">조건</div><div class="fact-d">목표 <b>세대수</b>와 최고 층수, <b>주동형태</b>(판상·탑상)를 정합니다.</div></div></div>
+<div class="fact"><div class="fact-n serif">3</div><div><div class="fact-t">대안</div><div class="fact-d">배치안이 여러 개 나오고 <b>동수·층수·세대수</b>를 비교해 고릅니다.</div></div></div>
+<div class="silent">이격은 만들 때부터 지키고 · 일조·정북은 만든 뒤 검토합니다</div>
+</div>
+</div></div>
+<div class="src">실무</div>
+<div class="pageno">21</div>
+</section>
+
+<section class="slide a-teal og-white" id="decision-guide" data-label="도구 선택 가이드" data-part="PART 3 · 사례" data-speaker-notes="여기까지 도구를 쭉 봤는데요. 이름을 다 외우실 필요는 없습니다. 지금 뭐가 막혀 있는지부터 보시면 됩니다. [여섯 칸을 왼쪽 위부터 짚으며] 매번 같은 업무 맥락을 다시 적고 계시면 프로젝트고요. 만든 걸 계속 손봐 가며 공유하고 계시면 아티팩트. 내 메일이나 일정, 문서를 직접 읽어야 하면 커넥터. 같은 절차를 계속 반복하고 계시면 스킬. 내 PC 폴더에 있는 파일을 직접 정리해야 하면 코워크. 뭘 더 말해야 할지 모르겠으면 먼저 질문받기입니다. 처음부터 다 쓰실 필요는 없습니다. [→]">
+<div class="og og--flip og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><rect class="d-dash" x="46.0" y="-25.7" width="25" height="9.5" rx="4.75" transform="rotate(42.8 58.5 -21.0)"/><rect class="d-dash" x="130.9" y="-15.0" width="25" height="9.5" rx="4.75" transform="rotate(35.2 143.4 -10.3)"/><rect class="d-dash" x="218.2" y="-20.3" width="25" height="9.5" rx="4.75" transform="rotate(39.3 230.7 -15.6)"/><rect class="d-dash" x="295.5" y="-14.0" width="25" height="9.5" rx="4.75" transform="rotate(35.3 308.0 -9.3)"/><rect class="d-dash" x="87.6" y="26.4" width="25" height="9.5" rx="4.75" transform="rotate(32.6 100.1 31.1)"/><rect class="d-dash" x="170.9" y="28.5" width="25" height="9.5" rx="4.75" transform="rotate(39.1 183.4 33.2)"/><rect class="d-dash" x="254.4" y="39.0" width="25" height="9.5" rx="4.75" transform="rotate(41.7 266.9 43.7)"/><rect class="d-dash" x="338.0" y="32.1" width="25" height="9.5" rx="4.75" transform="rotate(43.1 350.5 36.9)"/><rect class="d-dash" x="53.3" y="93.8" width="25" height="9.5" rx="4.75" transform="rotate(42.8 65.8 98.6)"/><rect class="d-dash" x="135.7" y="88.3" width="25" height="9.5" rx="4.75" transform="rotate(31.1 148.2 93.0)"/><rect class="d-dash" x="213.4" y="80.2" width="25" height="9.5" rx="4.75" transform="rotate(35.8 225.9 85.0)"/><rect class="d-dash" x="292.6" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(30.0 305.1 98.2)"/><path class="d-mint" d="M1450 -60 C1462 -22.7 1484.3 30.7 1512 64 C1539.7 97.3 1579.7 118 1616 140 C1652.3 162 1694.3 177.3 1730 196 C1765.7 214.7 1785.8 231.3 1830 252 C1874.2 272.7 1953.3 301 1995 320 C2036.7 339 2065.8 446 2080 366 C2094.2 286 2186.7 -72.3 2080 -160 C1973.3 -247.7 1545 -176.7 1440 -160 C1335 -143.3 1438 -97.3 1450 -60 Z"/><path class="d-ln" d="M1827.7 267.1 C1822.5 277.7 1816 287.1 1808.6 293.5 C1801.2 299.9 1791.9 305.1 1783.2 305.6 C1774.6 306.2 1764.8 302.5 1756.8 297 C1748.8 291.4 1740.6 282.8 1735 272.3 C1729.4 261.8 1723.5 247.1 1723 234 C1722.5 220.8 1726.2 203.6 1731.8 193.4 C1737.3 183.1 1748 177 1756.2 172.4 C1764.4 167.7 1772.3 166.9 1780.9 165.7 C1789.5 164.5 1799.2 161.4 1807.9 165.2 C1816.7 168.9 1828.2 177.1 1833.4 187.9 C1838.7 198.7 1840.4 216.9 1839.5 230.1 C1838.5 243.3 1832.8 256.6 1827.7 267.1 Z"/><path class="d-ln" d="M1592 -10 C1604.7 2.7 1643 43 1668 66 C1693 89 1723 105.7 1742 128 C1761 150.3 1774.7 170.3 1782 200 C1789.3 229.7 1785.3 288.3 1786 306"/><path class="d-mint" d="M-60 796 C-21.7 810.3 21.7 828.7 60 846 C98.3 863.3 138.3 879.3 170 900 C201.7 920.7 228.3 943.3 250 970 C271.7 996.7 288.7 1025 300 1060 C311.3 1095 396.3 1158.3 318 1180 C239.7 1201.7 -88.7 1260 -170 1190 C-251.3 1120 -188.3 825.7 -170 760 C-151.7 694.3 -98.3 781.7 -60 796 Z"/><path class="d-ln" d="M301.5 910.5 C303.3 920.8 301.9 930.7 299.3 940.5 C296.7 950.2 293.5 960.9 286.1 968.9 C278.7 976.8 266.7 984.7 254.8 988.2 C242.9 991.7 227.6 992.1 214.7 990 C201.8 988 187.3 983.1 177.5 976 C167.7 968.9 158.4 957.4 155.8 947.2 C153.2 937.1 157.2 924.3 161.7 915 C166.3 905.6 174.9 898.4 183 891 C191.1 883.5 198.8 875.3 210.1 870.2 C221.4 865.1 237.7 859.1 250.8 860.4 C263.9 861.8 280.1 869.8 288.6 878.2 C297 886.5 299.7 900.1 301.5 910.5 Z"/><path class="d-ln" d="M96 836 C106 843 132.3 864.3 156 878 C179.7 891.7 214.7 901.7 238 918 C261.3 934.3 283.7 958.3 296 976 C308.3 993.7 309.3 1016 312 1024"/></svg></div>
+<header class="head mb">
+<div class="eyebrow">정리 · 언제 무엇을 쓸까</div>
+<h2 class="h-title sm">도구 이름보다 지금 막힌 지점을 먼저 보세요</h2>
+</header>
+<div class="body">
+<div class="LX-decide">
+  <div class="LX-decide-deco" aria-hidden="true">
+    <span class="LX-decide-vr LX-decide-vr1"></span>
+    <span class="LX-decide-vr LX-decide-vr2"></span>
+  </div>
+
+  <div class="LX-decide-inner">
+    <div class="LX-decide-lead">
+      <div class="LX-decide-lead-tx">
+        <span class="serif LX-decide-ask">Ask yourself</span>
+        <b class="LX-decide-q">지금 필요한 것은 무엇인가?</b>
+      </div>
+      <span class="LX-decide-rule"></span>
+      <svg class="LX-decide-rings" width="148" height="64" viewBox="0 0 148 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="30"/>
+        <circle cx="74" cy="32" r="30"/>
+        <circle cx="116" cy="32" r="30"/>
+      </svg>
+    </div>
+
+    <div class="LX-decide-grid">
+
+      <article class="LX-decide-cell">
+        <span class="serif LX-decide-num">01</span>
+        <p class="LX-decide-need">같은 업무 맥락을 여러 번 다시 쓰기</p>
+        <span class="LX-decide-chip">Project</span>
+      </article>
+
+      <article class="LX-decide-cell">
+        <span class="serif LX-decide-num">02</span>
+        <p class="LX-decide-need">편집·공유할 독립 결과물 만들기</p>
+        <span class="LX-decide-chip">Artifact</span>
+      </article>
+
+      <article class="LX-decide-cell">
+        <span class="serif LX-decide-num">03</span>
+        <p class="LX-decide-need">메일·일정·문서에서 실제 자료 읽기</p>
+        <span class="LX-decide-chip">Connector</span>
+      </article>
+
+      <article class="LX-decide-cell">
+        <span class="serif LX-decide-num">04</span>
+        <p class="LX-decide-need">같은 절차와 기준을 계속 반복하기</p>
+        <span class="LX-decide-chip">Skill</span>
+      </article>
+
+      <article class="LX-decide-cell">
+        <span class="serif LX-decide-num">05</span>
+        <p class="LX-decide-need">PC 폴더의 파일을 직접 정리·저장하기</p>
+        <span class="LX-decide-chip">Cowork</span>
+      </article>
+
+      <article class="LX-decide-cell">
+        <span class="serif LX-decide-num">06</span>
+        <p class="LX-decide-need">무엇을 더 말해야 할지 모를 때</p>
+        <span class="LX-decide-chip">먼저 질문받기</span>
+      </article>
+
+    </div>
+  </div>
+</div>
+</div>
+<div class="src">가이드</div>
+<div class="pageno">22</div>
+</section>
+
+<section class="slide a-coral tint og-white" id="one-minute-practice" data-label="첫 실습 체크리스트" data-part="PART 3 · 사례" data-speaker-notes="오늘 들으신 것 중에 하나 해보신다면, 화면 위에 있는 이 문장을 그대로 복사해서 써보시면 됩니다. 내가 하려는 일은 이거야. 바로 시작하지 말고, 필요한 자료랑 원하는 결과 형식을 먼저 객관식으로 질문해 줘. 아래 네 칸은 시작점이고요. [아래 네 칸을 왼쪽부터 짚으며] 아직 계정부터 만들어야 하시면 기본 세팅이고요. 뭘 좀 찾아봐야 하면 질문하기. 만들 게 있으면 결과 만들기. 메일이나 자료를 붙이려면 업무 연결입니다. 지금 필요한 칸 하나만 골라서, 방금 그 문장으로 시작해 보세요. 1분이면 첫 답이 옵니다. [→]">
+<div class="og og--flip og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mint" d="M420 -50 C508.7 -22 397.3 33.7 372 58 C346.7 82.3 301.7 81 268 96 C234.3 111 198.7 127 170 148 C141.3 169 124.3 205.7 96 222 C67.7 238.3 31 243.7 0 246 C-31 248.3 -61.7 257 -90 236 C-118.3 215 -158.3 177.7 -170 120 C-181.7 62.3 -258.3 -81.7 -160 -110 C-61.7 -138.3 331.3 -78 420 -50 Z"/><path class="d-ln" d="M276 -14 C269.7 -2.3 254.3 33.3 238 56 C221.7 78.7 194 98 178 122 C162 146 150 175.7 142 200 C134 224.3 132 256.7 130 268"/><path class="d-ln" d="M164 248.9 C159.3 261.6 151 272.2 143 280.4 C135 288.5 125.4 295.4 116 297.7 C106.5 300 95.3 298.5 86.2 294.1 C77.1 289.7 68.4 280.9 61.4 271 C54.4 261.2 47.1 248.5 44.1 234.8 C41.2 221.1 39.8 202 43.5 188.8 C47.3 175.7 57.8 162.5 66.6 155.8 C75.5 149.1 87.2 149.5 96.8 148.7 C106.5 147.8 115 147.9 124.5 150.6 C134.1 153.3 146.4 155.9 154.2 164.8 C162.1 173.7 169.9 190.3 171.5 204.3 C173.1 218.3 168.8 236.3 164 248.9 Z"/><rect class="d-dash" x="1486.1" y="-17.5" width="25" height="9.5" rx="4.75" transform="rotate(29.5 1498.6 -12.8)"/><rect class="d-dash" x="1568.6" y="-22.6" width="25" height="9.5" rx="4.75" transform="rotate(30.3 1581.1 -17.8)"/><rect class="d-dash" x="1661.0" y="-26.9" width="25" height="9.5" rx="4.75" transform="rotate(36.2 1673.5 -22.2)"/><rect class="d-dash" x="1607.2" y="33.2" width="25" height="9.5" rx="4.75" transform="rotate(41.2 1619.7 37.9)"/><rect class="d-dash" x="1692.7" y="37.0" width="25" height="9.5" rx="4.75" transform="rotate(38.6 1705.2 41.7)"/><rect class="d-dash" x="1794.8" y="39.6" width="25" height="9.5" rx="4.75" transform="rotate(34.5 1807.3 44.3)"/><rect class="d-dash" x="1475.6" y="90.0" width="25" height="9.5" rx="4.75" transform="rotate(39.9 1488.1 94.8)"/><rect class="d-dash" x="1562.5" y="88.6" width="25" height="9.5" rx="4.75" transform="rotate(40.9 1575.0 93.4)"/><rect class="d-dash" x="1661.1" y="91.0" width="25" height="9.5" rx="4.75" transform="rotate(31.3 1673.6 95.7)"/><rect class="d-dash" x="1750.8" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(31.5 1763.3 98.2)"/><path class="d-mint" d="M1990 792 C1958 806 1912.7 827.3 1878 844 C1843.3 860.7 1810.7 873.7 1782 892 C1753.3 910.3 1729.3 930.7 1706 954 C1682.7 977.3 1659.7 996 1642 1032 C1624.3 1068 1528.7 1145.3 1600 1170 C1671.3 1194.7 1991.7 1248.3 2070 1180 C2148.3 1111.7 2083.3 824.7 2070 760 C2056.7 695.3 2022 778 1990 792 Z"/><path class="d-ln" d="M1737.6 950.7 C1740.5 964.8 1737.6 982.2 1734.9 995.9 C1732.3 1009.6 1727.8 1022.1 1721.9 1033 C1716 1043.9 1708.4 1055.3 1699.5 1061.3 C1690.6 1067.2 1678.7 1070 1668.4 1068.9 C1658.1 1067.7 1646.9 1062.3 1637.9 1054.3 C1628.9 1046.4 1619.1 1034.4 1614.6 1021.2 C1610.1 1008 1608.4 988.8 1610.9 975 C1613.5 961.3 1622.5 948.2 1629.9 938.8 C1637.2 929.3 1646 924.4 1654.9 918.5 C1663.9 912.6 1673.1 904.7 1683.6 903.5 C1694.1 902.2 1708.8 903.1 1717.8 911 C1726.9 918.9 1734.8 936.5 1737.6 950.7 Z"/><path class="d-ln" d="M1600 1080 C1609.3 1068.7 1632.7 1031.7 1656 1012 C1679.3 992.3 1711 972.7 1740 962 C1769 951.3 1800 946.7 1830 948 C1860 949.3 1905 966.3 1920 970"/></svg></div>
+<header class="head mb">
+<div class="eyebrow">정리 · 첫 실습 체크리스트</div>
+<h2 class="h-title sm">지금 필요한 시작점 하나만 고르세요</h2>
+</header>
+<div class="body">
+<div class="LX-practice">
+<div class="LX-practice-field">
+<svg class="LX-practice-rings" width="176" height="176" viewBox="0 0 176 176" aria-hidden="true">
+<circle class="LX-practice-ring-a" cx="88" cy="88" r="85"/>
+<circle class="LX-practice-ring-b" cx="88" cy="88" r="58"/>
+<circle class="LX-practice-ring-c" cx="88" cy="88" r="31"/>
+</svg>
+<div class="LX-practice-kick">
+<span class="LX-practice-kicklabel">Copy &amp; Start</span>
+<span class="LX-practice-kickrule"></span>
+</div>
+<p class="LX-practice-quote">
+<span class="LX-practice-line">“내가 하려는 일은 <span class="LX-practice-mark"><span class="LX-practice-markt">[업무]</span></span>야. 바로 시작하지 말고,</span>
+<span class="LX-practice-line">필요한 자료와 원하는 결과 형식을 먼저 <span class="LX-practice-em">객관식으로 질문</span>해 줘.”</span>
+</p>
+</div>
+
+<div class="LX-practice-steps">
+<div class="LX-practice-grid">
+<div class="LX-practice-col LX-practice-col-1">
+<div class="LX-practice-head">
+<span class="LX-practice-dot"></span>
+<span class="LX-practice-label">기본 세팅</span>
+</div>
+<div class="LX-practice-sub">
+<span class="LX-practice-subline">로그인 → 메모리 가져오기</span>
+<span class="LX-practice-subline">→ Sonnet으로 시작</span>
+</div>
+</div>
+<div class="LX-practice-col LX-practice-col-2">
+<div class="LX-practice-head">
+<span class="LX-practice-dot"></span>
+<span class="LX-practice-label">질문하기</span>
+</div>
+<div class="LX-practice-sub">
+<span class="LX-practice-subline">최신 사실은 웹 검색</span>
+<span class="LX-practice-subline">→ 필요한 정보 먼저 질문</span>
+</div>
+</div>
+<div class="LX-practice-col LX-practice-col-3">
+<div class="LX-practice-head">
+<span class="LX-practice-dot"></span>
+<span class="LX-practice-label">결과 만들기</span>
+</div>
+<div class="LX-practice-sub">
+<span class="LX-practice-subline">반복 맥락은 Project</span>
+<span class="LX-practice-subline">→ 결과는 Artifact·파일</span>
+</div>
+</div>
+<div class="LX-practice-col LX-practice-col-4">
+<div class="LX-practice-head">
+<span class="LX-practice-dot"></span>
+<span class="LX-practice-label">업무 연결</span>
+</div>
+<div class="LX-practice-sub">
+<span class="LX-practice-subline">실제 자료는 Connector</span>
+<span class="LX-practice-subline">→ 반복 절차는 Skill</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="src">가이드</div>
+<div class="pageno">23</div>
+</section>
+
+<section class="slide closing og-white" id="closing" data-label="마무리" data-part="마무리" data-speaker-notes="정리하겠습니다. 오늘 본 것들은 크게 두 갈래입니다. [왼쪽 두 카드를 차례로 짚으며] 채팅부터 아티팩트, 디자인까지는 결과물을 직접 만들어 주는 도구고요. 커넥터랑 스킬은 이미 하고 계신 업무를 거들어 주는 쪽입니다. [세 번째 카드로 손을 옮기며] 일하시다가 번거롭게 반복되는 게 눈에 띄면요. 혼자 붙들고 계시지 마시고, 만들어 줘, 하고 한번 시켜보세요. 오늘은 여기까지입니다. 질문 받겠습니다. [여기서 멈춘다. 부록은 질문 나올 때만 →]">
+<div class="og og--flip og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><path class="d-mus" d="M980 -90 C1167.5 -56.7 898.3 23.3 835 60 C771.7 96.7 673.8 111.7 600 130 C526.2 148.3 450.3 146.7 392 170 C333.7 193.3 265.3 233 250 270 C234.7 307 310 358.7 300 392 C290 425.3 221.7 442 190 470 C158.3 498 115 523.3 110 560 C105 596.7 162.3 649 160 690 C157.7 731 122.7 774.7 96 806 C69.3 837.3 42.7 862.3 0 878 C-42.7 893.7 -110 943 -160 900 C-210 857 -278.3 793.3 -300 620 C-321.7 446.7 -503.3 -21.7 -290 -140 C-76.7 -258.3 792.5 -123.3 980 -90 Z"/><path class="d-ln2" d="M945.5 -123.4 C923.1 -99.7 870.5 -16 811 18.5 C751.4 52.9 661.2 65.6 588.4 83.4 C515.6 101.2 438 97.4 374.2 125.4 C310.4 153.5 225.7 209.5 205.7 251.6 C185.6 293.8 261.9 347.8 254 378.2 C246.1 408.6 190.1 404.8 158.2 434 C126.3 463.3 70.1 511.3 62.4 553.5 C54.8 595.7 112.6 650.4 112.1 687.3 C111.6 724.2 82.9 749.5 59.4 774.9 C36 800.3 -14.1 828.8 -28.8 839.6"/><path class="d-mint" d="M1990 300 C1955 322 1901.3 361 1860 392 C1818.7 423 1766.7 449.7 1742 486 C1717.3 522.3 1739 579.7 1712 610 C1685 640.3 1623.3 644 1580 668 C1536.7 692 1483.3 718.7 1452 754 C1420.7 789.3 1419.3 847 1392 880 C1364.7 913 1314 918.7 1288 952 C1262 985.3 1252.3 1043.7 1236 1080 C1219.7 1116.3 1051 1153.3 1190 1170 C1329 1186.7 1923.3 1331.7 2070 1180 C2216.7 1028.3 2083.3 406.7 2070 260 C2056.7 113.3 2025 278 1990 300 Z"/><path class="d-ln" d="M2016.6 337.5 C1995.1 352.8 1927 399.8 1887.6 428.8 C1848.2 457.8 1803.6 476.5 1780.1 511.8 C1756.5 547.1 1776 607.9 1746.4 640.6 C1716.7 673.3 1645.6 684.3 1602.3 708.2 C1559 732.2 1515.6 751 1486.4 784.5 C1457.3 818 1454.5 876.7 1427.4 909.3 C1400.4 942 1349.1 949 1324.3 980.3 C1299.5 1011.6 1286.2 1077.8 1278.6 1097.3"/></svg></div>
+<div class="LX-closing">
+  <div class="LX-closing-stage">
+    <svg class="LX-closing-deco" width="340" height="340" viewBox="0 0 340 340" aria-hidden="true">
+      <circle class="LX-closing-ring1" cx="170" cy="170" r="168"/>
+      <circle class="LX-closing-ring1" cx="170" cy="170" r="118"/>
+      <circle class="LX-closing-ring2" cx="170" cy="170" r="68"/>
+    </svg>
+
+    <div class="LX-closing-main">
+      <div class="LX-closing-hd">
+        <div class="LX-closing-mark"></div>
+        <h2 class="LX-closing-title">오늘 본 것 —<br><span class="LX-closing-hl"><span class="LX-closing-hlt">시작부터 응용까지, 그리고 두 사례</span></span></h2>
+      </div>
+
+      <div class="LX-closing-hr"></div>
+
+      <div class="LX-closing-cols">
+        <div class="LX-closing-rail"></div>
+
+        <div class="LX-closing-col">
+          <div class="LX-closing-disc"><span class="LX-closing-num serif">1</span></div>
+          <p class="LX-closing-lead">채팅부터 아티팩트, 디자인까지는</p>
+          <p class="LX-closing-emph">결과물을 만드는 도구</p>
+        </div>
+
+        <div class="LX-closing-col">
+          <div class="LX-closing-disc"><span class="LX-closing-num serif">2</span></div>
+          <p class="LX-closing-lead">커넥터와 스킬은</p>
+          <p class="LX-closing-emph">기존 업무를 거들어 주는 기능</p>
+        </div>
+
+        <div class="LX-closing-col">
+          <div class="LX-closing-disc"><span class="LX-closing-num serif">3</span></div>
+          <p class="LX-closing-lead">번거로운 반복 작업이 보이면 — 일단</p>
+          <p class="LX-closing-emph">“만들어 줘”라고 시켜보기</p>
+        </div>
+      </div>
+
+      <div class="LX-closing-bar">
+        <p class="LX-closing-q">질문 받겠습니다 — “어디서부터?”는 다음 장에 준비돼 있습니다</p>
+        <div class="LX-closing-sep"></div>
+        <div class="LX-closing-next">
+          <div class="LX-closing-nrow">
+            <span class="LX-closing-kicker serif">다음 단계</span>
+            <span class="LX-closing-nh">부록 — 어디서부터</span>
+          </div>
+          <p class="LX-closing-np">질문에 따라 부록 장을 펼칩니다</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="src">A 06:27–06:37</div>
+</div>
+</section>
+
+<section class="slide a-teal tint og-white" id="appendix-start" data-label="부록 · 어디서부터" data-part="부록" data-speaker-notes="[정해진 발화 없음 — &quot;어디서부터&quot; 질문이 나오면 그때 →. 본편 26·27장에서 다뤘으므로 해당 행만 짚으며 짧게 답변]">
+<div class="og og--soft" aria-hidden="true"><svg class="dc" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false"><rect class="d-dash" x="46.0" y="-25.7" width="25" height="9.5" rx="4.75" transform="rotate(42.8 58.5 -21.0)"/><rect class="d-dash" x="130.9" y="-15.0" width="25" height="9.5" rx="4.75" transform="rotate(35.2 143.4 -10.3)"/><rect class="d-dash" x="218.2" y="-20.3" width="25" height="9.5" rx="4.75" transform="rotate(39.3 230.7 -15.6)"/><rect class="d-dash" x="295.5" y="-14.0" width="25" height="9.5" rx="4.75" transform="rotate(35.3 308.0 -9.3)"/><rect class="d-dash" x="87.6" y="26.4" width="25" height="9.5" rx="4.75" transform="rotate(32.6 100.1 31.1)"/><rect class="d-dash" x="170.9" y="28.5" width="25" height="9.5" rx="4.75" transform="rotate(39.1 183.4 33.2)"/><rect class="d-dash" x="254.4" y="39.0" width="25" height="9.5" rx="4.75" transform="rotate(41.7 266.9 43.7)"/><rect class="d-dash" x="338.0" y="32.1" width="25" height="9.5" rx="4.75" transform="rotate(43.1 350.5 36.9)"/><rect class="d-dash" x="53.3" y="93.8" width="25" height="9.5" rx="4.75" transform="rotate(42.8 65.8 98.6)"/><rect class="d-dash" x="135.7" y="88.3" width="25" height="9.5" rx="4.75" transform="rotate(31.1 148.2 93.0)"/><rect class="d-dash" x="213.4" y="80.2" width="25" height="9.5" rx="4.75" transform="rotate(35.8 225.9 85.0)"/><rect class="d-dash" x="292.6" y="93.4" width="25" height="9.5" rx="4.75" transform="rotate(30.0 305.1 98.2)"/><path class="d-mint" d="M1450 -60 C1462 -22.7 1484.3 30.7 1512 64 C1539.7 97.3 1579.7 118 1616 140 C1652.3 162 1694.3 177.3 1730 196 C1765.7 214.7 1785.8 231.3 1830 252 C1874.2 272.7 1953.3 301 1995 320 C2036.7 339 2065.8 446 2080 366 C2094.2 286 2186.7 -72.3 2080 -160 C1973.3 -247.7 1545 -176.7 1440 -160 C1335 -143.3 1438 -97.3 1450 -60 Z"/><path class="d-ln" d="M1827.7 267.1 C1822.5 277.7 1816 287.1 1808.6 293.5 C1801.2 299.9 1791.9 305.1 1783.2 305.6 C1774.6 306.2 1764.8 302.5 1756.8 297 C1748.8 291.4 1740.6 282.8 1735 272.3 C1729.4 261.8 1723.5 247.1 1723 234 C1722.5 220.8 1726.2 203.6 1731.8 193.4 C1737.3 183.1 1748 177 1756.2 172.4 C1764.4 167.7 1772.3 166.9 1780.9 165.7 C1789.5 164.5 1799.2 161.4 1807.9 165.2 C1816.7 168.9 1828.2 177.1 1833.4 187.9 C1838.7 198.7 1840.4 216.9 1839.5 230.1 C1838.5 243.3 1832.8 256.6 1827.7 267.1 Z"/><path class="d-ln" d="M1592 -10 C1604.7 2.7 1643 43 1668 66 C1693 89 1723 105.7 1742 128 C1761 150.3 1774.7 170.3 1782 200 C1789.3 229.7 1785.3 288.3 1786 306"/><path class="d-mint" d="M-60 796 C-21.7 810.3 21.7 828.7 60 846 C98.3 863.3 138.3 879.3 170 900 C201.7 920.7 228.3 943.3 250 970 C271.7 996.7 288.7 1025 300 1060 C311.3 1095 396.3 1158.3 318 1180 C239.7 1201.7 -88.7 1260 -170 1190 C-251.3 1120 -188.3 825.7 -170 760 C-151.7 694.3 -98.3 781.7 -60 796 Z"/><path class="d-ln" d="M301.5 910.5 C303.3 920.8 301.9 930.7 299.3 940.5 C296.7 950.2 293.5 960.9 286.1 968.9 C278.7 976.8 266.7 984.7 254.8 988.2 C242.9 991.7 227.6 992.1 214.7 990 C201.8 988 187.3 983.1 177.5 976 C167.7 968.9 158.4 957.4 155.8 947.2 C153.2 937.1 157.2 924.3 161.7 915 C166.3 905.6 174.9 898.4 183 891 C191.1 883.5 198.8 875.3 210.1 870.2 C221.4 865.1 237.7 859.1 250.8 860.4 C263.9 861.8 280.1 869.8 288.6 878.2 C297 886.5 299.7 900.1 301.5 910.5 Z"/><path class="d-ln" d="M96 836 C106 843 132.3 864.3 156 878 C179.7 891.7 214.7 901.7 238 918 C261.3 934.3 283.7 958.3 296 976 C308.3 993.7 309.3 1016 312 1024"/></svg></div>
+  <div class="body">
+<div class="LX-appendix">
+  <div class="LX-appendix-rule" aria-hidden="true"></div>
+  <div class="LX-appendix-lead">
+    <span class="LX-appendix-eyebrow">부록 A1</span>
+    <b class="LX-appendix-q">그래서,<br>어디서부터<br>시작할까요?</b>
+    <svg class="LX-appendix-rings" width="200" height="200" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+      <circle class="LX-appendix-ring-a" cx="100" cy="100" r="97"/>
+      <circle class="LX-appendix-ring-b" cx="100" cy="100" r="64"/>
+      <circle class="LX-appendix-ring-c" cx="100" cy="100" r="31"/>
+    </svg>
+  </div>
+  <div class="LX-appendix-list">
+    <div class="LX-appendix-item"><span class="LX-appendix-mark" aria-hidden="true"></span><div class="LX-appendix-tx"><p class="LX-appendix-need">문서·발표자료가 급하다</p><p class="LX-appendix-tool">디자인 — 프로토타입부터</p></div></div>
+    <div class="LX-appendix-item"><span class="LX-appendix-mark" aria-hidden="true"></span><div class="LX-appendix-tx"><p class="LX-appendix-need">폴더·파일 정리를 맡기고 싶다</p><p class="LX-appendix-tool">코워크</p></div></div>
+    <div class="LX-appendix-item"><span class="LX-appendix-mark" aria-hidden="true"></span><div class="LX-appendix-tx"><p class="LX-appendix-need">우리 팀 방식대로 답하게</p><p class="LX-appendix-tool">스킬</p></div></div>
+    <div class="LX-appendix-item"><span class="LX-appendix-mark" aria-hidden="true"></span><div class="LX-appendix-tx"><p class="LX-appendix-need">구글 메일·드라이브 연결</p><p class="LX-appendix-tool">커넥터</p></div></div>
+    <div class="LX-appendix-item"><span class="LX-appendix-mark" aria-hidden="true"></span><div class="LX-appendix-tx"><p class="LX-appendix-need">반복 업무를 프로그램으로</p><p class="LX-appendix-tool">클로드 코드</p></div></div>
+  </div>
+</div>
+</div><div class="src">B 9장 · A</div>
+<div class="pageno">A1</div>
+</section>
+
+<div id="chrome" aria-hidden="true"><div id="counter"></div><div id="section-label"></div><div id="progress"><div id="progress-fill"></div></div></div>
+<div id="toolbar" aria-label="발표 도구"><button type="button" id="toc-button" aria-label="목차 열기" aria-controls="toc" aria-expanded="false">목차</button><button type="button" id="notes-button" aria-label="발표자 메모 열기" aria-pressed="false">메모</button><button type="button" id="fullscreen-button" aria-label="전체 화면" aria-pressed="false">전체화면</button></div>
+</main></div>
+
+<aside id="notes" aria-hidden="true"><h2>발표자 메모</h2><p id="notes-copy"></p></aside>
+<div id="toc" role="dialog" aria-modal="true" aria-labelledby="toc-title" aria-hidden="true"><div class="toc-head"><h2 id="toc-title">슬라이드 목차</h2><button type="button" id="toc-close">닫기</button></div><div id="toc-grid"></div></div>
+<div id="zoom" role="dialog" aria-modal="true" aria-labelledby="zoom-caption" aria-hidden="true"><button type="button" id="zoom-close" aria-label="영상 닫기">×</button><video id="zoom-video" controls muted playsinline preload="metadata" aria-label="확대 영상 · 좌우 화살표키로 5초씩 이동" aria-keyshortcuts="ArrowLeft ArrowRight"></video><div id="zoom-caption"></div></div>
+
+<script>
+(() => {
+  "use strict";
+  const stage = document.getElementById("stage");
+  const slides = [...stage.querySelectorAll(".slide")];
+  const counter = document.getElementById("counter");
+  const sectionLabel = document.getElementById("section-label");
+  const progressFill = document.getElementById("progress-fill");
+  const notes = document.getElementById("notes");
+  const notesCopy = document.getElementById("notes-copy");
+  const toc = document.getElementById("toc");
+  const tocGrid = document.getElementById("toc-grid");
+  const zoom = document.getElementById("zoom");
+  const zoomVideo = document.getElementById("zoom-video");
+  const zoomCaption = document.getElementById("zoom-caption");
+  const tocButton = document.getElementById("toc-button");
+  const notesButton = document.getElementById("notes-button");
+  const fullscreenButton = document.getElementById("fullscreen-button");
+  let index = 0;
+  let returnFocus = null;
+  let touchGesture = null;
+  let zoomSeek = null;
+  let zoomLimit = null;
+  let zoomStart = 0;
+  let zoomEnd = Infinity;
+
+  const pad = value => String(value).padStart(2, "0");
+  const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[character]);
+  const isInteractive = target => target instanceof Element && Boolean(target.closest("button, a, input, textarea, select, video, [contenteditable='true']"));
+  const isTypingTarget = target => target instanceof Element && Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
+
+  slides.forEach((slide, slideIndex) => {
+    if (!slide.id) slide.id = `slide-${slideIndex + 1}`;
+    if (!slide.hasAttribute("aria-label")) slide.setAttribute("aria-label", slide.dataset.label || `슬라이드 ${slideIndex + 1}`);
+  });
+
+  function fitStage() {
+    const viewport = window.visualViewport;
+    const width = viewport ? viewport.width : window.innerWidth;
+    const height = viewport ? viewport.height : window.innerHeight;
+    stage.style.transform = `scale(${Math.min(width / 1920, height / 1080)})`;
+  }
+
+  function pauseSlideMedia(slide) {
+    slide.querySelectorAll("video").forEach(video => {
+      video.pause();
+      try { video.currentTime = 0; } catch (_) {}
+    });
+  }
+
+  function render({ updateHash = true } = {}) {
+    slides.forEach((slide, slideIndex) => {
+      const active = slideIndex === index;
+      slide.classList.toggle("active", active);
+      slide.setAttribute("aria-hidden", String(!active));
+      if (active) slide.removeAttribute("inert");
+      else {
+        slide.setAttribute("inert", "");
+        pauseSlideMedia(slide);
+      }
+    });
+    const current = slides[index];
+    counter.textContent = `${pad(index + 1)} / ${pad(slides.length)}`;
+    sectionLabel.textContent = current.dataset.part || "";
+    progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+    notesCopy.textContent = current.dataset.speakerNotes || "이 슬라이드에는 별도 발표자 메모가 없습니다.";
+    [...tocGrid.children].forEach((item, itemIndex) => {
+      const currentItem = itemIndex === index;
+      item.classList.toggle("current", currentItem);
+      if (currentItem) item.setAttribute("aria-current", "page");
+      else item.removeAttribute("aria-current");
+    });
+    if (updateHash && location.hash !== `#${current.id}`) history.replaceState(null, "", `#${current.id}`);
+    document.title = `${current.dataset.label || "슬라이드"} — 클로드 시작하기`;
+  }
+
+  function go(targetIndex, options) {
+    const next = Math.max(0, Math.min(slides.length - 1, targetIndex));
+    if (next === index && !options) return;
+    index = next;
+    render(options);
+  }
+
+  function goToId(id, options) {
+    const found = slides.findIndex(slide => slide.id === id);
+    if (found >= 0) go(found, options);
+  }
+
+  function buildToc() {
+    const fragment = document.createDocumentFragment();
+    slides.forEach((slide, slideIndex) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `toc-item${slide.dataset.type === "divider" ? " section" : ""}`;
+      button.innerHTML = `<span class="toc-num">${pad(slideIndex + 1)}</span><span>${escapeHtml(slide.dataset.label || slide.id)}</span>`;
+      button.addEventListener("click", () => {
+        go(slideIndex);
+        closeToc();
+      });
+      fragment.appendChild(button);
+    });
+    tocGrid.appendChild(fragment);
+  }
+
+  function openToc() {
+    if (zoom.classList.contains("open")) closeZoom(false);
+    returnFocus = document.activeElement;
+    toc.classList.add("open");
+    toc.setAttribute("aria-hidden", "false");
+    tocButton.setAttribute("aria-expanded", "true");
+    stage.setAttribute("inert", "");
+    (tocGrid.querySelector(".current") || tocGrid.querySelector("button"))?.focus();
+  }
+
+  function closeToc(restore = true) {
+    toc.classList.remove("open");
+    toc.setAttribute("aria-hidden", "true");
+    tocButton.setAttribute("aria-expanded", "false");
+    stage.removeAttribute("inert");
+    if (restore && returnFocus instanceof HTMLElement) returnFocus.focus();
+  }
+
+  function toggleNotes(force) {
+    const shouldOpen = typeof force === "boolean" ? force : !notes.classList.contains("open");
+    notes.classList.toggle("open", shouldOpen);
+    notes.setAttribute("aria-hidden", String(!shouldOpen));
+    notesButton.setAttribute("aria-pressed", String(shouldOpen));
+  }
+
+  function clearZoomRange() {
+    if (zoomSeek) zoomVideo.removeEventListener("loadedmetadata", zoomSeek);
+    if (zoomLimit) zoomVideo.removeEventListener("timeupdate", zoomLimit);
+    zoomSeek = null;
+    zoomLimit = null;
+    zoomStart = 0;
+    zoomEnd = Infinity;
+  }
+
+  function openZoom(src, poster, caption, trigger, start, end) {
+    if (!src) return;
+    if (toc.classList.contains("open")) closeToc(false);
+    returnFocus = trigger || document.activeElement;
+    zoomVideo.pause();
+    zoomVideo.muted = true;
+    clearZoomRange();
+    zoomVideo.src = src;
+    const startAt = Number(start);
+    const endAt = Number(end);
+    zoomStart = Number.isFinite(startAt) && startAt > 0 ? startAt : 0;
+    zoomEnd = Number.isFinite(endAt) && endAt > zoomStart ? endAt : Infinity;
+    if (zoomStart > 0) {
+      zoomSeek = () => {
+        zoomSeek = null;
+        try { zoomVideo.currentTime = zoomStart; } catch (_) {}
+      };
+      zoomVideo.addEventListener("loadedmetadata", zoomSeek, { once: true });
+    }
+    if (zoomEnd !== Infinity) {
+      zoomLimit = () => {
+        if (zoomVideo.currentTime < zoomEnd) return;
+        zoomVideo.pause();
+        try { zoomVideo.currentTime = zoomEnd; } catch (_) {}
+      };
+      zoomVideo.addEventListener("timeupdate", zoomLimit);
+    }
+    if (poster) zoomVideo.poster = poster;
+    else zoomVideo.removeAttribute("poster");
+    zoomCaption.textContent = `${caption || "무음 화면 데모"} · ←/→ 5초 이동`;
+    zoom.classList.add("open");
+    zoom.setAttribute("aria-hidden", "false");
+    stage.setAttribute("inert", "");
+    document.getElementById("zoom-close").focus();
+    zoomVideo.play().catch(() => {});
+  }
+
+  function closeZoom(restore = true) {
+    const focusTarget = returnFocus;
+    zoomVideo.pause();
+    clearZoomRange();
+    zoomVideo.removeAttribute("src");
+    zoomVideo.removeAttribute("poster");
+    zoomVideo.load();
+    zoom.classList.remove("open");
+    zoom.setAttribute("aria-hidden", "true");
+    stage.removeAttribute("inert");
+    if (restore && focusTarget instanceof HTMLElement) {
+      focusTarget.focus();
+      if (focusTarget.matches(".media-trigger")) focusTarget.blur();
+    }
+  }
+
+  function trapFocus(event, container) {
+    const focusable = [...container.querySelectorAll("button:not([disabled]), a[href], video[controls], [tabindex]:not([tabindex='-1'])")].filter(element => !element.hasAttribute("inert"));
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  buildToc();
+  document.querySelectorAll(".media-trigger").forEach(trigger => {
+    trigger.addEventListener("click", () => openZoom(trigger.dataset.video, trigger.dataset.poster, trigger.dataset.caption, trigger, trigger.dataset.start, trigger.dataset.end));
+  });
+  tocButton.addEventListener("click", openToc);
+  document.getElementById("toc-close").addEventListener("click", () => closeToc());
+  notesButton.addEventListener("click", () => toggleNotes());
+  fullscreenButton.addEventListener("click", async () => {
+    try {
+      if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch (_) {}
+  });
+  document.getElementById("zoom-close").addEventListener("click", () => closeZoom());
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Tab" && zoom.classList.contains("open")) return trapFocus(event, zoom);
+    if (event.key === "Tab" && toc.classList.contains("open")) return trapFocus(event, toc);
+    if (event.key === "Escape") {
+      if (zoom.classList.contains("open")) closeZoom();
+      else if (toc.classList.contains("open")) closeToc();
+      else if (notes.classList.contains("open")) toggleNotes(false);
+      return;
+    }
+    if (zoom.classList.contains("open")) {
+      if (["ArrowLeft", "ArrowRight"].includes(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey && zoomVideo.readyState > 0) {
+        event.preventDefault();
+        const offset = event.key === "ArrowLeft" ? -5 : 5;
+        const upper = Math.min(zoomEnd, Number.isFinite(zoomVideo.duration) ? zoomVideo.duration : Infinity);
+        zoomVideo.currentTime = Math.min(upper, Math.max(zoomStart, zoomVideo.currentTime + offset));
+      }
+      return;
+    }
+    if (toc.classList.contains("open") || event.ctrlKey || event.metaKey || event.altKey || isTypingTarget(event.target)) return;
+    if (isInteractive(event.target) && [" ", "Enter"].includes(event.key)) return;
+    if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(event.key)) {
+      event.preventDefault(); go(index + 1);
+    } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) {
+      event.preventDefault(); go(index - 1);
+    } else if (event.key === "Home") {
+      event.preventDefault(); go(0);
+    } else if (event.key === "End") {
+      event.preventDefault(); go(slides.length - 1);
+    } else if (event.code === "KeyT") {
+      event.preventDefault(); openToc();
+    } else if (event.code === "KeyS") {
+      event.preventDefault(); toggleNotes();
+    } else if (event.code === "KeyF") {
+      event.preventDefault(); fullscreenButton.click();
+    } else if (["1", "2", "3"].includes(event.key)) {
+      event.preventDefault(); goToId(`part-${event.key}`);
+    }
+  });
+
+  stage.addEventListener("pointerdown", event => {
+    if (event.pointerType !== "touch" || isInteractive(event.target)) {
+      touchGesture = null;
+      return;
+    }
+    touchGesture = { pointerId: event.pointerId, startX: event.clientX };
+  });
+  stage.addEventListener("pointerup", event => {
+    if (!touchGesture || event.pointerType !== "touch" || event.pointerId !== touchGesture.pointerId) return;
+    const delta = event.clientX - touchGesture.startX;
+    touchGesture = null;
+    if (Math.abs(delta) > 70) go(index + (delta < 0 ? 1 : -1));
+  });
+  stage.addEventListener("pointercancel", () => { touchGesture = null; });
+  stage.addEventListener("lostpointercapture", () => { touchGesture = null; });
+  window.addEventListener("hashchange", () => goToId(decodeURIComponent(location.hash.slice(1)), { updateHash: false }));
+  window.addEventListener("resize", fitStage);
+  window.visualViewport?.addEventListener("resize", fitStage);
+  document.addEventListener("fullscreenchange", () => {
+    const active = Boolean(document.fullscreenElement);
+    fullscreenButton.setAttribute("aria-pressed", String(active));
+    fullscreenButton.setAttribute("aria-label", active ? "전체 화면 종료" : "전체 화면");
+    fullscreenButton.textContent = active ? "전체화면 종료" : "전체화면";
+    fitStage();
+  });
+
+  const initialId = decodeURIComponent(location.hash.slice(1));
+  const initialIndex = slides.findIndex(slide => slide.id === initialId);
+  if (initialIndex >= 0) index = initialIndex;
+  fitStage();
+  render({ updateHash: initialIndex < 0 });
+  document.fonts?.ready.then(fitStage);
+
+  window.__deckQA = () => slides.map((slide, slideIndex) => {
+    const body = slide.querySelector(".body");
+    const title = slide.querySelector(".h-title, .display, .d-title, .closing-title");
+    const inspect = element => element ? {
+      clientWidth: element.clientWidth,
+      scrollWidth: element.scrollWidth,
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+      overflowX: element.scrollWidth > element.clientWidth + 1,
+      overflowY: element.scrollHeight > element.clientHeight + 1
+    } : null;
+    return { number: slideIndex + 1, id: slide.id, slide: inspect(slide), body: inspect(body), title: inspect(title) };
+  });
+})();
+</script>
+</body>
+</html>

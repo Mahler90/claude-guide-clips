@@ -1,7 +1,8 @@
 # Downloads is not a dedicated project folder — track ONLY the completed guide,
-# its three companion clip folders, and the presentation deck. Everything else is ignored.
+# its three companion clip folders, and the presentation decks. Everything else is ignored.
 /*
 !/.gitignore
+!/index.html
 !/클로드_초보자_활용가이드_완성판.html
 !/클로드_초보자가이드_클립
 !/claude_screen_clips
@@ -12,6 +13,43 @@
 !/프리젠테이션_페이지구성안_v4.md
 !/프리젠테이션_Canva_프롬프트.md
 
+# 시작하기 발표 v4 — 덱, 낭독본, 낭독본 생성기
+!/클로드_시작하기_발표_v4.html
+!/낭독본_시작하기_v4.html
+!/_build_낭독본.py
+
+# v4 덱이 참조하는 자산만 선별 통과 (발표v2_클립 전체는 152MB라 제외)
+!/_발표_포스터_무자막_v1/
+/_발표_포스터_무자막_v1/*
+!/_발표_포스터_무자막_v1/p10.jpg
+!/_발표_포스터_무자막_v1/p12.jpg
+
+!/클로드_발표용_무자막_클립_v1/
+/클로드_발표용_무자막_클립_v1/*
+!/클로드_발표용_무자막_클립_v1/16_커넥터_Gmail_16m48s-17m36s_무자막.mp4
+
+!/발표v2_클립/
+/발표v2_클립/*
+!/발표v2_클립/A08bc_정리예약.mp4
+!/발표v2_클립/_무자막/
+/발표v2_클립/_무자막/*
+!/발표v2_클립/_무자막/A10b_달력앱_wide.mp4
+!/발표v2_클립/_무자막/D1_디자인진입_프로토타입_wide.mp4
+!/발표v2_클립/_무자막/D2_슬라이드_내보내기_애니메이션_wide.mp4
+!/발표v2_클립/_포스터/
+/발표v2_클립/_포스터/*
+!/발표v2_클립/_포스터/p_02_가입시작_0m28s-0m50s_무자막.jpg
+!/발표v2_클립/_포스터/p_05_model_selector_dropdown.jpg
+!/발표v2_클립/_포스터/p_09_프로젝트_만들기_8m39s-9m15s.jpg
+!/발표v2_클립/_포스터/p_15_dataviz_dashboard_artifact_무자막.jpg
+!/발표v2_클립/_포스터/p_18_skills_meeting_to_report_무자막.jpg
+!/발표v2_클립/_포스터/p_20_스킬_활성화커스텀_23m30s-24m09s_무자막.jpg
+!/발표v2_클립/_포스터/p_A08bc_정리예약.jpg
+!/발표v2_클립/_포스터/p_A10b_달력앱_wide.jpg
+!/발표v2_클립/_포스터/p_D1_디자인진입_프로토타입_wide.jpg
+!/발표v2_클립/_포스터/p_D2_슬라이드_내보내기_애니메이션_wide.jpg
+
 # work-in-progress scratch, not final deliverables
 *.bak_*
+*.bak.*
 claude_screen_clips/_subtitle_removal_work/
