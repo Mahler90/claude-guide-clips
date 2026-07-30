@@ -170,7 +170,7 @@ PAGE = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>낭독본 · 클로드 시작하기</title>
-<meta name="description" content="클로드 시작하기 발표 v4 — 슬라이드 29장 낭독 대사와 무대 지시">
+<meta name="description" content="클로드 시작하기 발표 v4 — 슬라이드 __N__장 낭독 대사와 무대 지시">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
