@@ -543,6 +543,17 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
 #projects .screen-main{width:min(1160px,100%)}
 #projects .cap{grid-template-columns:1fr}
 </style>
+<style id="pt-start-style">
+#pt-start{display:inline-flex;align-items:center;gap:14px;margin-top:38px;padding:17px 34px;border:0;border-radius:999px;
+background:var(--ink,#2b2a28);color:#fdfcfa;font-family:inherit;font-size:21px;font-weight:700;letter-spacing:-.01em;
+cursor:pointer;box-shadow:0 6px 22px rgba(43,42,40,.25);transition:transform .15s ease,box-shadow .15s ease}
+#pt-start:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(43,42,40,.3)}
+#pt-start .pt-tri{font-size:15px;translate:0 -1px}
+#pt-start .pt-key{padding:3px 10px;border-radius:7px;background:rgba(253,252,250,.16);border:1px solid rgba(253,252,250,.35);
+font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.is-fs #pt-start{display:none}
+@media print{#pt-start{display:none}}
+</style>
 </head>
 <body>
 <div id="viewport"><main id="stage" aria-label="클로드 시작하기 발표">
@@ -556,6 +567,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
     <h1 class="display">클로드 <span class="hl"><span class="t">시작</span></span>하기</h1>
     <p class="cover-sub">시작하기부터 응용하기까지, 그리고 세 가지 실전 사례 — 실제 화면으로 봅니다</p>
     <div class="meta"><span>발표 약 25분</span><span class="mdot">●</span><span>질의응답 별도</span></div>
+    <button type="button" id="pt-start"><span class="pt-tri" aria-hidden="true">▶</span>전체화면으로 발표 시작<span class="pt-key">F</span></button>
   </div>
 </section>
 
@@ -1562,6 +1574,11 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
     } catch (_) {}
   });
   document.getElementById("zoom-close").addEventListener("click", () => closeZoom());
+  const ptStart = document.getElementById("pt-start");
+  if (ptStart) {
+    if (document.documentElement.requestFullscreen) ptStart.addEventListener("click", () => fullscreenButton.click());
+    else ptStart.hidden = true;
+  }
 
   document.addEventListener("keydown", event => {
     if (event.key === "Tab" && zoom.classList.contains("open")) return trapFocus(event, zoom);
@@ -1622,6 +1639,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#171614}bod
   window.visualViewport?.addEventListener("resize", fitStage);
   document.addEventListener("fullscreenchange", () => {
     const active = Boolean(document.fullscreenElement);
+    document.body.classList.toggle("is-fs", active);
     fullscreenButton.setAttribute("aria-pressed", String(active));
     fullscreenButton.setAttribute("aria-label", active ? "전체 화면 종료" : "전체 화면");
     fullscreenButton.textContent = active ? "전체화면 종료" : "전체화면";
